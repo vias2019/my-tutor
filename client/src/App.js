@@ -1,6 +1,9 @@
 import React from 'react';
 import './App.css';
 
+//import RegistrPage from "./Components/RegistrInvite";
+//import StudentPay from "./Components/StudentPay";
+
 function App() {
   return (
     <div className="App">
@@ -18,7 +21,10 @@ function App() {
           Learn React
         </a>
       </header>
+
     </div>
+
+
   );
 }
 
