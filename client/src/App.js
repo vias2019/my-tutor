@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import './App.css';
-import RegistrInvite from './Components/RegistrInvite';
+//import RegistrInvite from './Components/RegistrInvite';
+// import AddStudent from "./Components/AddStudent";
+// import EditStudent from "./Components/EditStudent";
 
 //import StudentPay from "./Components/StudentPay";
 

@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col';
 
 import './style.css';
 
+
 function RegistrInvite() {
 
     const [show, setShow] = React.useState(false);
