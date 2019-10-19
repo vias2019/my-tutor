@@ -15,9 +15,27 @@ function Calendar(){
           header={{
             left: "prev,next",
             center: "title",
-            right: "dayGridMonth,timeGridWeek,listWeek"
+            right: "dayGridMonth,timeGridWeek,listWeek",
           }}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          //to get events to show up, create a separate events object and use props to pass in the event details. Events takes in an array of object. Each object in the array should have the title of the event with a data following this format: 2019-10-20T08:00. Default duration of all events is 1 hour.
+          events={[{
+            title: "Student Name@@",
+            date: "2019-10-20T08:00",
+          },
+          {
+            title: "Student Name2",
+            date: "2019-10-22",
+          },
+          {
+            title: "Student Name3",
+            date: "2019-10-25",
+          },
+          {
+            title: "Student Name4",
+            date: "2019-10-31",
+          }
+        ]}
         />
       </div>
     </div>
