@@ -1,0 +1,14 @@
+.brand_logo{
+    max-width: 200px;
+    max-height: auto;
+};
+
+.login-form {
+    display: inline-block;
+    float: left;
+};
+
+.google-login {
+    display: inline-block;
+    float: right;
+};
