@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import './App.css';
-//import RegistrInvite from './Components/RegistrInvite';
+import RegistrInvite from './Components/RegistrInvite';
 // import AddStudent from "./Components/AddStudent";
 // import EditStudent from "./Components/EditStudent";
 
@@ -17,10 +17,12 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-
+<RegistrInvite />
       </div>
     );
   }
 }
 
 export default App;
+
+
