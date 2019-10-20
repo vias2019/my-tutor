@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from 'react';
+import TeacherScheduler from './Components/TeacherScheduler'
 import './App.css';
 import RegistrInvite from './Components/RegistrInvite';
 // import AddStudent from "./Components/AddStudent";
@@ -6,6 +7,7 @@ import RegistrInvite from './Components/RegistrInvite';
 
 //import StudentPay from "./Components/StudentPay";
 
+<<<<<<< HEAD
 class App extends Component {
   render() {
     return (
@@ -21,6 +23,12 @@ class App extends Component {
       </div>
     );
   }
+=======
+function App() {
+  return (
+        <TeacherScheduler/>
+  );
+>>>>>>> 6237c0f187fe5e403a09850fca09a52b3a03fa0d
 }
 
 export default App;
