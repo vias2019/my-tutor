@@ -43,7 +43,7 @@ let mailOptions = {
 // Step 3
 transporter.sendMail(mailOptions, (err, data) => {
   if (err) {
-      return log('Error occurs here');
+      return log('There is an error with your nodemailer component in server.js');
   }
   return log('Email sent!!!');
 });

@@ -1,34 +1,29 @@
-import React from 'react';
-import TeacherScheduler from './Components/TeacherScheduler'
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
-import RegistrInvite from './Components/RegistrInvite';
-// import AddStudent from "./Components/AddStudent";
-// import EditStudent from "./Components/EditStudent";
 
-//import StudentPay from "./Components/StudentPay";
+import LoginPage from "../src/Components/LoginPage";
 
-<<<<<<< HEAD
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-         
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-<RegistrInvite />
-      </div>
-    );
-  }
-=======
+import StudentView from "./pages/StudentView";
+import TeacherView from "./pages/TeacherView";
+
+import TeacherRegistration from "./pages/TeacherRegistration";
+import StudentRegistration from "./pages/StudentRegistration";
+
 function App() {
   return (
-        <TeacherScheduler/>
+    <Router>
+      <div>
+        <Switch>
+          <Route exact path="/" component={LoginPage} />
+          <Route exact path="/studentregistration" component={StudentRegistration} />
+          <Route exact path="/teacherregistration" component={TeacherRegistration} />
+          <Route exact path="/studentview" component={StudentView} />
+          <Route exact path="/teacherview" component={TeacherView} />
+        </Switch>
+      </div>
+    </Router>
   );
->>>>>>> 6237c0f187fe5e403a09850fca09a52b3a03fa0d
 }
 
 export default App;
