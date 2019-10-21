@@ -1,55 +1,83 @@
 import * as React from 'react';
-import "./style.css";
+import './style.css';
 
-// import { Button, Form, FormGroup, Label, Input }
-// from 'reactstrap';
-// import  { GoogleLoginButton } from 'react-social-login-buttons';
+export class LoginPage extends React.Component {
 
-export const LogIn = () => {
+    constructor(props) {
+        super(props);
+        this.state = {
+            emailValue: '',
+            passwordValue: ''
+        };
+        
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    }
+
+    handleEmailChange(event) {
+        this.setState({ emailValue: event.target.value });
+    }
+
+    handlePasswordChange(event) {
+        this.setState({ passwordValue: event.target.value });
+    }
     
-    return (
-        <div classNameName="container h-100">
-            <div classNameNameName="d-flex justify-content-center h-100">
-                <div classNameName="user_card">
-                    <div className="d-flex justify-content-center">
-                        <div className="brand_logo_container">
-                            <p>Welcome to MyTutor</p>
-                            <img src="./images/teacherOwl.png" className="brand_logo" alt="Logo"/>
-                        </div>
-                    </div>
-
-                    <div className="d-flex justify-content-center form_container">
-                        <form className="login-form" id="signin" name="signin" method="post" action="signin">
-                            <div className="input-group mb-3">
-                                <div className="input-group-append"></div>
-                                <input type="text" name="email" className="form-control input_user" value=""
-                                    placeholder="email"/>
-                            </div>
-                            <div className="input-group mb-3">
-                                <div className="input-group-append">
-                                </div>
-                                <input type="password" name="password" className="form-control input_pass" value=""
-                                    placeholder="password"/>
-                            </div>
-
-                            <div className="d-flex justify-content-center mt-3 login_container">
-                                <button type="submit" name="button" className="btn login_btn" value="Sign In">Login</button>
-                            </div>
-
-                        </form>
-                        <div className> hi</div>
-                    </div>
-
-                    <div className="mt-4">
-                        <div className="d-flex justify-content-center links">
-                            Don't have an account? <br/>
-                                <a href="/teacherReg" className="ml-2">Register as a Teacher</a> 
-                                <br/>
-                                <a href="/studentReg" className="ml-2">Register as a Student</a>
-                        </div>
-                    </div>
+    render () {
+        return (
+        <>
+            <div className="d-flex justify-content-center">
+                <div className="brand_logo_container">
+                    <p>Welcome to MyTutor</p>
+                    <img src="./images/teacherOwl.png" className="brand_logo" alt="Logo"/>
                 </div>
             </div>
-        </div>
-    );
+
+            <div className="d-flex justify-content-center form_container">
+                <form name="signin" method="post" action="signin">
+                    <div >
+                        <label>
+                            Email:
+                            <input 
+                                className="form-control input_user"
+                                type="text" 
+                                name="email" 
+                                value={this.state.emailValue} 
+                                placeholder="email"
+                                onChange={this.handleEmailChange}
+                            />
+                        </label>
+                    </div>
+                    <div >
+                        <label>
+                            Password:
+                            <input 
+                                className="form-control input_pass"
+                                type="password" 
+                                name="password" 
+                                value={this.state.passwordValue}
+                                placeholder="password"
+                                onChange={this.handlePasswordChange}
+                            />
+                        </label>
+                    </div>
+                    <div className="d-flex justify-content-center mt-3 login_container">
+                        <button 
+                            type="submit" 
+                            name="button" 
+                            className="btn login_btn" 
+                            value="Sign In">
+                            Sign In
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div className="center-div">
+                Don't have an account?
+                <div><a href="/student-registration">Register as new student</a></div> 
+                <div><a href="/teacher-registration">Register as new teacher</a></div> 
+            </div>
+        </>
+        )
+    }
 };
