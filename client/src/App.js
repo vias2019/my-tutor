@@ -17,6 +17,8 @@ function App() {
             <li><Link to="/">Log In</Link></li>
             <li><Link to="/student-registration">Student Registration</Link></li>
             <li><Link to="/teacher-registration">Teacher Registration</Link></li>
+            <li><Link to="/studentview">Student View</Link></li>
+            <li><Link to="/teacherview">Teacher View</Link></li>
           </ul>
         </nav>
 

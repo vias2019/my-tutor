@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "My-tutor",
   "private": true,
-  "proxy": "http://localhost:3001/",
+  "proxy": "http://localhost:3000/",
   "dependencies": {
     "@fullcalendar/core": "^4.3.1",
     "@fullcalendar/daygrid": "^4.3.0",
@@ -12,11 +12,14 @@
     "@fullcalendar/resource-timegrid": "^4.3.0",
     "@fullcalendar/timegrid": "^4.3.0",
     "bootstrap": "^4.3.1",
+    "braintree": "^2.20.0",
+    "braintree-web-drop-in": "^1.20.4",
     "react": "^16.6.3",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.6.3",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^2.1.1"
+    "react-scripts": "^2.1.1",
+    "react-select": "^3.0.8"
   },
   "scripts": {
     "start": "react-scripts start",

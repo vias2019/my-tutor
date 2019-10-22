@@ -13,6 +13,18 @@ const app = express();
 const nodemailer = require('nodemailer');
 const log = console.log;
 
+//Package for payment function.
+const braintree = require("braintree");
+var gateway = braintree.connect({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "9tcq3ypzspqhjqk7",
+  publicKey: "6k79n6k7bq4tg38j",
+  privateKey: "2198178311d1a642203ecc7ff935239a"
+});
+gateway.clientToken.generate({}, function (err, response) {
+  var clientToken = response.clientToken
+});
+
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -49,6 +61,19 @@ transporter.sendMail(mailOptions, (err, data) => {
 });
 
 // Define API routes here
+app.get('/client_token',function(req,res){
+  gateway.clientToken.generate({},function(err,response){
+    res.send(response.clientToken);
+  })
+})
+
+app.post("/checkout", function (req, res) {
+  var clientNonce = req.body.payload;
+  gateway.transaction.sale({
+    amount: "200.00",
+    paymentMethodNonce: clientNonce}, function (err, result) {
+  });
+});
 
 // Send every other request to the React app
 // Define any API routes before this runs

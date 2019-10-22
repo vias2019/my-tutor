@@ -1,24 +1,43 @@
-import React from 'react';
+import React, {Component} from 'react';
+import axios from 'axios';
+import braintree from 'braintree';
+import dropin from 'braintree-web-drop-in';
 import './style.css';
 
-function StudentPay(props) {
-    return (
-        <div className='studentPayView'>
-            <div class="card">
-                <div class="card-header">
-                    Tuition and Fees
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Your current fee balance is $ 
-                {/* TO DO: UPDATE WITH DATABASE INFO */}
-                    {props.tuitionOwed}</h5>
-                    <p class="card-text">Click below to pay your tutor today.</p>
-                    {/* TO DO: ADD PAYMENT COMPONENT */}
-                    <a href="#" class="btn btn-primary">Pay</a>
-                </div>
+class StudentPay extends Component {
+    state = {};
+    //When the component mounts, get request is made to the server. Server generates and sends back a client token. Once we have the client token, create the payment button using the token.
+    componentDidMount(){
+        let button = document.querySelector('.submit-button');
+        axios.get('/client_token')
+        .then(res => {
+            let clientToken = res
+            braintree.dropin.create({
+                authorization: clientToken,
+                container: '.dropin-container'
+              }, function (err, instance) {
+                  button.addEventListener('click',function(){
+                      instance.requestPaymentMethod(function(err,payload){
+                          axios.post('/checkout', payload)
+                          .then(console.log('payload sent to server'))
+                          })
+                      })
+                  })
+              });
+        }
+
+        render(){
+            return(
+                <div>
+                <div className='dropin-container'></div>
+                <button className='submit-button'> Request payment method</button>
             </div>
-        </div>
-    )
+            )
+    }
 }
 
+
+
+
 export default StudentPay;
+// tuitionOwed={this.state.tuitionOwed}
