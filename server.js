@@ -21,6 +21,11 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
+app.post('/send-invite',(req,res) => {
+  console.log(req.body);
+
+ 
+
 //Student registration email notification: 
 // Step 1
 let transporter = nodemailer.createTransport({
@@ -35,9 +40,9 @@ let transporter = nodemailer.createTransport({
 let mailOptions = {
   from: 'mytutortest@gmail.com', 
   // TODO: email receiver - pull from registrinvite form submit
-  to: 'mytutortest@gmail.com', 
+  to: req.body.emailid, 
   subject: 'Welcome to My Tutor!',
-  text: 'Welcome to My Tutor! Please register here to get started with your tutoring sessions.'
+  text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.' 
 };
 
 // Step 3
@@ -48,6 +53,8 @@ transporter.sendMail(mailOptions, (err, data) => {
   return log('Email sent!!!');
 });
 
+res.json({email: 'sent'})
+});
 // Define API routes here
 
 // Send every other request to the React app
