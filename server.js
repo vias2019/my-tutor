@@ -4,6 +4,46 @@
 
 // mongoose.connect("mongodb://localhost/maindatabase", { useNewUrlParser: true });
 
+// // Configuring Passport
+// var passport = require('passport');
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// const session = require('express-session')
+// ...
+// //sessions
+// app.use(
+//   session({
+//   secret: 'fraggle-rock', //pick a random string to make the hash that is generated secure
+//   resave: false, //required
+//   saveUninitialized: false //required
+//   })
+// )
+
+// // This is a console.log, that shows us the basic info that is in the user object
+// app.use( (req, res, next) => {
+//     console.log('req.session', req.session);
+//     return next();
+//   });
+
+//   app.use( (req, res, next) => {
+//     console.log('req.session', req.session);
+//     next()
+//   });
+//   app.post('/user', (req, res) => {
+//     console.log('user signup');
+//     req.session.username = req.body.username;
+//     res.end()
+//   })
+
+
+
+
+// // Require Database (This will be the route to the database, not ./database)
+// const dbConnection = require('./database')
+// const user = require('./routes/user')
+// // ****In API routes, we need to write your mongoose request to save the new user.***
+
 require('dotenv').config();
 const express = require("express");
 const path = require("path");

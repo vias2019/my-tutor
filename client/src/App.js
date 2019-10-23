@@ -5,6 +5,7 @@ import { LoginPage } from "./Components/LoginPage/index.js";
 import { RegisterStudentPage } from './Components/RegisterStudentPage';
 import { RegisterTeacherPage } from './Components/RegisterTeacherPage';
 
+
 function App() {
   return (
     <Router>
@@ -13,6 +14,8 @@ function App() {
           <ul>
             <li><Link to="/">Log In</Link></li>
             <li><Link to="/student-registration">Student Registration</Link></li>
+            <li><Link to="/teacher-registration">Teacher Registration</Link></li>
+            <li><Link to="/teacher-registration">Teacher Registration</Link></li>
             <li><Link to="/teacher-registration">Teacher Registration</Link></li>
           </ul>
         </nav>
