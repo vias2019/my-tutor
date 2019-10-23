@@ -11,11 +11,11 @@ class StudentPay extends Component {
 
         dropin.create({
             authorization: 'sandbox_tv289x3x_9tcq3ypzspqhjqk7',
-            container: '.dropin-container'
-          }, function (createErr, instance) {
+            selector: '.dropin-container'
+          }, function (err, dropinInstance) {
             button.addEventListener('click', function () {
               instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-                // Submit payload.nonce to your server
+                
               });
             });
           });
