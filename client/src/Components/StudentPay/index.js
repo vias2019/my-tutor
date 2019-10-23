@@ -6,20 +6,20 @@ import './style.css';
 class StudentPay extends Component {
     state = {};
 
-    componentDidMount(){
-        const button = document.querySelector('.submit-button')
+    // componentDidMount(){
+    //     const button = document.querySelector('.submit-button')
 
-        dropin.create({
-            authorization: 'sandbox_tv289x3x_9tcq3ypzspqhjqk7',
-            selector: '.dropin-container'
-          }, function (err, dropinInstance) {
-            button.addEventListener('click', function () {
-              instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+    //     dropin.create({
+    //         authorization: 'sandbox_tv289x3x_9tcq3ypzspqhjqk7',
+    //         selector: '.dropin-container'
+    //       }, function (err, dropinInstance) {
+    //         button.addEventListener('click', function () {
+    //           instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
                 
-              });
-            });
-          });
-    }
+    //           });
+    //         });
+    //       });
+    // }
 
         render(){
             return(
