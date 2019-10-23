@@ -5,17 +5,15 @@ var Schema = mongoose.Schema;
 var dbSchema = new Schema({
     isTeacher: {
         type: Boolean,
+        default: false,
+        required: true
     },
 
     teacherIs: {
         type: String,
-        required: "String is Required"
-        //dropdown
-    },
-
-    studentIs: {
-        type: String,
+        trim: true,
         required: true
+        //dropdown
     },
 
     firstName: {
@@ -30,10 +28,26 @@ var dbSchema = new Schema({
         required: true
     },
 
-    className: {
-        type: String,
-        required: true
-        //dropdown
+    class: 
+      
+         [
+
+        {
+            className: {
+                type: String
+            },
+
+            time: {
+                type: Date
+            }
+        }
+
+
+    ],
+
+    isRegistered: {
+        type: Boolean,
+        default: false
     },
 
     tuition: {
@@ -55,22 +69,19 @@ var dbSchema = new Schema({
     },
 
     time: {
-        type: Date,
+        type: Number
     },
 
-    duration: {
-        type: Number,
-    },
-
+   
     email: {
         type: String,
-        match: [/.+@.+\..+/, "Please enter a valid e-mail address"]
+        match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
+        required: true
     },
 
     password: {
         type: Schema.Types.Mixed,
         trim: true,
-        required: true,
         validate: [
             function (input) {
                 return input.length >= 6;
