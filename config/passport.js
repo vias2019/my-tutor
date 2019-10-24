@@ -3,7 +3,7 @@ var User = require('../models/user');
 var bCrypt = require('bcrypt-nodejs');
 var login = require('./login');
 var signup = require('./signup');
-var User = require('../models/user');
+var User = require('../model'); //this only will work if we accurately export the model as a module
 
 module.exports = function(passport){
 
@@ -26,7 +26,7 @@ module.exports = function(passport){
 
 }
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// Login Strategy for Passport:
+// Local Login Strategy for Passport:
 passport.use('login', new LocalStrategy({
     passReqToCallback : true
 },
@@ -64,7 +64,7 @@ return bCrypt.compareSync(password, user.password);
 
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// Signup Strategy for Passport:
+// Local Signup Strategy for Passport:
 
 	passport.use('signup', new LocalStrategy({
             passReqToCallback : true // allows us to pass back the entire request to the callback
