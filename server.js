@@ -21,33 +21,42 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
+app.post('/send-invite',(req,res) => {
+  console.log(req.body);
+
+ 
+
 //Student registration email notification: 
 // Step 1
-// let transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//       user: process.env.EMAIL,
-//       pass: process.env.PASSWORD 
-//   }
-// });
 
-// // Step 2
-// let mailOptions = {
-//   from: 'mytutortest@gmail.com', 
-//   // TODO: email receiver - pull from registrinvite form submit
-//   to: 'mytutortest@gmail.com', 
-//   subject: 'Welcome to My Tutor!',
-//   text: 'Welcome to My Tutor! Please register here to get started with your tutoring sessions.'
-// };
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD 
+  }
+});
 
-// // Step 3
-// transporter.sendMail(mailOptions, (err, data) => {
-//   if (err) {
-//       return log('There is an error with your nodemailer component in server.js');
-//   }
-//   return log('Email sent!!!');
-// });
+// Step 2
+let mailOptions = {
+  from: 'mytutortest@gmail.com', 
+  // TODO: email receiver - pull from registrinvite form submit
+  to: req.body.emailid, 
+  subject: 'Welcome to My Tutor!',
+  text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.' 
+};
 
+// Step 3
+transporter.sendMail(mailOptions, (err, data) => {
+  if (err) {
+      return log('There is an error with your nodemailer component in server.js');
+  }
+  return log('Email sent!!!');
+});
+
+
+res.json({email: 'sent'})
+});
 // Define API routes here
 
 
