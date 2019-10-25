@@ -1,15 +1,20 @@
 var mongoose = require("mongoose");
 
+// This is the route to the database
 var model = require("./model.js");
 
 mongoose.connect("mongodb://localhost/maindatabase", { useNewUrlParser: true });
+// const user = require('./routes/user')
+// // ****In API routes, we need to write your mongoose request to save the new user.***
 
 require('dotenv').config();
 const express = require("express");
 const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
-
+//setting up express session - this will allow us to maintain persistence in our loggedin user
+const session = require('express-session')
+const authRoutes = require('.controllers/authRoutes')
 const nodemailer = require('nodemailer');
 const log = console.log;
 
@@ -20,6 +25,33 @@ app.use(express.json());
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
+
+// Configuring Passport
+var passport = require('passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Setting up express-session
+app.use(
+  session({
+  secret: 'fraggle-rock', //pick a random string to make the hash that is generated secure
+  resave: false, //required
+  saveUninitialized: false //required
+  })
+)
+
+//we’re using serializeUser and deserializeUser callbacks. The first one will be invoked on authentication, and its job is to serialize the user instance with the information we pass to it (the user ID in this case) and store it in the session via a cookie. The second one will be invoked every subsequent request to deserialize the instance, providing it the unique cookie identifier as a “credential”. 
+
+passport.serializeUser(function(user, cb) {
+    cb(null, user.id);
+  });
+  
+  passport.deserializeUser(function(id, cb) {
+    User.findById(id, function(err, user) {
+      cb(err, user);
+    });
+  });
+
 
 app.post('/send-invite',(req,res) => {
   console.log(req.body);
