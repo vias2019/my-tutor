@@ -25,7 +25,7 @@ function Calendar(){
           events={[{
             title: "Student Name@@",
             date: "2019-10-20T09:00",
-            duration: '04:00:00'
+            slotDuration: '04:00:00'
           },
           {
             title: "Student Name2",
