@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react';
+import axios from 'axios';
+import dropin from 'braintree-web-drop-in';
 import './style.css';
 
 function StudentPay(props) {
