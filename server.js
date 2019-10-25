@@ -28,6 +28,7 @@ app.post('/send-invite',(req,res) => {
 
 //Student registration email notification: 
 // Step 1
+
 let transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -53,6 +54,7 @@ transporter.sendMail(mailOptions, (err, data) => {
   return log('Email sent!!!');
 });
 
+
 res.json({email: 'sent'})
 });
 // Define API routes here
@@ -60,83 +62,114 @@ res.json({email: 'sent'})
 
 
 //Teacher reqistration - create a document in db - works
-app.post("/submit-teacher", function(req, res) {
+app.post("/submit-teacher", function (req, res) {
   model.create(req.body)
-    .then(function(dbUser) {
+    .then(function (dbUser) {
       res.json(dbUser);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       res.json(err);
     });
 });
+
 //invitation sent to student -works
-app.post("/send-invite", function(req, res) {
-  model.create(req.body)
-    .then(function(dbUser) {
-      res.json(dbUser);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
+app.post("/send-invite", function (req, res) {
+  model.find({ email: 'viktoriya@gmail.com' }).then(function (result) {
+    if (result) {
+      res.json({ success: false, message: 'user already exists in db' });
+    } else {
+      model.create(req.body)
+        .then(function (dbUser) {
+          res.json(dbUser);
+        })
+        .catch(function (err) {
+          res.json(err);
+        });
+    }
+  });
 });
-//Student registration
+
+//Student registration - works
 app.post("/student-reg", function (req, res) {
-  model.findOneAndUpdate({ "email": req.body.email }, { "isRegistered": true, "password": req.body.password }).then(function (err, result) {
-
-    if (err) throw err;
-    res.json({"message":"Email does not exist"});
-  });
+  model.findOneAndUpdate({ "email": req.body.email }, { "isRegistered": true, "password": req.body.password }).then(function (result) {
+    res.json(result);
+  }
+  );
 });
 
-//Add Student button
-//Should we search by student ID?
+//Add Student button -works
 app.post("/add-student", function (req, res) {
-const date = new Date();
-const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
+  // const date = new Date();
+  // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
+  console.log(req.body);
+  model.findOneAndUpdate({ "email": req.body.email }, { "tuition": req.body.tuition, "schedule": req.body.schedule, "date": req.body.date, "time": req.body.time }).then(function (result) {
 
-  model.findOneAndUpdate({ "email": req.body.email }, { "className": req.body.className, "tuition": req.body.tuition, "schedule": req.body.schedule, "date":req.body.date, "time": req.body.time }).then(function (err, result) {
-
-    if (err) throw err;
-    res.json({"message":"Email does not exist"});
-  });
-});
-
-//Delete record
-app.post("/delete", function (req, res) {
-  model.findOneAndDelete({ "email": req.body.email }).then(function (err, result) {
-
-    if (err) throw err;
-    res.json({"message":"Record was deleted"});
-  });
-});
-
-//Student view
-app.get("/student-view", function (req, res) {
-  model.findOne({ "email": req.body.email},{"teacherIs": res.body.teacherIs, "className": res.body.className, "tuition": res.body.tuition, "schedule":res.body.schedule, "date": res.body.date, "time": res.body.time, "tuitionOwed": res.body.tuitionOwed  }).then(function (err, result) {
-
-    if (err) throw err;
     res.json(result);
   });
 });
 
-//get payment info
-//add logic here
-app.get("/payment", function (req, res) {
-  model.findOne({ "email": req.body.email},{"tuitionOwed": res.body.tuitionOwed}).then(function (err, result) {
+//Delete record -works
+app.post("/delete", function (req, res) {
+  model.findOneAndDelete({ "email": req.body.email }, function (result) {
 
-    if (err) throw err;
-    res.json();
+
+    res.json({ "message": "Record was deleted" });
+  });
+});
+
+//Student view
+// TeacherName (dropdown selector)
+// ClassName
+// Monthly Rate -works
+app.get("/student-view", function (req, res) {
+  model.find({ "email": req.body.email }, "teacherIs className tuition tuitionOwed").then(function (result) {
+    res.json(result);
+  });
+});
+
+//drop-down menu - teachers
+app.get("/teachers", function (req, res) {
+  console.log('are we here?');
+  arrayOfTeachers = [];
+  const listOfTeachers = (response) => {
+    console.log('are we in this fn?');
+    for (var i = 0; i < response.length; i++) {
+      arrayOfTeachers.push(response[i].teacherIs);
+    }
+    return arrayOfTeachers;
+  }
+
+  model.find({}, "teacherIs").then(function (result) {
+    // console.log('are we here also?', err);
+    // if (err) {
+    //   console.log("error?");
+    //   res.json(err);
+    // }else{
+    const teachersList = listOfTeachers(result);
+    console.log('teachersList: ', teachersList);
+    res.json(teachersList);
+
+    //}
+  });
+});
+
+//get payment info - works
+//add logic here 
+app.get("/payment", function (req, res) {
+  model.find({ "email": req.body.email }, "tuitionOwed").then(function (result) {
+
+    res.json(result);
   });
 });
 
 //calendar read - firstname, lastname, date - works
 app.get("/calendar", function (req, res) {
-  responseArray=[];
-  model.find({"isTeacher": false}, 'firstName lastName date class', function(err,result){
-  res.json(result);
+
+  model.find({ "isTeacher": false }, 'firstName lastName date class', function (result) {
+    res.json(result);
   });
 
-  
+
   //{projection: {firstName, lastname, schedule, date, time}})
   // .then(function (err, result) {
 
