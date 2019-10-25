@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './style.css';
+import Footer from "../Footer/index";
 
 export class LoginPage extends React.Component {
 
@@ -77,6 +78,7 @@ export class LoginPage extends React.Component {
                 <div><a href="/student-registration">Register as new student</a></div> 
                 <div><a href="/teacher-registration">Register as new teacher</a></div> 
             </div>
+            <Footer/>
         </>
         )
     }
