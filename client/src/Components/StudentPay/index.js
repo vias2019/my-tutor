@@ -4,6 +4,7 @@ import './style.css';
 function StudentPay(props) {
     return (
         <div className='studentPayView'>
+              <br/>
             <div class="card">
                 <div class="card-header">
                     Tuition and Fees
