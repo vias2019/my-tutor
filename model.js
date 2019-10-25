@@ -2,6 +2,12 @@ var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
+// (Tim) I believe we need to export the model this way: 
+//module.exports = {
+//     key: value,
+//     key: value
+// };
+
 var dbSchema = new Schema({
     isTeacher: {
         type: Boolean,
@@ -97,3 +103,4 @@ var createSchema = mongoose.model("Example", dbSchema);
 
 // Export the Example model
 module.exports = createSchema;
+
