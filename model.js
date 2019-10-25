@@ -28,22 +28,22 @@ var dbSchema = new Schema({
         required: true
     },
 
-    class: 
-      
-         [
+    class:
 
-        {
-            className: {
-                type: String
-            },
+        [
 
-            time: {
-                type: Date
+            {
+                className: {
+                    type: String
+                },
+
+                time: {
+                    type: Date
+                }
             }
-        }
 
 
-    ],
+        ],
 
     isRegistered: {
         type: Boolean,
@@ -57,22 +57,22 @@ var dbSchema = new Schema({
 
     tuitionOwed: {
         type: Number,
-       //calculated
+        //calculated
     },
 
-    schedule: {
-        type: Date,
-    },
-    date: {
-        type: Date,
-        default: Date.now
-    },
+    // schedule: {
+    //     type: Date,
+    // },
+    // date: {
+    //     type: Date,
+    //     default: Date.now
+    // },
 
-    time: {
-        type: Number
-    },
+    // time: {
+    //     type: Number
+    // },
 
-   
+
     email: {
         type: String,
         match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
