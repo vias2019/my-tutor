@@ -4,7 +4,7 @@ import "./style.css"
 
 function Footer (props) {
     return (
-        <div class="footer">
+        <div className="footer">
  <p>Contributors: Kevin Joun      -      Stephanie Hughes      -      Tim Holeski      -      Viktoriya Grishkina</p>     
         </div>
     )

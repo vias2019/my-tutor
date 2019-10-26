@@ -1,6 +1,33 @@
 var express = require('express')
 var router = express.Router()
 var mongoose = require("mongoose");
+var braintree = require('braintree');
+
+
+var gateway = braintree.connect({
+    environment:  braintree.Environment.Sandbox,
+    merchantId:   '9tcq3ypzspqhjqk7',
+    publicKey:    '6k79n6k7bq4tg38j',
+    privateKey:   '2198178311d1a642203ecc7ff935239a'
+});
+
+//Payment Routes
+router.post('/checkout',function(req,res){
+    var nonceFromTheClient = req.body.payload.nonce
+
+    gateway.transaction.sale({
+        amount: '200.00',
+        paymentMethodNonce: nonceFromTheClient,
+        options: {
+            submitForSettlement:true
+        }
+    },function(err,result){
+        console.log(result)
+    })
+})
+
+
+
 
 mongoose.connect("mongodb://localhost/maindatabase", { useNewUrlParser: true });
 router.use(function timeLog (req, res, next) {

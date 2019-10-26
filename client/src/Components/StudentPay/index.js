@@ -3,24 +3,41 @@ import axios from 'axios';
 import dropin from 'braintree-web-drop-in';
 import './style.css';
 
-function StudentPay(props) {
-    return (
-        <div className='studentPayView'>
-            <div class="card">
-                <div class="card-header">
-                    Tuition and Fees
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Your current fee balance is $ 
-                {/* TO DO: UPDATE WITH DATABASE INFO */}
-                    {props.tuitionOwed}</h5>
-                    <p class="card-text">Click below to pay your tutor today.</p>
-                    {/* TO DO: ADD PAYMENT COMPONENT */}
-                    <a href="#" class="btn btn-primary">Pay</a>
-                </div>
+class StudentPay extends Component {
+
+    componentDidMount(){
+        var button = document.querySelector('.submit-button1')
+        dropin.create({
+            authorization: 'sandbox_tv289x3x_9tcq3ypzspqhjqk7',
+            container: '.dropin-container1'
+        },function(err,dropinInstance){
+            button.addEventListener('click',function(){
+                dropinInstance.requestPaymentMethod()
+                .then(function(payload){
+                    console.log(payload.nonce)
+                    axios.post('/checkout', {payload})
+                    .then(function(response){
+                        console.log('payload has been sent');
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+
+                }).catch(function(err){
+                    console.log(err);
+                })
+            })
+        })
+    }
+
+    render(){
+        return(
+            <div>
+                <div className='dropin-container1'></div>
+                <button className='submit-button1'>Purchase</button>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default StudentPay;
