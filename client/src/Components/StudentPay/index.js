@@ -4,7 +4,7 @@ import dropin from 'braintree-web-drop-in';
 import './style.css';
 
 class StudentPay extends Component {
-    //state will be assigned to a prop that will be passed down.
+    //state will be assigned to a prop that will be passed down. 
     state= {
         amountOwed: '222.20'
       };

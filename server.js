@@ -38,7 +38,9 @@ app.use(
   resave: false, //required
   saveUninitialized: false //required
   })
-)
+);
+
+app.use(mongo);
 
 app.use(mongo);
 
@@ -55,42 +57,42 @@ passport.serializeUser(function(user, cb) {
   });
 
 
-app.post('/send-invite',(req,res) => {
-  console.log(req.body);
+// app.post('/send-invite',(req,res) => {
+//   console.log(req.body);
 
  
 
-//Student registration email notification: 
-// Step 1
+// //Student registration email notification: 
+// // Step 1
 
-let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD 
-  }
-});
+// let transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//       user: process.env.EMAIL,
+//       pass: process.env.PASSWORD 
+//   }
+// });
 
-// Step 2
-let mailOptions = {
-  from: 'mytutortest@gmail.com', 
-  // TODO: email receiver - pull from registrinvite form submit
-  to: req.body.emailid, 
-  subject: 'Welcome to My Tutor!',
-  text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.' 
-};
+// // Step 2
+// let mailOptions = {
+//   from: 'mytutortest@gmail.com', 
+//   // TODO: email receiver - pull from registrinvite form submit
+//   to: req.body.emailid, 
+//   subject: 'Welcome to My Tutor!',
+//   text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.' 
+// };
 
-// Step 3
-transporter.sendMail(mailOptions, (err, data) => {
-  if (err) {
-      return log('There is an error with your nodemailer component in server.js');
-  }
-  return log('Email sent!!!');
-});
+// // Step 3
+// transporter.sendMail(mailOptions, (err, data) => {
+//   if (err) {
+//       return log('There is an error with your nodemailer component in server.js');
+//   }
+//   return log('Email sent!!!');
+// });
 
 
-res.json({email: 'sent'})
-});
+// res.json({email: 'sent'})
+// });
 // Define API routes here
 
 
