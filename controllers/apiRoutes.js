@@ -1,6 +1,33 @@
 var express = require('express')
 var router = express.Router();
 var mongoose = require("mongoose");
+var braintree = require('braintree');
+
+//payment api setup. If we want to have dynamic payments sent directly to the logged in teacher, we need the teacher to provide their merchant id, public key, and private key. Change that below dynamically. 
+var gateway = braintree.connect({
+    environment:  braintree.Environment.Sandbox,
+    merchantId:   '9tcq3ypzspqhjqk7',
+    publicKey:    '6k79n6k7bq4tg38j',
+    privateKey:   '2198178311d1a642203ecc7ff935239a'
+});
+
+//Payment Routes
+router.post('/checkout',function(req,res){
+    var nonceFromTheClient = req.body.payload.nonce
+    var amount = req.body.amount
+    gateway.transaction.sale({
+        amount: amount,
+        paymentMethodNonce: nonceFromTheClient,
+        options: {
+            submitForSettlement:true
+        }
+    },function(err,result){
+        res.send(true)
+    })
+})
+
+
+
 var model =require("../model");
 const nodemailer = require('nodemailer');
 const log = console.log;
