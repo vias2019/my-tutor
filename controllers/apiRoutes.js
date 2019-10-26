@@ -50,7 +50,7 @@ router.post("/submit-teacher", function (req, res) {
   
   //invitation sent to student -works
   router.post("/send-invite", function (req, res) {
-    model.find({ "email": req.body.emailid }).then(function (result) {
+    model.find({ "emailid": req.body.emailid }).then(function (result) {
       console.log (result);
       if (result.length>0) {
         res.json({ success: false, message: 'user already exists in db' });
@@ -59,41 +59,41 @@ router.post("/submit-teacher", function (req, res) {
           .then(function (dbUser) {
             // Step 1
 
-let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD 
-  }
-});
+            let transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                  user: process.env.EMAIL,
+                  pass: process.env.PASSWORD 
+              }
+            });
 
-// Step 2
-let mailOptions = {
-  from: 'mytutortest@gmail.com', 
-  // TODO: email receiver - pull from registrinvite form submit
-  to: req.body.emailid, 
-  subject: 'Welcome to My Tutor!',
-  text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.' 
-};
+            // Step 2
+            let mailOptions = {
+              from: 'mytutortest@gmail.com', 
+              // TODO: email receiver - pull from registrinvite form submit
+              to: req.body.emailid, 
+              subject: 'Welcome to My Tutor!',
+              text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.' 
+            };
 
-// Step 3
-transporter.sendMail(mailOptions, (err, data) => {
-  if (err) {
-      return log('There is an error with your nodemailer component in server.js');
-  }
-  return log('Email sent!!!');
-});
+            // Step 3
+            transporter.sendMail(mailOptions, (err, data) => {
+              if (err) {
+                  return log('There is an error with your nodemailer component in server.js');
+              }
+              return log('Email sent!!!');
+            });
 
 
-res.json({email: 'sent'})
-})
-        
-          .catch(function (err) {
-            res.json(err);
-          });
-      }
-    });
-  });
+            res.json({email: 'sent'})
+            })
+                    
+                      .catch(function (err) {
+                        res.json(err);
+                      });
+                  }
+                });
+              });
   
   //Student registration - works
   router.post("/student-reg", function (req, res) {
