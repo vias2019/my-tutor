@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 //setting up express session - this will allow us to maintain persistence in our loggedin user
 const session = require('express-session')
-const authRoutes = require('.controllers/authRoutes')
+const authRoutes = require('./controllers/authRoutes')
 const nodemailer = require('nodemailer');
 const log = console.log;
 
@@ -56,9 +56,7 @@ passport.serializeUser(function(user, cb) {
 app.post('/send-invite',(req,res) => {
   console.log(req.body);
 
- 
-
-//Student registration email notification: 
+ //Student registration email notification: 
 // Step 1
 
 let transporter = nodemailer.createTransport({
@@ -72,7 +70,6 @@ let transporter = nodemailer.createTransport({
 // Step 2
 let mailOptions = {
   from: 'mytutortest@gmail.com', 
-  // TODO: email receiver - pull from registrinvite form submit
   to: req.body.emailid, 
   subject: 'Welcome to My Tutor!',
   text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.' 
@@ -85,7 +82,6 @@ transporter.sendMail(mailOptions, (err, data) => {
   }
   return log('Email sent!!!');
 });
-
 
 res.json({email: 'sent'})
 });
