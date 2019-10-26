@@ -70,7 +70,7 @@ router.post("/submit-teacher", function (req, res) {
   
   //Student registration - works
   router.post("/student-reg", function (req, res) {
-    model.findOneAndUpdate({ "email": req.body.emailid }, { "isRegistered": true, "password": req.body.password }).then(function (result) {
+    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "isRegistered": true, "password": req.body.password }).then(function (result) {
       res.json(result);
     }
     );
@@ -81,7 +81,7 @@ router.post("/submit-teacher", function (req, res) {
     // const date = new Date();
     // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
     console.log(req.body);
-    model.findOneAndUpdate({ "email": req.body.emailid }, { "tuition": req.body.tuition, "schedule": req.body.schedule, "date": req.body.date, "time": req.body.time }).then(function (result) {
+    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuition": req.body.tuition, "schedule": req.body.schedule, "date": req.body.date, "time": req.body.time }).then(function (result) {
   
       res.json(result);
     });
@@ -89,7 +89,7 @@ router.post("/submit-teacher", function (req, res) {
   
   //Delete record -works
   router.post("/delete", function (req, res) {
-    model.findOneAndDelete({ "email": req.body.emailid }, function (result) {
+    model.findOneAndDelete({ "emailid": req.body.emailid }, function (result) {
   
   
       res.json({ "message": "Record was deleted" });
@@ -101,7 +101,7 @@ router.post("/submit-teacher", function (req, res) {
   // ClassName
   // Monthly Rate -works
   router.get("/student-view", function (req, res) {
-    model.find({ "email": req.body.emailid }, "teacherIs className tuition tuitionOwed").then(function (result) {
+    model.find({ "emailid": req.body.emailid }, "teacherIs className tuition tuitionOwed").then(function (result) {
       res.json(result);
     });
   });
@@ -131,7 +131,7 @@ router.post("/submit-teacher", function (req, res) {
   //get payment info - works
   //add logic here 
   router.get("/payment", function (req, res) {
-    model.find({ "email": req.body.emailid }, "tuitionOwed").then(function (result) {
+    model.find({ "emailid": req.body.emailid }, "tuitionOwed").then(function (result) {
   
       res.json(result);
     });
