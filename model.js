@@ -37,7 +37,6 @@ var dbSchema = new Schema({
     class:
 
         [
-
             {
                 className: {
                     type: String
@@ -47,8 +46,6 @@ var dbSchema = new Schema({
                     type: Date
                 }
             }
-
-
         ],
 
     isRegistered: {
