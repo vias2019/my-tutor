@@ -154,6 +154,26 @@ router.post("/submit-teacher", function (req, res) {
       //}
     });
   });
+
+    //drop-down menu - teachers
+    router.get("/students", function (req, res) {
+      console.log('are we here?');
+      var arrayOfStudents = [];
+      const listOfStudents = (response) => {
+        console.log('are we in this fn?');
+        for (var i = 0; i < response.length; i++) {
+          arrayOfStudents.push(response[i].firstName+" "+response[i].lastName);
+        }
+        return arrayOfStudents.sort();
+      };
+    
+      model.find({"isTeacher": false}, "firstName lastName").then(function (result) {
+        console.log(result);
+        const studentsList = listOfStudents(result);
+        console.log('studentsList: ', studentsList);
+        res.json(studentsList);
+      });
+    });
   
   //get payment info - works
   //add logic here 

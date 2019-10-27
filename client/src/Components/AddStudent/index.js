@@ -6,8 +6,8 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 
-
 import './style.css';
+
 
 function AddStudent() {
 
