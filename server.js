@@ -10,7 +10,7 @@ var model = require("./model.js");
 require('dotenv').config();
 const express = require("express");
 const path = require("path");
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const app = express();
 //setting up express session - this will allow us to maintain persistence in our loggedin user
 const session = require('express-session')
