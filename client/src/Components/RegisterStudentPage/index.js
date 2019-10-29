@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Select from 'react-select';
 import './style.css';
+import api from '../../Utils/api'
 
 export const dropDownOptions = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -51,6 +52,10 @@ export class RegisterStudentPage extends React.Component {
     setSelectedTeacher = selectedOption => {
         this.setState({ teacher: selectedOption });
     }
+
+    // componentDidMount(){
+    //     api.studentRegister().then
+    // }
     
     render () {
         return (
