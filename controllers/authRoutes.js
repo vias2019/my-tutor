@@ -21,13 +21,14 @@ module.exports = function(passport){
     app.get("/", isAuthenticated, function(req, res)  {
         console.log('in app.get/');
         res.sendFile(path.join(__dirname, "../client/public/index.html"));
-      });
+    });
 
-      logout = function(req, res) {
+    logout = function(req, res) {
         req.session.destroy(function(err) {
             res.redirect('/');
         });
     }
+}
 
 
 
