@@ -1,8 +1,6 @@
 var LocalStrategy   = require('passport-local').Strategy;
-var User = require('../models/user');
 var bCrypt = require('bcrypt-nodejs');
-
-var User = require('../model'); //this only will work if we accurately export the model as a module
+var model =require("../model");
 
 module.exports = function(passport){
 
@@ -11,9 +9,9 @@ module.exports = function(passport){
     passport.use('login', new LocalStrategy({
         passReqToCallback : true
     },
-        function(req, email, password, done) { 
+        function(req, emailid, password, done) { 
             // check in mongo if a user with emal exists or not
-            User.findOne({ 'email' :  email }, 
+            model.findOne({ 'emailid' :  emailid }, 
                 function(err, user) {
                     // In case of any error, return using the done method
                     if (err)
@@ -50,11 +48,12 @@ module.exports = function(passport){
     passport.use('signup', new LocalStrategy({
             passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-        function(req, username, password, done) {
+        function(req, emailid, password, done) {
+            console.log('in passport sign up');
 
             findOrCreateUser = function(){
                 // find a user in Mongo with provided username
-                User.findOne({ 'username' :  username }, function(err, user) {
+                model.findOne({ 'emailid' :  emailid }, function(err, user) {
                     // In case of any error, return using the done method
                     if (err){
                         console.log('Error in SignUp: '+err);
@@ -62,17 +61,17 @@ module.exports = function(passport){
                     }
                     // already exists
                     if (user) {
-                        console.log('User already exists with username: '+username);
+                        console.log('User already exists with email address: '+emailid);
                         return done(null, false, req.flash('message','User Already Exists'));
                     } else {
                         // if there is no user with that email
                         // create the user
+                        // I'm not clear how this piece of code is working - what does User represent?  the import of my model used to be called User - want to make sure there is no confusion there.
                         var newUser = new User();
 
                         // set the user's local credentials
-                        newUser.username = username;
+                        newUser.emailid = emailid;
                         newUser.password = createHash(password);
-                        newUser.email = req.param('email');
                         newUser.firstName = req.param('firstName');
                         newUser.lastName = req.param('lastName');
 

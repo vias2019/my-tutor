@@ -1,7 +1,7 @@
 import * as React from 'react';
+import axios from 'axios';
 import Select from 'react-select';
 import './style.css';
-import api from '../../Utils/api'
 
 export const dropDownOptions = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -53,9 +53,21 @@ export class RegisterStudentPage extends React.Component {
         this.setState({ teacher: selectedOption });
     }
 
-    // componentDidMount(){
-    //     api.studentRegister().then
-    // }
+    registerStudent(event) {
+        event.preventDefault();
+
+        axios.get('/signup') 
+            .then(res => {
+                console.log(res);
+                // console.log(res.data);
+            })
+
+        // fetch('/signup')
+        //     .then(res => {
+        //         console.log('got response from api', res);
+        //         return res.json()
+        //      })
+    }
     
     render () {
         return (
@@ -68,7 +80,8 @@ export class RegisterStudentPage extends React.Component {
             </div>
 
             <div className="d-flex justify-content-center form_container">
-                <form name="signin" method="post" action="signin">
+                {/* <form name="signup" method="fetch" action="signup"> */}
+                <form onSubmit={this.registerStudent}>
                     <div>
                         <label>Teacher:</label>
                         <Select

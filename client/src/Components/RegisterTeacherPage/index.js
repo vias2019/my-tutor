@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Select from 'react-select';
 import './style.css';
 
 export class RegisterTeacherPage extends React.Component {

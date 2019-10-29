@@ -128,9 +128,10 @@ router.post("/submit-teacher", function (req, res) {
   // ClassName
   // Monthly Rate -works
   router.get("/student-view", function (req, res) {
-    model.find({ "emailid": req.body.emailid }, "teacherIs className tuition tuitionOwed").then(function (result) {
-      res.json(result);
-    });
+        console.log('studnet view');
+        model.find({ "emailid": req.body.emailid }, "teacherIs className tuition tuitionOwed").then(function (result) {
+        res.json(result);
+        });
   });
   
   //drop-down menu - teachers

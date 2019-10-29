@@ -34,7 +34,7 @@ export class LoginPage extends React.Component {
             </div>
 
             <div className="d-flex justify-content-center form_container">
-                <form name="signin" method="post" action="signin">
+                <form name="signup" method="get" action="signup">
                     <div >
                         <label>
                             Email:
