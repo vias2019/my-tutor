@@ -18,7 +18,7 @@ var dbSchema = new Schema({
     teacherIs: {
         type: String,
         trim: true,
-        required: true
+       //required: true
         //dropdown
     },
 
@@ -37,7 +37,6 @@ var dbSchema = new Schema({
     class:
 
         [
-
             {
                 className: {
                     type: String
@@ -47,8 +46,6 @@ var dbSchema = new Schema({
                     type: Date
                 }
             }
-
-
         ],
 
     isRegistered: {
@@ -79,7 +76,7 @@ var dbSchema = new Schema({
     // },
 
 
-    email: {
+    emailid: {
         type: String,
         match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
         required: true

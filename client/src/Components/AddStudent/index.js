@@ -1,20 +1,27 @@
 
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 
-
 import './style.css';
+
 
 function AddStudent() {
 
-    const [show, setShow] = React.useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [show, setShow] = React.useState(false);
+  const [students, setStudents] = React.useState([]);
+  React.useEffect(() => {
+    fetch('/students')
+        .then((res) => res.json())
+        .then((json) => setStudents(json));
+}, []);
+
+const handleClose = () => setShow(false);
+const handleShow = () => setShow(true);
 
   return (
     <>
@@ -35,11 +42,9 @@ function AddStudent() {
                             <Form.Label>Student List</Form.Label>
                             {/* TODO ADD FOR IMPORTING STUDENT NAME DATA */}
                             <Form.Control as="select">
-                            <option>Alice Alvarez</option>
-                            <option>Brien Bartlow</option>
-                            <option>Carol Christmas</option>
-                            <option>Daniel Davis</option>
-                            <option>Erin Erickson</option>
+                            {
+                                students.map((student) => <option value={student}>{student}</option>)
+                            }
                             </Form.Control>
                         </Form.Group>
                         </Col>

@@ -1,13 +1,15 @@
 import React from "react";
-import logo from './images/logo-placeholder.png';
+//import logo from './images/logo-placeholder.png';
+import logo from "./images/owllogo.jpg";
 import mail from './images/mail.jpg';
+import "./style.css";
 
 function Header(props) {
     return (
-        <div>
-            <div className="row bg-light pt-4 pb-4">
-                <div className="col-md">
-                    <span className="font-weight-bold h1">Welcome</span><br/>
+        <div className="owl" >
+            <div className="row bg-light pt-4 pb-4" >
+                <div className="col-md" >
+                    <span className="font-weight-bold h1" style={{color: "#401801"}}>Welcome to My-Tutor</span><br/>
                     <span className="font-weight-bold h1">{props.name}</span>
                 </div>
                 <div className="col-md">

@@ -58,27 +58,29 @@ export default class FormUser extends React.Component {
               <Form.Row>
                 <Col>
                   
-                  <Form.Label>First Name:  <input type="text" name="firstName" value={firstName} onChange={this.handleChange} required /></Form.Label><br/>
+                  <Form.Label>First Name:  <Form.Control type="text" name="firstName" value={firstName} onChange={this.handleChange} required /></Form.Label><br/>
                 
                 </Col>
 
                 <Col>
-                  <Form.Label>Last Name:  <input type="text" name="lastName" value={lastName} onChange={this.handleChange} required /></Form.Label>
+                  <Form.Label>Last Name:  <Form.Control type="text" name="lastName" value={lastName} onChange={this.handleChange} required /></Form.Label>
                 </Col>
               </Form.Row>
 
               <Form.Row>
                 <Col>
-                  <Form.Label>Email:  <input type="text" name="emailid" value={emailid} onChange={this.handleChange} required /></Form.Label>
+                  <Form.Label>Email:  <Form.Control type="text" name="emailid" value={emailid} onChange={this.handleChange} required /></Form.Label>
                 </Col>
               </Form.Row>
 
               <Form.Row>
+                <Col>
+                </Col>
                 <Col>
                   <Button variant="secondary" onClick={() => this.toggleShow(false)}> 
                       Cancel
                   </Button>
-             
+            
                   <Button type="submit" variant="primary" onClick={() => this.toggleShow(false)}>
                       Send Invite
                   </Button>
