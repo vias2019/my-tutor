@@ -1,12 +1,8 @@
 var mongoose = require("mongoose");
+const bcrypt = require('bcryptjs');
 
 var Schema = mongoose.Schema;
 
-// (Tim) I believe we need to export the model this way: 
-//module.exports = {
-//     key: value,
-//     key: value
-// };
 
 var dbSchema = new Schema({
     isTeacher: {
@@ -94,6 +90,29 @@ var dbSchema = new Schema({
         ]
     }
 });
+
+// Define schema methods
+dbSchema.methods = {
+	checkPassword: function (inputPassword) {
+		return bcrypt.compareSync(inputPassword, this.password)
+	},
+	hashPassword: plainTextPassword => {
+		return bcrypt.hashSync(plainTextPassword, 10)
+	}
+}
+
+// Define hooks for pre-saving
+dbSchema.pre('save', function (next) {
+	if (!this.password) {
+		console.log('models/user.js =======NO PASSWORD PROVIDED=======')
+		next()
+	} else {
+		console.log('models/user.js hashPassword in pre save');
+		
+		this.password = this.hashPassword(this.password)
+		next()
+	}
+})
 
 // This creates our model from the above schema, using mongoose's model method
 var model = mongoose.model("Example", dbSchema);
