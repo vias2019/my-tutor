@@ -52,7 +52,7 @@ router.post("/submit-teacher", function (req, res) {
   //invitation sent to student -works
   router.post("/send-invite", function (req, res) {
     model.find({ "emailid": req.body.emailid }).then(function (result) {
-      console.log (result);
+      //console.log (result);
       if (result.length>0) {
         res.json({ success: false, message: 'user already exists in db' });
       } else {
@@ -108,8 +108,10 @@ router.post("/submit-teacher", function (req, res) {
   router.post("/add-student", function (req, res) {
     // const date = new Date();
     // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
+
     console.log(req.body);
     model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuition": req.body.tuition, "time": req.body.schedule, "date": req.body.date, "className": req.body.className, "amountOwed": req.body.tuition}).then(function (result) {
+
   
       res.json(result);
     });
@@ -136,10 +138,10 @@ router.post("/submit-teacher", function (req, res) {
   
   //drop-down menu - teachers
   router.get("/teachers", function (req, res) {
-    console.log('are we here?');
+    
     arrayOfTeachers = [];
     const listOfTeachers = (response) => {
-      console.log('are we in this fn?');
+     
       for (var i = 0; i < response.length; i++) {
         arrayOfTeachers.push(response[i].teacherIs);
       }
@@ -149,7 +151,7 @@ router.post("/submit-teacher", function (req, res) {
     model.find({}, "teacherIs").then(function (result) {
       
       const teachersList = listOfTeachers(result);
-      console.log('teachersList: ', teachersList);
+      //console.log('teachersList: ', teachersList);
       res.json(teachersList);
   
       //}
@@ -169,9 +171,9 @@ router.post("/submit-teacher", function (req, res) {
       };
     
       model.find({"isTeacher": false}, "firstName lastName").then(function (result) {
-        console.log(result);
+        //console.log(result);
         const studentsList = listOfStudents(result);
-        console.log('studentsList: ', studentsList);
+        //console.log('studentsList: ', studentsList);
         res.json(studentsList);
       });
     });
