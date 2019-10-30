@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-var mongo = require ("./controllers/apiRoutes");
+var mongo = require ("./controllers/apiRoutes")
 // This is the route to the database
 var model = require("./model.js");
 
@@ -42,7 +42,7 @@ app.use(
 
 app.use(mongo);
 
-app.use(mongo);
+app.use(authRoutes);
 
 //we’re using serializeUser and deserializeUser callbacks. The first one will be invoked on authentication, and its job is to serialize the user instance with the information we pass to it (the user ID in this case) and store it in the session via a cookie. The second one will be invoked every subsequent request to deserialize the instance, providing it the unique cookie identifier as a “credential”. 
 

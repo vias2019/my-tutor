@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './style.css';
 import Footer from "../Footer/index";
+import axios from 'axios';
 
 export class LoginPage extends React.Component {
 
@@ -22,7 +23,19 @@ export class LoginPage extends React.Component {
     handlePasswordChange(event) {
         this.setState({ passwordValue: event.target.value });
     }
-    
+
+    login = event => {
+        event.preventDefault();
+        console.log('login');
+        const currentUser = {
+            emailid: this.state.emailValue,
+            password: this.state.passwordValue
+        }
+        axios.post('/login', currentUser) 
+            .then(res => {
+                console.log(res);
+            })
+        }
     render () {
         return (
         <>
@@ -34,7 +47,7 @@ export class LoginPage extends React.Component {
             </div>
 
             <div className="d-flex justify-content-center form_container">
-                <form name="signup" method="get" action="signup">
+                <form onSubmit={this.login}>
                     <div >
                         <label>
                             Email:

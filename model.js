@@ -96,8 +96,8 @@ var dbSchema = new Schema({
 });
 
 // This creates our model from the above schema, using mongoose's model method
-var createSchema = mongoose.model("Example", dbSchema);
+var model = mongoose.model("Example", dbSchema);
 
 // Export the Example model
-module.exports = createSchema;
+module.exports = model;
 

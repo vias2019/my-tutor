@@ -53,13 +53,17 @@ export class RegisterStudentPage extends React.Component {
         this.setState({ teacher: selectedOption });
     }
 
-    registerStudent(event) {
+    registerStudent = event => {
         event.preventDefault();
-
-        axios.get('/signup') 
+        const registeredStudent = {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            emailid: this.state.emailValue,
+            password: this.state.passwordValue
+        }
+        axios.post('/signup', registeredStudent) 
             .then(res => {
                 console.log(res);
-                // console.log(res.data);
             })
 
         // fetch('/signup')
