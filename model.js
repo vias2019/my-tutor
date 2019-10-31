@@ -18,7 +18,6 @@ var dbSchema = new Schema({
     teacherIs: {
         type: String,
         trim: true,
-       //required: true
         //dropdown
     },
 
@@ -36,30 +35,34 @@ var dbSchema = new Schema({
 
     class:
 
-        [
+        
             {
                 className: {
                     type: String
                 },
 
+                tuition: {
+                    type: Number,
+                    trim: true
+                },
+
                 time: {
+                    type: String
+                },
+
+                date: {
                     type: Date
                 }
-            }
-        ],
+            },
+        
 
     isRegistered: {
         type: Boolean,
         default: false
     },
 
-    tuition: {
-        type: Number,
-        trim: true
-    },
-
     tuitionOwed: {
-        type: Number,
+        type: Number
         //calculated
     },
 

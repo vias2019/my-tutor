@@ -13,8 +13,8 @@ var gateway = braintree.connect({
 
 //Payment Routes
 router.post('/checkout',function(req,res){
-    var nonceFromTheClient = req.body.payload.nonce
-    var amount = req.body.amount
+    var nonceFromTheClient = req.body.payload.nonce;
+    var amount = req.body.amount;
     gateway.transaction.sale({
         amount: amount,
         paymentMethodNonce: nonceFromTheClient,
@@ -22,9 +22,9 @@ router.post('/checkout',function(req,res){
             submitForSettlement:true
         }
     },function(err,result){
-        res.send(true)
-    })
-})
+        res.send(true);
+    });
+});
 
 
 
@@ -37,6 +37,7 @@ router.use(function timeLog (req, res, next) {
     console.log('Time: ', Date.now());
     next();
   });
+
 //Teacher reqistration - create a document in db - works
 router.post("/submit-teacher", function (req, res) {
     model.create(req.body)
@@ -46,7 +47,7 @@ router.post("/submit-teacher", function (req, res) {
       .catch(function (err) {
         res.json(err);
       });
-  });
+  });//isTeacher=true;
   
   //invitation sent to student -works
   router.post("/send-invite", function (req, res) {
@@ -93,22 +94,24 @@ router.post("/submit-teacher", function (req, res) {
                       });
                   }
                 });
-              });
+              }); //Add Teacheris -eamil
   
-  //Student registration - works
+  //Student registration - works//double works
   router.post("/student-reg", function (req, res) {
-    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "isRegistered": true, "password": req.body.password }).then(function (result) {
+    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "isRegistered": true, "password": req.body.password, "firstName": req.body.firstName, "lastName": req.body.lastName }).then(function (result) {
       res.json(result);
     }
     );
-  });
+  });//add get req. to check if email exists, let register||message
   
   //Add Student button -works
   router.post("/add-student", function (req, res) {
     // const date = new Date();
     // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
-    //console.log(req.body);
-    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuition": req.body.tuition, "schedule": req.body.schedule, "date": req.body.date, "time": req.body.time }).then(function (result) {
+
+    console.log(req.body);
+    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuition": req.body.tuition, "time": req.body.schedule, "date": req.body.date, "className": req.body.className, "amountOwed": req.body.tuition}).then(function (result) {
+
   
       res.json(result);
     });
@@ -128,7 +131,7 @@ router.post("/submit-teacher", function (req, res) {
   // ClassName
   // Monthly Rate -works
   router.get("/student-view", function (req, res) {
-    model.find({ "emailid": req.body.emailid }, "teacherIs className tuition tuitionOwed").then(function (result) {
+    model.find({ "emailid": req.body.emailid }, "teacherIs className tuition time date tuitionOwed").then(function (result) {
       res.json(result);
     });
   });
@@ -155,7 +158,7 @@ router.post("/submit-teacher", function (req, res) {
     });
   });
 
-    //drop-down menu - teachers
+    //drop-down menu - students
     router.get("/students", function (req, res) {
       console.log('are we here?');
       var arrayOfStudents = [];
@@ -191,5 +194,6 @@ router.post("/submit-teacher", function (req, res) {
       res.json(result);
     });
   
-  });
+  });//two calendars - student: email=current student - get TeacherIs,class object
+  //teacher : email-current teacher, get Studen's first and last name, class
   module.exports = router;
