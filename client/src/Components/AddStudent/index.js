@@ -43,6 +43,7 @@ export default class FormUser extends React.Component {
     axios.get('/students-list')
       .then(res => {
         const students = res.data;
+        console.log('checking' + students);
         this.setState({ students });
       })
   }
@@ -94,7 +95,7 @@ export default class FormUser extends React.Component {
                             {/* TODO ADD FOR IMPORTING STUDENT NAME DATA */}
                             <Form.Control as="select">
                             {
-                                this.state.students.map((student) => <option value={student}>{student}</option>)
+                                this.state.students.map((student) => <option value={student.emailid}>{student.name}</option>)
                             }
                             </Form.Control>
                         </Form.Group>
