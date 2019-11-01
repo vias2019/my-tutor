@@ -150,10 +150,10 @@ router.post("/delete", function (req, res) {
 router.get("/student-view", function (req, res) {
   model.findOne({ "emailid": req.body.emailid }, "teacherIs class tuitionOwed").then(function (result) {
     //console.log(result);
-    model.findOne({ "emailid": result.teacherIs }, "firstName lastName").then(function (answer) {
-      result.teacherIs = (answer.firstName + " " + answer.lastName);
+    model.findOne({ "emailid": result.teacherIs }, "firstName lastName emailid").then(function (answer) {
+      //result.teacherIs = (answer.firstName + " " + answer.lastName);
       // console.log("Answer"+result);
-      res.json(result);
+      res.json(answer);
     });
 
   });
@@ -200,6 +200,8 @@ router.get("/students-list", function (req, res) {
     res.json(studentsList);
   });
 });
+
+
 
 //get payment info /tested
 router.get("/payment", function (req, res) {
