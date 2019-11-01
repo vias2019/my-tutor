@@ -2,12 +2,6 @@ var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
-// (Tim) I believe we need to export the model this way: 
-//module.exports = {
-//     key: value,
-//     key: value
-// };
-
 var dbSchema = new Schema({
     isTeacher: {
         type: Boolean,
@@ -18,7 +12,6 @@ var dbSchema = new Schema({
     teacherIs: {
         type: String,
         trim: true,
-        //dropdown
     },
 
     firstName: {
@@ -35,7 +28,6 @@ var dbSchema = new Schema({
 
     class:
 
-        
             {
                 className: {
                     type: String
@@ -51,7 +43,7 @@ var dbSchema = new Schema({
                 },
 
                 date: {
-                    type: Date
+                    type: String
                 }
             },
         
@@ -65,19 +57,6 @@ var dbSchema = new Schema({
         type: Number
         //calculated
     },
-
-    // schedule: {
-    //     type: Date,
-    // },
-    // date: {
-    //     type: Date,
-    //     default: Date.now
-    // },
-
-    // time: {
-    //     type: Number
-    // },
-
 
     emailid: {
         type: String,
