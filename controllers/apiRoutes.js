@@ -110,9 +110,8 @@ router.post("/submit-teacher", function (req, res) {
     // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
 
     console.log(req.body);
-    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuition": req.body.tuition, "time": req.body.schedule, "date": req.body.date, "className": req.body.className, "amountOwed": req.body.tuition}).then(function (result) {
-
-  
+    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.time, "date": req.body.date,}, "tuitionOwed": req.body.tuition}).then(function (result) {
+      
       res.json(result);
     });
   });

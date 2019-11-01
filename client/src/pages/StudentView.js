@@ -15,9 +15,9 @@ class StudentView extends Component {
         tuitionOwed: 200,
         courseName: "Music 101", 
         monthlyFee: 100,
-        sessionPartner: "**teacher name",
         date: "October 28, 2019",
-        time: "3:00pm-4:00pm"
+        time: "3:00pm-4:00pm",
+        teacherName: "Adam Anderson"
       };
 
     render() {
@@ -28,8 +28,8 @@ class StudentView extends Component {
             <Container>
                 <Row>
                     <Col>
-                    <StudentScheduler courseName={this.state.courseName} monthlyFee={this.state.monthlyFee} />
-                    <CalendarModal sessionPartner={this.state.sessionPartner} courseName={this.state.courseName}date={this.state.date} time={this.state.time}/>
+                    <StudentScheduler teacherName={this.state.teacherName} courseName={this.state.courseName} monthlyFee={this.state.monthlyFee} />
+                    <CalendarModal sessionPartner={this.state.teacherName} courseName={this.state.courseName}date={this.state.date} time={this.state.time}/>
 
                     </Col>
                     <Col>

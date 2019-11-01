@@ -1,43 +1,78 @@
 
+
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
-
-
 import './style.css';
 
 
-function EditStudent() {
+export default class FormUser extends React.Component {
 
-    const [show, setShow] = React.useState(false);
-    const [students, setStudents] = React.useState([]);
+  constructor() {
+      super();
+      this.state = {
+        emailid: 'test@test.com',
 
-    React.useEffect(() => {
-        fetch('/students')
-            .then((res) => res.json())
-            .then((json) => setStudents(json));
-    }, []);
+        tuition:0,
+        time: '',
+        date: '',
+        className:'',
+        tuitionOwed: 0,
+        showModal: false,
+        students: []
+      };
+    };
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  toggleShow = (shouldShow) => {
+    this.setState({
+      showModal: shouldShow
+    });
+  }
 
-    console.log(students)
-  return (
-    <>
-        <Button variant="primary" onClick={handleShow}>
-            Edit Student
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
+  componentDidMount() {
+    axios.get('/students')
+      .then(res => {
+        const students = res.data;
+        this.setState({ students });
+      })
+  }
+
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    const {emailid, tuition, time, date, className, tuitionOwed} = this.state;
+    console.log('testing if this works')
+
+    axios.post('/add-student', ({ emailid, tuition, time, date, className, tuitionOwed } )) 
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+  }
+
+  render() {
+    const { tuition, time, date, className } = this.state;
+    return (
+      <>
+        <Button variant="primary" onClick={() => this.toggleShow(true)}>
+          Edit Student
         </Button>
 
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={this.state.showModal} onHide={() => this.toggleShow(false)}>
             <Modal.Header closeButton>
-                <Modal.Title>Add student to schedule</Modal.Title>
+                <Modal.Title>Edit student schedule</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {/* TODO ADD ID FOR CAPTURING DATA */}
-                <Form>
+                <Form onSubmit={this.handleSubmit}>
                     <Form.Row>
                         <Col>
                         <Form.Group controlId="exampleForm.ControlSelect1">
@@ -45,7 +80,7 @@ function EditStudent() {
                             {/* TODO ADD FOR IMPORTING STUDENT NAME DATA */}
                             <Form.Control as="select">
                             {
-                                students.map((student) => <option value={student}>{student}</option>)
+                                this.state.students.map((student) => <option value={student}>{student}</option>)
                             }
                             </Form.Control>
                         </Form.Group>
@@ -53,41 +88,44 @@ function EditStudent() {
                     </Form.Row>
                     <Form.Row>
                         <Form.Label>Monthly Fee</Form.Label>
-                        <Form.Control type="number" placeholder="$" />
+                        <Form.Control type="number" name="tuition" value={tuition} onChange={this.handleChange} placeholder="$" />
                     </Form.Row>
 
                     <Form.Row>
                         <Col>
                         <Form.Label>Start Date</Form.Label>
-                        <Form.Control type="date" />
+                        <Form.Control type="date" name="date" value={date} onChange={this.handleChange} />
                         </Col>
                         <Col> 
 
                         {/* TODO CHANGE TIME TO MILITARY                    */}
                         <Form.Label>Tutor Session Time</Form.Label>
-                        <Form.Control type="time" />
+                        <Form.Control type="time" name="time" value={time} onChange={this.handleChange} />
                         </Col>
                     </Form.Row>
 
       
                     <Form.Row>
                         <Form.Label>Tutor Session Subject</Form.Label>
-                        <Form.Control type="text" placeholder="Curriculum" />
+                        <Form.Control type="text" placeholder="Curriculum" name="className" value={className} onChange={this.handleChange}/>
+                    </Form.Row>
+                    <Form.Row>
+                        <Button variant="secondary" onClick={() => this.toggleShow(false) }>
+                        Cancel
+                        </Button>
+                        <Button variant="primary" type="submit" onClick={() => this.toggleShow(false)}>
+                        Save
+                        </Button>
                     </Form.Row>
 
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                Cancel
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                Save
-                </Button>
+
             </Modal.Footer>
         </Modal>
-    </>
-  );
-}
 
-export default EditStudent;
+      </>
+    )
+  }
+}
