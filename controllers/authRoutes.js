@@ -1,155 +1,125 @@
 const express = require('express');
 const router = express.Router()
-const model = require('../model');
-const passport = require('passport');
-//some examples use express router to handle these routes but I read that that isn't necessary
-// const app = express();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-//i have no idea what is going on in this function...
-// var isAuthenticated = function (req, res, next) {
-// 	// if user is authenticated in the session, call the next() to call the next request handler 
-// 	// Passport adds this method to request object. A middleware is allowed to add properties to
-// 	// request and response objects
-// 	if (req.isAuthenticated()) {
-//         return next();
-//     }
-		
-//     // if the user is not authenticated then redirect him to the login page  
-//     res.redirect('/');
-// }
 
-// module.exports = function(passport){
+const db = require("../model");
 
-    //when url doesn't hit an route that is an API, it will hit our aplication and automatically flow into the react router
-    // router.get("/", isAuthenticated, function(req, res)  {
-    //     console.log('in app.get/');
-    //     res.sendFile(path.join(__dirname, "../client/public/index.html"));
-    // });
 
-    // router.post('/login', 
-    //     passport.authenticate('local', { failureRedirect: '/login' }),
-    //     function(req, res) {
-    //         res.redirect('/');
-    //     });
+router.post("/teacher-registration", (req, res, next) => {
+  console.log(req.body, "inside teacher sign up post");
+  const newUser = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    emailid: req.body.emailid,
+    password: req.body.password,
+    isTeacher: true
+  };
 
-    // router.post('/signup', function(req, res) {
-    //     const { emailid, firstName, lastName, password } = req.body
+  db.create(newUser).then(data => {
 
-    //     model.create({
-    //         emailid: emailid,
-    //         password: password,
-    //         firstName: firstName,
-    //         lastName: lastName
-    //     }).then(res => {
-    //         console.log(res)
-    //     })
-    //     res.send(req.body)
-    // });
-  
-router.post('/signup', (req, res) => {
-    console.log('user signup');
+    //mongo id syntax??
 
-    const { emailid, firstName, lastName, password } = req.body
-    // ADD VALIDATION
-    model.findOne({ emailid: emailid }, (err, user) => {
-        if (err) {
-            console.log('model.js post error: ', err)
-        } else if (user) {
-            res.json({
-                error: `Sorry, already a user with the email address: ${emailid}`
-            })
-        }
-        else {
-            console.log('in new user');
-            const newUser = new Model({
-                emailid: emailid,
-                password: password,
-                firstName: firstName,
-                lastName: lastName
-            })
-            console.log('newUser: ', newUser);
-            newUser.save((err, savedUser) => {
-                if (err) return res.json(err)
-                res.json(savedUser)
-                console.log('savedUser: ', savedUser);
-            })
-        }
+    const token = jwt.sign({
+      userId: data._id,
+      emailid: data.emailid,
+      firstName: data.firstName,
+      lastName: data.lastName
+    }, process.env.JWT_SECRET);
+
+    const result = {
+      data,
+      token
+    };
+
+    return res.json(result);
+    }).catch(err => {
+      if (err) {
+        console.log(err);
+        return res.json({ error: err.message });
+      }
     })
+
 });
 
-router.post(
-    '/login',
-    function (req, res, next) {
-        console.log('routes/user.js, login, req.body: ');
-        console.log('req.body is here: ', req.body)
-        next();
-    },
-    passport.authenticate(),
-    function (req, res) {
-        console.log('logged in', req.user);
-        var userInfo = {
-            username: req.user.firstName
+  router.post("/student-registration", (req, res, next) => {
+    console.log(req.body, "inside post student sign up");
+    db.findOne({ where: { emailid: req.body.emailid } }).then
+    {
+        const newUser = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        emailid: req.body.emailid,
+        password: req.body.password
         };
-        res.send(userInfo);
-    }
-)
-
-
-// router.post('/login',
-//   passport.authenticate(),
-//   function(req, res) {
-//       console.log('in login');
-//     // If this function gets called, authentication was successful.
-//     // `req.user` contains the authenticated user.
-//     res.redirect('/users/' + req.user.username);
-//   });
-
-// router.post('/login', passport.authenticate('login'), {
-//     successRedirect: '/home',
-//     failureRedirect: '/',
-//     failureFlash : true
-//   });
-
-//     logout = fsunction(req, res) {
-//         req.session.destroy(function(err) {
-//             res.redirect('/');
-//         });
-//     }
-// }
-
-
-
-
-	/* Handle Login POST */
-	// app.post('/login', passport.authenticate('login', {
-	// 	successRedirect: '/home',
-	// 	failureRedirect: '/',
-	// 	failureFlash : true  
-    // }));
     
+        db.create(newUser).then(data => {
     
+        const token = jwt.sign({
+            userId: data._id,
+            emailid: data.emailid,
+            firstName: data.firstName,
+            lastName: data.lastName
+        }, process.env.JWT_SECRET);
+    
+        const result = {
+            data,
+            token
+        };
+    
+        return res.json(result);
+        }).catch(err => {
+            if (err) {
+            console.log(err);
+            return res.json({ error: err.message });
+            }
+        })
+      }
+    })
 
-	/* GET Registration Page */
-	
+router.post("/login", (req, res) => {
 
-	/* Handle Registration POST */
-	// app.post('/signup', passport.authenticate('signup', {
-	// 	successRedirect: '/home',
-	// 	failureRedirect: '/signup',
-	// 	failureFlash : true  
-	// }));
+  db.find({ emailid: req.body.emailid }).then(function (result) {
+console.log(req.body, "inside teacher sign up post");
+console.log(req.body.password, "req.body.password");
+console.log(result[0].password, "database - password");
+    // is this authentication my passwords without my "checkpassword method?
 
-	// /* GET Home Page */
-	// app.get('/home', isAuthenticated, function(req, res){
-	// 	res.render('home', { user: req.user });
-	// });
+    if (bcrypt.compareSync(req.body.password, result[0].password)) {
 
-	// /* Handle Logout */
-	// app.get('/signout', function(req, res) {
-	// 	req.logout();
-	// 	res.redirect('/');
-	// });
+        console.log('comparesync successful');
+      const token = jwt.sign({
+        userId: result[0]._id,
+        emailid: result[0].emailid,
+        firstName: result[0].firstName,
+        lastName: result[0].lastName
+      }, process.env.TOKEN);
 
-	// return router;
+      return res.json({
+        userId: result[0]._id,
+        emailid: result[0].emailid,
+        firstName: result[0].firstName,
+        lastName: result[0].lastName,
+        token: token
+      });
+    } else {
+      console.log("not authenticated")
+      return res.json({
+        error: "Invalid emailid/password"
+      });
+    }}).catch(err => {
+      console.log(err);
+    });
+
+});
+
+//test route to see all users 
+router.get("/users", (req, res) => {
+  db.findAll({}).then(result => {
+    res.json(result)
+  })
+})
+
 
 module.exports = router;

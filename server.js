@@ -15,12 +15,10 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 //setting up express session - this will allow us to maintain persistence in our loggedin user
 const session = require('express-session');
-const morgan = require('morgan')
 const passport = require('passport');
 const bodyParser = require('body-parser')
 const nodemailer = require('nodemailer');
 // Route requires
-const user = require('./controllers/authRoutes')
 
 const log = console.log;
 
@@ -52,7 +50,7 @@ app.use(
 );
 
 app.use(mongo);
-app.use(user);
+app.use(authRoutes);
 // Routes
 // app.use('/user', user);
 
