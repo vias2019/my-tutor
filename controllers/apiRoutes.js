@@ -100,8 +100,9 @@ router.post("/send-invite", function (req, res) {
           res.json(err);
         });
     }
-    
-  });//add get req. to check if email exists, let register||message
+  }
+  )
+});//add get req. to check if email exists, let register||message
   
   //Add Student button -works
   router.post("/add-student", function (req, res) {
@@ -109,7 +110,7 @@ router.post("/send-invite", function (req, res) {
     // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
 
     console.log(req.body);
-    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.time, "date": req.body.date,}, "tuitionOwed": req.body.tuition}).then(function (result) {
+    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.utcNewTime, "date": req.body.utcNewDate,}, "tuitionOwed": req.body.tuition}).then(function (result) {
       
       res.json(result);
     });
@@ -205,6 +206,8 @@ router.get("/students-list", function (req, res) {
     }
     return arrayOfStudents.sort();
   };
+
+
 
   model.find({ "teacherIs": req.body.teacherIs }, "firstName lastName").then(function (result) {
     //console.log(result);

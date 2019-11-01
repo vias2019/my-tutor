@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import './style.css';
+import moment from 'moment';
 
 
 export default class FormUser extends React.Component {
@@ -37,7 +38,7 @@ export default class FormUser extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/students')
+    axios.get('/students-list')
       .then(res => {
         const students = res.data;
         this.setState({ students });
@@ -49,9 +50,20 @@ export default class FormUser extends React.Component {
     event.preventDefault();
 
     const {emailid, tuition, time, date, className, tuitionOwed} = this.state;
+    console.log(this.state.date);
+    var dateTime = this.state.date + 'T' + this.state.time;
+    var utcDateTime = moment(dateTime).utc().format('YYYY-MM-DDTHH:mm');
+    var utcNewDate = utcDateTime.split('T')[0];
+    var utcNewTime = utcDateTime.split('T')[1];
+    console.log('date...', utcNewDate);
+    console.log('time...', utcNewTime);
+    //this.setState({date : utcNewDate, time: utcNewTime}, () => console.log('async is fun',this.state));
+    console.log(this.state.time)
+
+
     console.log('testing if this works')
 
-    axios.post('/add-student', ({ emailid, tuition, time, date, className, tuitionOwed } )) 
+    axios.post('/add-student', ({ emailid, tuition, utcNewTime, utcNewDate, className, tuitionOwed } )) 
       .then(res => {
         console.log(res);
         console.log(res.data);
