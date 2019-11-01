@@ -224,11 +224,13 @@ router.get("/students-list", function (req, res) {
     for (var i = 0; i < response.length; i++) {
       var list={
         name: "",
-        emailid: ""
+        emailid: "",
+
     
       };
       list.name=response[i].firstName + " " + response[i].lastName;
       list.emailid=response[i].emailid;
+    
       //arrayOfStudents.push(response[i].firstName + " " + response[i].lastName);
       arrayOfStudents.push(list);
     }
@@ -244,7 +246,16 @@ router.get("/students-list", function (req, res) {
   });
 });
 
+router.get("/student-info", function (req, res) {
+  console.log("student info result1: " + res)
+  console.log("is this the email id?" + req.query.emailid)
 
+  model.find({ "emailid": req.query.emailid }).then(function (result) {
+    console.log("student info result2: " + result);
+
+    res.json(result);
+  });
+});
 
 //get payment info /tested
 router.get("/payment", function (req, res) {
