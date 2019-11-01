@@ -102,21 +102,33 @@ router.post("/send-invite", function (req, res) {
     }
     
   });//add get req. to check if email exists, let register||message
-  
+});
   //Add Student button -works
-  router.post("/add-student", function (req, res) {
-    // const date = new Date();
-    // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
+  // router.post("/add-student", function (req, res) {
+  //   // const date = new Date();
+  //   // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
 
-    console.log(req.body);
-    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.time, "date": req.body.date,}, "tuitionOwed": req.body.tuition}).then(function (result) {
+  //   console.log(req.body);
+  //   model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.time, "date": req.body.date,}, "tuitionOwed": req.body.tuition}).then(function (result) {
       
-      res.json(result);
-    });
+  //     res.json(result);
+  //   });
+  // });
+
+router.post("/populate-edit-student", function (req, res) {
+  console.log(req.body);
+  model.find({ "emailid": req.body.emailid }).then(function (result) {
+
+    res.json(result);
   });
+});
 
+router.post("/edit-student", function (req, res) {
+  model.findOneAndUpdate({ "emailid": req.body.emailid }, { class: { "tuition": req.body.class.tuition, "time": req.body.class.time, "date": req.body.class.date, "className": req.body.class.className}, "isTeacher": false}, { upsert: false, new: true }).then(function (result) {
 
-
+    res.json(result);
+  });
+});
 //add get req. for students to check if email exists, let register||message /tested
 router.post("/registration-student", function (req, res) {
   model.find({ "emailid": req.body.emailid }).then(function (result) {
@@ -195,19 +207,33 @@ router.get("/student-view", function (req, res) {
 // });
 
 //drop-down menu - students/ tested / Needs to add Teacher's email in request
-router.get("/students-list", function (req, res) {
+router.post("/students-list", function (req, res) {
   console.log('are we here?');
+  
   var arrayOfStudents = [];
+
+ 
+
   const listOfStudents = (response) => {
     console.log('are we in this fn?');
+
     for (var i = 0; i < response.length; i++) {
-      arrayOfStudents.push(response[i].firstName + " " + response[i].lastName);
+      var list={
+        name: "",
+        emailid: ""
+    
+      };
+      list.name=response[i].firstName + " " + response[i].lastName;
+      list.emailid=response[i].emailid;
+      //arrayOfStudents.push(response[i].firstName + " " + response[i].lastName);
+      arrayOfStudents.push(list);
     }
-    return arrayOfStudents.sort();
+    //return arrayOfStudents.sort();
+    return arrayOfStudents;
   };
 
-  model.find({ "teacherIs": req.body.teacherIs }, "firstName lastName").then(function (result) {
-    //console.log(result);
+  model.find({ "teacherIs": req.body.teacherIs}, "firstName lastName emailid").then(function (result) {
+    console.log("What 2222?"+result);
     const studentsList = listOfStudents(result);
     //console.log('studentsList: ', studentsList);
     res.json(studentsList);
