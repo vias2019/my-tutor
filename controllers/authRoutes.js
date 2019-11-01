@@ -95,7 +95,7 @@ console.log(result[0].password, "database - password");
         firstName: result[0].firstName,
         lastName: result[0].lastName
       }, process.env.TOKEN);
-
+      console.log('show res: ', res.json);
       return res.json({
         userId: result[0]._id,
         emailid: result[0].emailid,
@@ -103,6 +103,7 @@ console.log(result[0].password, "database - password");
         lastName: result[0].lastName,
         token: token
       });
+      
     } else {
       console.log("not authenticated")
       return res.json({

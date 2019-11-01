@@ -3,11 +3,6 @@ var mongo = require ("./controllers/apiRoutes")
 // This is the route to the database
 var model = require("./model.js");
 const authRoutes = require('./controllers/authRoutes');
-
-
-// const user = require('./routes/user')
-// // ****In API routes, we need to write your mongoose request to save the new user.***
-
 require('dotenv').config();
 const express = require("express");
 const path = require("path");
@@ -22,7 +17,13 @@ const nodemailer = require('nodemailer');
 
 const log = console.log;
 
+//require passport file:
+require('./config/passport');
 
+//require routes:
+require('./controllers/teacherAuthRoute')(app);
+require('./controllers/studentAuthRoute')(app);
+require('./controllers/loginAuthRoute')(app);
 // Define middleware her
 // app.use(morgan('dev'))
 app.use(
@@ -50,18 +51,8 @@ app.use(
 );
 
 app.use(mongo);
-app.use(authRoutes);
-// Routes
-// app.use('/user', user);
+// app.use(authRoutes);
 
-// //load routes
-// require('./controllers/authRoutes')(app, passport);
-
-// //load passport strategies
-// require('./config/passport')(passport, model);
-
-// // app.post('/send-invite',(req,res) => {
-//   console.log(req.body);
 
  
 
