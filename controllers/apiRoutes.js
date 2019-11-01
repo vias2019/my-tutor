@@ -130,7 +130,7 @@ router.post("/add-student", function (req, res) {
   // const date = new Date();
   // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
 
-  model.findOneAndUpdate({ "emailid": req.body.emailid }, { class: { "tuition": req.body.class.tuition, "time": req.body.class.time, "date": req.body.class.date, "className": req.body.class.className }, "isTeacher": false }, { upsert: false }).then(function (result) {
+  model.findOneAndUpdate({ "emailid": req.body.emailid }, { class: { "tuition": req.body.class.tuition, "time": req.body.class.time, "date": req.body.class.date, "className": req.body.class.className}, "isTeacher": false}, { upsert: false }).then(function (result) {
     console.log('in here: ', result);
     model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuitionOwed": req.body.class.tuition }, { upsert: false }).then(function (result) { res.json(result); });
 
