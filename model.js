@@ -9,15 +9,8 @@ var dbSchema = new Schema({
         required: true
     },
     teacherIs: {
-        emailid: {
-            type: String
-        },
-        firstName: {
-            type: String
-        },
-        lastName: {
-            type: String
-        }
+        type: String,
+        trim: true,
     },
     firstName: {
         type: String,

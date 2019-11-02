@@ -171,11 +171,19 @@ router.post("/delete", function (req, res) {
 
 //Student view. Gets all the logged in students information.
 router.post("/student-view", function (req, res) {
-    model.findOne({ "emailid": req.body.emailid })
-        .then(function (results) {
-            res.json(results);
-        });
+  model.findOne({ "emailid": req.body.emailid }).then(function (result) {
+    res.json(result)
+  })
+})
+
+router.post('/teacher-name',function(req,res){
+  model.findOne({ "emailid": req.body.teacherEmail }, "firstName lastName").then(function (result) {
+    teacherName = result.firstName + ' ' + result.lastName
+    res.send(teacherName)
+  })
 });
+
+
 
 //drop-down menu - teachers
 // router.get("/teachers", function (req, res) {

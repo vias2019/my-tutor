@@ -6,12 +6,14 @@ import './style.css';
 class StudentPay extends React.Component {
     //state will be assigned to a prop that will be passed down. 
     state = {
-        amountOwed: 0
-    };
+        amount: 0
+    }
+
     //Need to figure out why props isnt loading here. 
-    componentDidMount() {
+    componentDidUpdate() {
         var button = document.querySelector('.submit-button1')
-        var amount = this.state.amountOwed
+        console.log(this.props.amountOwed)
+        let amount = this.state.amount
         dropin.create({
             authorization: 'sandbox_tv289x3x_9tcq3ypzspqhjqk7',
             container: '.dropin-container1',

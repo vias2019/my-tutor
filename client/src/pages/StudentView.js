@@ -29,8 +29,6 @@ class StudentView extends Component {
             .then((res) => {
                 //shortened variable for res.data.
                 let data = res.data
-                //setting variable for teacher first name and last name.
-                let teacher = data.teacherIs.firstName + data.teacherIs.lastName
                 //combining the date and time from database to a momentjs readable string.
                 let combinedUtcDateTime = data.class.date + 'T' + data.class.time
                 let utcFormat = 'YYYY-MM-DDTHH:mm'
@@ -84,11 +82,17 @@ class StudentView extends Component {
                     emailid: data.emailid,
                     tuition: data.class.tuition,
                     amountOwed: data.amountOwed,
-                    teacherIs: teacher,
                     className: data.class.className,
                     classObj: calendarArray
                 })
-                console.log(this.state)
+                let teacherEmail = data.teacherIs
+                axios.post('/teacher-name', {teacherEmail})
+                    .then((result) => {
+                        this.setState({
+                            teacherIs: result.data
+                        })
+                        console.log(this.state)
+                    })
             })
     }
 
@@ -97,26 +101,24 @@ class StudentView extends Component {
         return (
 
             <div>
-                <Header name={this.state.name} />
-                <Container>
-                    <Row>
-                        <Col>
-                            <StudentScheduler teacherName={this.state.teacherName} courseName={this.state.courseName} monthlyFee={this.state.monthlyFee} />
-                            <CalendarModal sessionPartner={this.state.teacherName} courseName={this.state.courseName} date={this.state.date} time={this.state.time} />
+            <Header name={this.state.name}/>
+            <Container>
+                <Row>
+                    <Col>
+                    <StudentScheduler teacherName={this.state.teacherIs}/> 
+                    </Col>
+                    <Col>
+                    <StudentPay amountOwed={this.state.amountOwed}/>
+                    </Col>
+                </Row>
+                <br />
+                <Row>
 
-                        </Col>
-                        <Col>
-                            <StudentPay 
-                            amountOwed={this.state.amountOwed} />
-                        </Col>
-                    </Row>
-                    <br />
-                    <Row>
-                        <Calendar
-                        events={this.state.classObj}
-                        />
-                    </Row>
-                </Container>
+                    <Calendar
+                    events={this.state.classObj}
+                    />
+                </Row>
+            </Container>
 
 
             </div>
