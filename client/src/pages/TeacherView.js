@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Header from "../Components/Header";
 import RegistrInvite from "../Components/RegistrInvite";
 import TeacherScheduler from "../Components/TeacherScheduler";
-import AddStudent from "../Components/AddStudent";
+
 import EditStudent from "../Components/EditStudent";
 import CalendarModal from "../Components/CalendarModal";
 
@@ -24,7 +24,7 @@ class TeacherView extends Component {
             <Header name={this.state.name}></Header>
             <div className="col-md">
                 <RegistrInvite /> 
-                <AddStudent />
+
                 <EditStudent />
                 <CalendarModal sessionPartner={this.state.sessionPartner} courseName={this.state.courseName}date={this.state.date} time={this.state.time}/>
             </div>

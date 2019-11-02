@@ -173,6 +173,8 @@ router.post("/delete", function (req, res) {
     res.json({ "message": "Record was deleted" });
   });
 
+
+
 });
 
 //Student view
@@ -186,6 +188,8 @@ router.get("/student-view", function (req, res) {
       // console.log("Answer"+result);
       res.json(answer);
     });
+
+
 
 
   });
@@ -241,7 +245,7 @@ router.get("/students-list", function (req, res) {
     return arrayOfStudents;
   };
 
-  model.find({ "teacherIs": req.body.teacherIs}, "firstName lastName emailid").then(function (result) {
+  model.find({ "teacherIs": req.query.teacherIs}).then(function (result) {
     console.log("What 2222?"+result);
     const studentsList = listOfStudents(result);
     //console.log('studentsList: ', studentsList);

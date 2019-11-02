@@ -15,7 +15,8 @@ export default class FormUser extends React.Component {
         firstName: '',
         lastName: '',
         emailid: '',
-        showModal: false
+        showModal: false,
+        teacherIs: 'testTeacher@test.com'
       };
     };
 
@@ -32,9 +33,9 @@ export default class FormUser extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    const {firstName, lastName, emailid} = this.state;
+    const {firstName, lastName, emailid, teacherIs} = this.state;
 
-    axios.post('/send-invite', ({ firstName, lastName, emailid } )) 
+    axios.post('/send-invite', ({ firstName, lastName, emailid, teacherIs } )) 
       .then(res => {
         console.log(res);
         console.log(res.data);
