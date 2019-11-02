@@ -10,9 +10,10 @@ import CalendarModal from '../Components/CalendarModal';
 import Footer from '../Components/Footer';
 
 class StudentView extends Component {
+    
     state= {
         //TODO write function to pull data for adjusting state
-        name: "Student Name",
+        name: window.localStorage.getItem('emailid'),
         tuitionOwed: 200,
         courseName: "Music 101", 
         monthlyFee: 100,
