@@ -1,107 +1,174 @@
-var LocalStrategy   = require('passport-local').Strategy;
-var User = require('../models/user');
-var bCrypt = require('bcrypt-nodejs');
+const bcrypt = require("bcryptjs");
+const bcrypt_SALT_ROUNDS = 12;
 
-var User = require('../model'); //this only will work if we accurately export the model as a module
+const passport = require('passport'),
+  localStrategy = require('passport-local').Strategy,
+  db = require('../model'),
+  JWTstrategy = require('passport-jwt').Strategy,
+  ExtractJWT = require('passport-jwt').ExtractJwt;
 
-module.exports = function(passport){
+  // called on login, saves the id to session req.session.passport.user = {id:'..'}
+passport.serializeUser((user, done) => {
+	console.log('*** serializeUser called, user: ')
+	console.log(user) // the whole raw user object!
+	console.log('---------')
+	done(null, { _id: user._id })
+})
 
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Local Login Strategy for Passport:
-    passport.use('login', new LocalStrategy({
-        passReqToCallback : true
+// user object attaches to the request as req.user
+passport.deserializeUser((id, done) => {
+	console.log('DeserializeUser called')
+	User.findOne(
+		{ _id: id },
+		'username',
+		(err, user) => {
+			console.log('*** Deserialize user, user:')
+			console.log(user)
+			console.log('--------------')
+			done(null, user)
+		}
+	)
+})
+
+
+passport.use(
+  'registerStudent',
+  new localStrategy(
+    {
+      usernameField: 'emailid',
+      passwordField: 'password',
+      session: false,
     },
-        function(req, email, password, done) { 
-            // check in mongo if a user with emal exists or not
-            User.findOne({ 'email' :  email }, 
-                function(err, user) {
-                    // In case of any error, return using the done method
-                    if (err)
-                        return done(err);
-                    // email does not exist, log the error and redirect back
-                    if (!user){
-                        console.log('User Not Found with email address '+ email);
-                        return done(null, false, req.flash('message', 'User Not found.'));                 
-                    }
-                    // User exists but wrong password, log the error 
-                    if (!isValidPassword(user, password)){
-                        console.log('Invalid Password');
-                        return done(null, false, req.flash('message', 'Invalid Password')); // redirect back to login page
-                    }
-                    // User and password both match, return user from done method
-                    // which will be treated like success
-                    return done(null, user);
-                }
-            );
-        }
-    )
-    );
-
-
-    var isValidPassword = function(user, password){
-    return bCrypt.compareSync(password, user.password);
-    }
-
-
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Local Signup Strategy for Passport:
-
-    passport.use('signup', new LocalStrategy({
-            passReqToCallback : true // allows us to pass back the entire request to the callback
+    (emailid, password, done) => {
+      try {
+        db.findOne({
+            emailid: emailid,
+        }).then(user => {
+          if (user != null) {
+            console.log('email address already taken');
+            return done(null, false, { message: 'emailid already taken' });
+          } else {
+            bcrypt.hash(password, bcrypt_SALT_ROUNDS).then(hashedPassword => {
+              db.create({ 
+                emailid, 
+                password: hashedPassword, 
+                isRegistered: true
+            }).then(user => {
+                console.log('user created', user);
+                // note the return needed with passport local - remove this return for passport JWT to work
+                return done(null, user);
+              });
+            });
+          }
+        });
+      } catch (err) {
+        done(err);
+      }
     },
-        function(req, username, password, done) {
+  ),
+);
 
-            findOrCreateUser = function(){
-                // find a user in Mongo with provided username
-                User.findOne({ 'username' :  username }, function(err, user) {
-                    // In case of any error, return using the done method
-                    if (err){
-                        console.log('Error in SignUp: '+err);
-                        return done(err);
-                    }
-                    // already exists
-                    if (user) {
-                        console.log('User already exists with username: '+username);
-                        return done(null, false, req.flash('message','User Already Exists'));
-                    } else {
-                        // if there is no user with that email
-                        // create the user
-                        var newUser = new User();
 
-                        // set the user's local credentials
-                        newUser.username = username;
-                        newUser.password = createHash(password);
-                        newUser.email = req.param('email');
-                        newUser.firstName = req.param('firstName');
-                        newUser.lastName = req.param('lastName');
-
-                        // save the user
-                        newUser.save(function(err) {
-                            if (err){
-                                console.log('Error in Saving user: '+err);  
-                                throw err;  
-                            }
-                            console.log('User Registration succesful');    
-                            return done(null, newUser);
-                        });
-                    }
+passport.use(
+    'registerTeacher',
+    new localStrategy(
+      {
+        usernameField: 'emailid',
+        passwordField: 'password',
+        session: false,
+      },
+      (emailid, password, done) => {
+        try {
+          db.findOne({
+              emailid: emailid,
+          }).then(user => {
+            if (user != null) {
+              console.log('email address already taken');
+              return done(null, false, { message: 'emailid already taken' });
+            } else {
+              bcrypt.hash(password, bcrypt_SALT_ROUNDS).then(hashedPassword => {
+                db.create({ 
+                  emailid, 
+                  password: hashedPassword, 
+                  isRegistered: true,
+                  isTeacher:true
+              }).then(user => {
+                  console.log('user created', user);
+                  // note the return needed with passport local - remove this return for passport JWT to work
+                  return done(null, user);
                 });
-            };
-            // next tick method seems to delay the execution of a function - I'm not sure why we'd want to do this... For Brian
-
-            // Delay the execution of findOrCreateUser and execute the method
-            // in the next tick of the event loop
-            process.nextTick(findOrCreateUser);
+              });
+            }
+          });
+        } catch (err) {
+          done(err);
         }
-    )
-    );
+      },
+    ),
+  );
 
-    // Generates hash using bCrypt
-    var createHash = function(password){
-        return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-    }
+
+passport.use(
+  'login',
+  new localStrategy(
+    {
+      usernameField: 'emailid',
+      passwordField: 'password',
+      session: false,
+    },
+    (emailid, password, done) => {
+      try {
+        db.findOne({
+            emailid: emailid,
+        }).then(user => {
+          if (user === null) {
+            return done(null, false, { message: 'bad email address' });
+          } else {
+            bcrypt.compare(password, user.password).then(response => {
+              if (response !== true) {
+                console.log('passwords do not match');
+                return done(null, false, { message: 'passwords do not match' });
+              }
+              console.log('user found & authenticated');
+              // note the return needed with passport local - remove this return for passport JWT
+              return done(null, user);
+            });
+          }
+        });
+      } catch (err) {
+        done(err);
+      }
+    },
+  ),
+);
+
+const opts = {
+  jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('JWT'),
+  secretOrKey: process.env.TOKEN, // get jwt secret from environment variable,
 };
 
+passport.use(
+  'jwt',
+  new JWTstrategy(opts, (jwt_payload, done) => {
+    try {
+      db.findOne({
+        where: {
+          emailid: jwt_payload.id,
+        },
+      }).then(user => {
+        if (user) {
+          console.log('user found in db in passport');
+          // note the return removed with passport JWT - add this return for passport local
+          done(null, user);
+        } else {
+          console.log('user not found in db');
+          done(null, false);
+        }
+      });
+    } catch (err) {
+      done(err);
+    }
+  }),
+);
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+module.exports = passport

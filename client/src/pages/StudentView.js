@@ -6,9 +6,9 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Calendar from '../Components/Calendar';
-import CalendarModal from '../Components/CalendarModal';
 import moment from 'moment';
 import axios from "axios";
+import Footer from '../Components/Footer';
 
 class StudentView extends Component {
     state = {

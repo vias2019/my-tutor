@@ -7,22 +7,24 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import './style.css';
+import moment from 'moment';
 
-
+//send teacher email when click edit student button
 export default class FormUser extends React.Component {
 
   constructor() {
       super();
       this.state = {
-        emailid: 'test@test.com',
+        emailid: '',
 
-        tuition:0,
+        tuition:'',
         time: '',
         date: '',
         className:'',
         tuitionOwed: 0,
         showModal: false,
-        students: []
+        students: [],
+        teacherIs: 'testTeacher@test.com'
       };
     };
 
@@ -33,13 +35,46 @@ export default class FormUser extends React.Component {
   }
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value })
-  }
+    this.setState({ [event.target.name]: event.target.value });
+    if(event.target.name == 'emailid') {
+      console.log('this is an email id: ' + event.target.value);
+      axios.get('/student-info', { params: { emailid: event.target.value}})
+      .then(res => {
+        console.log(res);
+        if (res.data[0].class) {
+        //const students = res.data;
+        // console.log(res.data[0].class)
+        var dateFix1 = res.data[0].class.date +' '+ res.data[0].class.time;
+        console.log(dateFix1)
+        var dateFixing = moment.utc(dateFix1)
+        var dateFix2 = dateFixing.local().format('YYYY-MM-DD HH:mm');
+        console.log(dateFix2)
+        var dateFix3 = dateFix2.split(' ')[1];
+        console.log(dateFix3);
+       
+        this.setState({ tuition: res.data[0].class.tuition, className: res.data[0].class.className, date: res.data[0].class.date, time: dateFix3 });}
+
+     
+      else {
+        this.setState({ tuition: '', className: '', date: '', time: '' });
+        console.log('nothing to populate')
+      }
+    
+    }
+    
+    )}
+  };
+
+  //need to send teacher login information for selecting students
 
   componentDidMount() {
-    axios.get('/students')
+    var teacherIsVar = this.state.teacherIs;
+    console.log('teacher is ' + teacherIsVar);
+
+    axios.get('/students-list', { params: { teacherIs: teacherIsVar}})
       .then(res => {
         const students = res.data;
+
         this.setState({ students });
       })
   }
@@ -49,9 +84,21 @@ export default class FormUser extends React.Component {
     event.preventDefault();
 
     const {emailid, tuition, time, date, className, tuitionOwed} = this.state;
-    console.log('testing if this works')
+    console.log(this.state.date);
+    var dateTime = this.state.date + 'T' + this.state.time;
+    var utcDateTime = moment(dateTime).utc().format('YYYY-MM-DDTHH:mm');
+    var utcNewDate = utcDateTime.split('T')[0];
+    var utcNewTime = utcDateTime.split('T')[1];
+    console.log('date...', utcNewDate);
+    console.log('time...', utcNewTime);
+    //this.setState({date : utcNewDate, time: utcNewTime}, () => console.log('async is fun',this.state));
+    console.log(this.state.time)
 
-    axios.post('/add-student', ({ emailid, tuition, time, date, className, tuitionOwed } )) 
+
+    console.log('testing if this works' + emailid)
+    
+
+    axios.post('/add-student', ({ emailid, tuition, utcNewTime, utcNewDate, className, tuitionOwed } )) 
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -63,24 +110,25 @@ export default class FormUser extends React.Component {
     return (
       <>
         <Button variant="primary" onClick={() => this.toggleShow(true)}>
-          Edit Student
+          Add/Edit Student
         </Button>
 
         <Modal show={this.state.showModal} onHide={() => this.toggleShow(false)}>
             <Modal.Header closeButton>
-                <Modal.Title>Edit student schedule</Modal.Title>
+                <Modal.Title>Edit schedule for student</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {/* TODO ADD ID FOR CAPTURING DATA */}
+
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Row>
                         <Col>
                         <Form.Group controlId="exampleForm.ControlSelect1">
                             <Form.Label>Student List</Form.Label>
-                            {/* TODO ADD FOR IMPORTING STUDENT NAME DATA */}
-                            <Form.Control as="select">
+
+                            <Form.Control as="select" onChange={this.handleChange} name="emailid" value={this.state.value}>
+                            <option value="" selected disabled>Select student</option>
                             {
-                                this.state.students.map((student) => <option value={student}>{student}</option>)
+                                this.state.students.map((student) => <option name="emailid" value={student.emailid} onChange={this.handleChange} >{student.name}</option>)
                             }
                             </Form.Control>
                         </Form.Group>
@@ -98,7 +146,6 @@ export default class FormUser extends React.Component {
                         </Col>
                         <Col> 
 
-                        {/* TODO CHANGE TIME TO MILITARY                    */}
                         <Form.Label>Tutor Session Time</Form.Label>
                         <Form.Control type="time" name="time" value={time} onChange={this.handleChange} />
                         </Col>

@@ -1,4 +1,4 @@
-var express = require('express')
+var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
 var braintree = require('braintree');
@@ -103,13 +103,14 @@ router.post("/send-invite", function (req, res) {
     
   });//add get req. to check if email exists, let register||message
 });
+
   //Add Student button -works
   // router.post("/add-student", function (req, res) {
   //   // const date = new Date();
   //   // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
 
-  //   console.log(req.body);
-  //   model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.time, "date": req.body.date,}, "tuitionOwed": req.body.tuition}).then(function (result) {
+    // console.log(req.body);
+    // model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.utcNewTime, "date": req.body.utcNewDate,}, "tuitionOwed": req.body.tuition}).then(function (result) {
       
   //     res.json(result);
   //   });
@@ -155,9 +156,13 @@ router.post("/add-student", function (req, res) {
   // const date = new Date();
   // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
 
-  model.findOneAndUpdate({ "emailid": req.body.emailid }, { class: { "tuition": req.body.class.tuition, "time": req.body.class.time, "date": req.body.class.date, "className": req.body.class.className}, "isTeacher": false}, { upsert: false }).then(function (result) {
-    console.log('in here: ', result);
-    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuitionOwed": req.body.class.tuition }, { upsert: false }).then(function (result) { res.json(result); });
+  console.log(req.body);
+  model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.utcNewTime, "date": req.body.utcNewDate,}, "tuitionOwed": req.body.tuition, "isTeacher": false}, { upsert: false }).then(function (result) {
+    res.json(result);
+
+  // model.findOneAndUpdate({ "emailid": req.body.emailid }, { class: { "tuition": req.body.class.tuition, "time": req.body.class.time, "date": req.body.class.date, "className": req.body.class.className}, "isTeacher": false}, { upsert: false }).then(function (result) {
+    // console.log('in here: ', result);
+    // model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuitionOwed": req.body.class.tuition }, { upsert: false }).then(function (result) { res.json(result); });
 
   });
 });
@@ -167,6 +172,9 @@ router.post("/delete", function (req, res) {
   model.findOneAndDelete({ "emailid": req.body.emailid }, function (result) {
     res.json({ "message": "Record was deleted" });
   });
+
+
+
 });
 
 //Student view. Gets all the logged in students information.
@@ -208,7 +216,7 @@ router.post('/teacher-name',function(req,res){
 // });
 
 //drop-down menu - students/ tested / Needs to add Teacher's email in request
-router.post("/students-list", function (req, res) {
+router.get("/students-list", function (req, res) {
   console.log('are we here?');
   
   var arrayOfStudents = [];
@@ -221,11 +229,13 @@ router.post("/students-list", function (req, res) {
     for (var i = 0; i < response.length; i++) {
       var list={
         name: "",
-        emailid: ""
+        emailid: "",
+
     
       };
       list.name=response[i].firstName + " " + response[i].lastName;
       list.emailid=response[i].emailid;
+    
       //arrayOfStudents.push(response[i].firstName + " " + response[i].lastName);
       arrayOfStudents.push(list);
     }
@@ -233,7 +243,7 @@ router.post("/students-list", function (req, res) {
     return arrayOfStudents;
   };
 
-  model.find({ "teacherIs": req.body.teacherIs}, "firstName lastName emailid").then(function (result) {
+  model.find({ "teacherIs": req.query.teacherIs}).then(function (result) {
     console.log("What 2222?"+result);
     const studentsList = listOfStudents(result);
     //console.log('studentsList: ', studentsList);
@@ -241,7 +251,16 @@ router.post("/students-list", function (req, res) {
   });
 });
 
+router.get("/student-info", function (req, res) {
+  console.log("student info result1: " + res)
+  console.log("is this the email id?" + req.query.emailid)
 
+  model.find({ "emailid": req.query.emailid }).then(function (result) {
+    console.log("student info result2: " + result);
+
+    res.json(result);
+  });
+});
 
 //get payment info /tested
 router.get("/payment", function (req, res) {
