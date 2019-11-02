@@ -3,6 +3,10 @@ var router = express.Router();
 var mongoose = require("mongoose");
 var braintree = require('braintree');
 
+//require db for hitting is auth method;
+const db = require('../model');
+
+
 //payment api setup. If we want to have dynamic payments sent directly to the logged in teacher, we need the teacher to provide their merchant id, public key, and private key. Change that below dynamically. 
 var gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
@@ -167,18 +171,6 @@ router.post("/delete", function (req, res) {
   model.findOneAndDelete({ "emailid": req.body.emailid }, function (result) {
     res.json({ "message": "Record was deleted" });
   });
-<<<<<<< HEAD
-  
-  //Student view
-  // TeacherName (dropdown selector)
-  // ClassName
-  // Monthly Rate -works
-  router.get("/student-view", function (req, res) {
-        console.log('studnet view');
-        model.find({ "emailid": req.body.emailid }, "teacherIs className tuition tuitionOwed").then(function (result) {
-        res.json(result);
-        });
-=======
 });
 
 //Student view
@@ -193,7 +185,6 @@ router.get("/student-view", function (req, res) {
       res.json(answer);
     });
 
->>>>>>> master
   });
 });
 
@@ -272,5 +263,15 @@ router.get("/teacher-view", function (req, res) {
   });
 
 });
+
+function ensureAuthenticated(req, res, next) {
+    console.log('req.user from passport on front end: ', req.user);
+    console.log('req', req);
+    if (req.isAuthenticated())
+        return next();
+    else{
+        res.redirect('/users/login')
+    }
+}
 
 module.exports = router;
