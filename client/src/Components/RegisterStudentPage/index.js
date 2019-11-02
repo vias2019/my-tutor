@@ -58,9 +58,8 @@ export class RegisterStudentPage extends React.Component {
         event.preventDefault();
         // alert('here is value ' + this.state.value);
         API.createStudent(this.state).then(res => {
-            Auth.setToken(res.data.token);
             //route for redirect after login
-            this.props.history.push({ pathname: '/student-registration' });
+            this.props.history.push({ pathname: '/' });
         }).catch(err => console.log(err));
     }
     

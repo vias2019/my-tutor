@@ -1,5 +1,4 @@
 const bcrypt = require("bcryptjs");
-
 const bcrypt_SALT_ROUNDS = 12;
 
 const passport = require('passport'),
@@ -8,8 +7,32 @@ const passport = require('passport'),
   JWTstrategy = require('passport-jwt').Strategy,
   ExtractJWT = require('passport-jwt').ExtractJwt;
 
+  // called on login, saves the id to session req.session.passport.user = {id:'..'}
+passport.serializeUser((user, done) => {
+	console.log('*** serializeUser called, user: ')
+	console.log(user) // the whole raw user object!
+	console.log('---------')
+	done(null, { _id: user._id })
+})
+
+// user object attaches to the request as req.user
+passport.deserializeUser((id, done) => {
+	console.log('DeserializeUser called')
+	User.findOne(
+		{ _id: id },
+		'username',
+		(err, user) => {
+			console.log('*** Deserialize user, user:')
+			console.log(user)
+			console.log('--------------')
+			done(null, user)
+		}
+	)
+})
+
+
 passport.use(
-  'register',
+  'registerStudent',
   new localStrategy(
     {
       usernameField: 'emailid',
@@ -19,14 +42,18 @@ passport.use(
     (emailid, password, done) => {
       try {
         db.findOne({
-            emailid: emailid
+            emailid: emailid,
         }).then(user => {
           if (user != null) {
             console.log('email address already taken');
             return done(null, false, { message: 'emailid already taken' });
           } else {
             bcrypt.hash(password, bcrypt_SALT_ROUNDS).then(hashedPassword => {
-              User.create({ emailid, password: hashedPassword }).then(user => {
+              db.create({ 
+                emailid, 
+                password: hashedPassword, 
+                isRegistered: true
+            }).then(user => {
                 console.log('user created', user);
                 // note the return needed with passport local - remove this return for passport JWT to work
                 return done(null, user);
@@ -41,18 +68,58 @@ passport.use(
   ),
 );
 
+
+passport.use(
+    'registerTeacher',
+    new localStrategy(
+      {
+        usernameField: 'emailid',
+        passwordField: 'password',
+        session: false,
+      },
+      (emailid, password, done) => {
+        try {
+          db.findOne({
+              emailid: emailid,
+          }).then(user => {
+            if (user != null) {
+              console.log('email address already taken');
+              return done(null, false, { message: 'emailid already taken' });
+            } else {
+              bcrypt.hash(password, bcrypt_SALT_ROUNDS).then(hashedPassword => {
+                db.create({ 
+                  emailid, 
+                  password: hashedPassword, 
+                  isRegistered: true,
+                  isTeacher:true
+              }).then(user => {
+                  console.log('user created', user);
+                  // note the return needed with passport local - remove this return for passport JWT to work
+                  return done(null, user);
+                });
+              });
+            }
+          });
+        } catch (err) {
+          done(err);
+        }
+      },
+    ),
+  );
+
+
 passport.use(
   'login',
   new localStrategy(
     {
-      emailidField: 'emailid',
+      usernameField: 'emailid',
       passwordField: 'password',
       session: false,
     },
     (emailid, password, done) => {
       try {
         db.findOne({
-            emailid: emailid
+            emailid: emailid,
         }).then(user => {
           if (user === null) {
             return done(null, false, { message: 'bad email address' });
@@ -84,7 +151,7 @@ passport.use(
   'jwt',
   new JWTstrategy(opts, (jwt_payload, done) => {
     try {
-      User.findOne({
+      db.findOne({
         where: {
           emailid: jwt_payload.id,
         },
@@ -103,3 +170,5 @@ passport.use(
     }
   }),
 );
+
+module.exports = passport

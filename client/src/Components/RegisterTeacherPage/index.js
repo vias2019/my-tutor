@@ -47,8 +47,7 @@ export class RegisterTeacherPage extends React.Component {
         event.preventDefault();
         console.log('in register teacher function');
         API.createTeacher(this.state).then(res => {
-            Auth.setToken(res.data.token);
-            this.props.history.push({ pathname: '/teacher-registration' });
+            this.props.history.push({ pathname: '/' });
         }).catch(err => console.log(err));
     }
     
@@ -63,7 +62,7 @@ export class RegisterTeacherPage extends React.Component {
             </div>
 
             <div className="d-flex justify-content-center form_container">
-                <form onSubmit={this.registerStudent}>
+                <form onSubmit={this.registerTeacher}>
                     <div >
                         <label>
                             First name:

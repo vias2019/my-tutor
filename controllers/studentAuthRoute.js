@@ -2,9 +2,8 @@ const db = require("../model");
 const passport = require('passport');
 
 module.exports = app => {
-  app.post('/registerStudent', (req, res, next) => {
-    
-    passport.authenticate('register', (err, user, info) => {
+  app.post('/student-registration', (req, res, next) => {
+    passport.authenticate('registerStudent', (err, user, info) => {
       if (err) {
         console.log(err);
       }
@@ -12,10 +11,13 @@ module.exports = app => {
         console.log(info.message);
         res.send(info.message);
       } else {
+          console.log('req.body: ', req.body);
+          console.log('user: ', user);
+          
         req.logIn(user, err => {
           const data = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             emailid: req.body.emailid
           };
           db.find({
@@ -23,10 +25,9 @@ module.exports = app => {
               emailid: data.emailid,
             
           }).then(user => {
-            user
-              .update({
-                first_name: data.first_name,
-                last_name: data.last_name,
+            db.update({
+                firstName: data.firstName,
+                lastName: data.lastName,
                 emailid: data.emailid,
               })
               .then(() => {

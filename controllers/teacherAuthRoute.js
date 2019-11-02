@@ -2,8 +2,8 @@ const db = require("../model");
 const passport = require('passport');
 
 module.exports = app => {
-  app.post('/registerTeacher', (req, res, next) => {
-    passport.authenticate('register', (err, user, info) => {
+  app.post('/teacher-registration', (req, res, next) => {
+    passport.authenticate('registerTeacher', (err, user, info) => {
       if (err) {
         console.log(err);
       }
@@ -13,8 +13,8 @@ module.exports = app => {
       } else {
         req.logIn(user, err => {
           const data = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             emailid: req.body.emailid
           };
           db.findOne({
@@ -22,11 +22,11 @@ module.exports = app => {
               emailid: data.emailid,
             },
           }).then(user => {
-            user
-              .update({
+            db.update({
                 first_name: data.first_name,
                 last_name: data.last_name,
-                emailid: data.emailid
+                emailid: data.emailid,
+                isTeacher:true
               })
               .then(() => {
                 console.log('user created in db');

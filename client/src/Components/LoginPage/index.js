@@ -30,6 +30,7 @@ export class LoginPage extends React.Component {
         // alert('here is value ' + this.state.password + this.state.email);
         API.loginUser(this.state).then(res => {
             // Auth.setToken(res.data.token);
+            console.log('res: ', res);
             this.setState({username: res.data.username});
             //the route below will depend on the res.data.isTeacher(boolean) in the db.
             this.props.history.push({pathname: '/', state: {username: res.data.username}});

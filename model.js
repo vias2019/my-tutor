@@ -21,13 +21,13 @@ var dbSchema = new Schema({
     firstName: {
         type: String,
         trim: true,
-        required: true
+        // required: true
     },
 
     lastName: {
         type: String,
         trim: true,
-        required: true
+        // required: true
     },
 
     class:
@@ -75,7 +75,7 @@ var dbSchema = new Schema({
     emailid: {
         type: String,
         match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
-        required: true
+        // required: true
     },
 
     password: {

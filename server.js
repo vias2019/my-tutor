@@ -1,8 +1,6 @@
 var mongoose = require("mongoose");
-var mongo = require ("./controllers/apiRoutes")
+const mongo = require ("./controllers/apiRoutes")
 // This is the route to the database
-var model = require("./model.js");
-const authRoutes = require('./controllers/authRoutes');
 require('dotenv').config();
 const express = require("express");
 const path = require("path");
@@ -17,20 +15,12 @@ const nodemailer = require('nodemailer');
 
 const log = console.log;
 
-//require passport file:
-require('./config/passport');
 
-//require routes:
-require('./controllers/teacherAuthRoute')(app);
-require('./controllers/studentAuthRoute')(app);
-require('./controllers/loginAuthRoute')(app);
-// Define middleware her
-// app.use(morgan('dev'))
 app.use(
 	bodyParser.urlencoded({
-		extended: false
+		extended: true
 	})
-)
+);
 app.use(bodyParser.json())
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
@@ -40,6 +30,8 @@ if (process.env.NODE_ENV === "production") {
 // Configuring Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 
 //Setting up express-session
 app.use(
@@ -55,6 +47,16 @@ app.use(mongo);
 
 
  
+//require passport file:
+require('./config/passport');
+
+//require routes:
+require('./controllers/teacherAuthRoute')(app);
+require('./controllers/studentAuthRoute')(app);
+require('./controllers/loginAuthRoute')(app);
+// Define middleware her
+// app.use(morgan('dev'))
+
 
 // //Student registration email notification: 
 // // Step 1
