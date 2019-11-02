@@ -3,7 +3,10 @@ const bcrypt = require('bcryptjs');
 
 var Schema = mongoose.Schema;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 var dbSchema = new Schema({
     isTeacher: {
         type: Boolean,
@@ -14,8 +17,6 @@ var dbSchema = new Schema({
     teacherIs: {
         type: String,
         trim: true,
-       //required: true
-        //dropdown
     },
 
     firstName: {
@@ -32,45 +33,35 @@ var dbSchema = new Schema({
 
     class:
 
-        [
             {
                 className: {
                     type: String
                 },
 
+                tuition: {
+                    type: Number,
+                    trim: true
+                },
+
                 time: {
-                    type: Date
+                    type: String
+                },
+
+                date: {
+                    type: String
                 }
-            }
-        ],
+            },
+        
 
     isRegistered: {
         type: Boolean,
         default: false
     },
 
-    tuition: {
-        type: Number,
-        trim: true
-    },
-
     tuitionOwed: {
-        type: Number,
+        type: Number
         //calculated
     },
-
-    // schedule: {
-    //     type: Date,
-    // },
-    // date: {
-    //     type: Date,
-    //     default: Date.now
-    // },
-
-    // time: {
-    //     type: Number
-    // },
-
 
     emailid: {
         type: String,

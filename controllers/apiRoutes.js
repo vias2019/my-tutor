@@ -5,123 +5,169 @@ var braintree = require('braintree');
 
 //payment api setup. If we want to have dynamic payments sent directly to the logged in teacher, we need the teacher to provide their merchant id, public key, and private key. Change that below dynamically. 
 var gateway = braintree.connect({
-    environment:  braintree.Environment.Sandbox,
-    merchantId:   '9tcq3ypzspqhjqk7',
-    publicKey:    '6k79n6k7bq4tg38j',
-    privateKey:   '2198178311d1a642203ecc7ff935239a'
+  environment: braintree.Environment.Sandbox,
+  merchantId: '9tcq3ypzspqhjqk7',
+  publicKey: '6k79n6k7bq4tg38j',
+  privateKey: '2198178311d1a642203ecc7ff935239a'
 });
 
 //Payment Routes
-router.post('/checkout',function(req,res){
-    var nonceFromTheClient = req.body.payload.nonce
-    var amount = req.body.amount
-    gateway.transaction.sale({
-        amount: amount,
-        paymentMethodNonce: nonceFromTheClient,
-        options: {
-            submitForSettlement:true
-        }
-    },function(err,result){
-        res.send(true)
-    })
-})
+router.post('/checkout', function (req, res) {
+  var nonceFromTheClient = req.body.payload.nonce;
+  var amount = req.body.amount;
+  gateway.transaction.sale({
+    amount: amount,
+    paymentMethodNonce: nonceFromTheClient,
+    options: {
+      submitForSettlement: true
+    }
+  }, function (err, result) {
+    res.send(true);
+  });
+});
 
-
-
-var model =require("../model");
+var model = require("../model");
 const nodemailer = require('nodemailer');
 const log = console.log;
 
 mongoose.connect("mongodb://localhost/maindatabase", { useNewUrlParser: true });
-router.use(function timeLog (req, res, next) {
-    console.log('Time: ', Date.now());
-    next();
-  });
-//Teacher reqistration - create a document in db - works
-router.post("/submit-teacher", function (req, res) {
-    model.create(req.body)
-      .then(function (dbUser) {
-        res.json(dbUser);
-      })
-      .catch(function (err) {
-        res.json(err);
-      });
-  });
-  
-  //invitation sent to student -works
-  router.post("/send-invite", function (req, res) {
-    model.find({ "emailid": req.body.emailid }).then(function (result) {
-      //console.log (result);
-      if (result.length>0) {
-        res.json({ success: false, message: 'user already exists in db' });
-      } else {
-        model.create(req.body)
-          .then(function (dbUser) {
-            // Step 1
+router.use(function timeLog(req, res, next) {
+  console.log('Time: ', Date.now());
+  next();
+});
 
-            let transporter = nodemailer.createTransport({
-              service: 'gmail',
-              auth: {
-                  user: process.env.EMAIL,
-                  pass: process.env.PASSWORD 
-              }
-            });
-
-            // Step 2
-            let mailOptions = {
-              from: 'mytutortest@gmail.com', 
-              // TODO: email receiver - pull from registrinvite form submit
-              to: req.body.emailid, 
-              subject: 'Welcome to My Tutor!',
-              text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.' 
-            };
-
-            // Step 3
-            transporter.sendMail(mailOptions, (err, data) => {
-              if (err) {
-                  return log('There is an error with your nodemailer component in server.js');
-              }
-              return log('Email sent!!!');
-            });
-
-
-            res.json({email: 'sent'})
-            })
-                    
-                      .catch(function (err) {
-                        res.json(err);
-                      });
-                  }
-                });
-              });
-  
-  //Student registration - works
-  router.post("/student-reg", function (req, res) {
-    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "isRegistered": true, "password": req.body.password }).then(function (result) {
-      res.json(result);
+//Teacher reqistration - create a document in db /tested
+//Teacher=true; however, Postman doesn't show true, but DB is updated
+router.post("/registration-teacher", function (req, res) {
+  model.find({ "emailid": req.body.emailid }).then(function (result) {
+    if (result.length == 0) {
+      model.create(req.body)
+        .then(function (dbUser) {
+          model.findOneAndUpdate({ "emailid": req.body.emailid }, { "isTeacher": true }).then(function (result) {
+            res.json(result);
+          }
+          );
+        })
+        .catch(function (err) {
+          res.json(err);
+        });
+    } else {
+      res.json({ success: false, message: 'user already exists in db' });
     }
-    );
   });
-  
+});
+
+//invitation sent to student /tested/ Steph add teacher's email as teacherIs
+router.post("/send-invite", function (req, res) {
+  model.find({ "emailid": req.body.emailid }).then(function (result) {
+    //console.log (result);
+    if (result.length > 0) {
+      res.json({ success: false, message: 'user already exists in db' });
+    } else {
+      model.create(req.body)
+        .then(function (dbUser) {
+          // Step 1
+
+          let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.EMAIL,
+              pass: process.env.PASSWORD
+            }
+          });
+
+          // Step 2
+          let mailOptions = {
+            from: 'mytutortest@gmail.com',
+            // TODO: email receiver - pull from registrinvite form submit
+            to: req.body.emailid,
+            subject: 'Welcome to My Tutor!',
+            text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.'
+          };
+
+          // Step 3
+          transporter.sendMail(mailOptions, (err, data) => {
+            if (err) {
+              return log('There is an error with your nodemailer component in server.js');
+            }
+            return log('Email sent!!!');
+          });
+
+          res.json({ email: 'sent' });
+        })
+
+        .catch(function (err) {
+          res.json(err);
+        });
+    }
+    
+  });//add get req. to check if email exists, let register||message
+});
   //Add Student button -works
-  router.post("/add-student", function (req, res) {
-    // const date = new Date();
-    // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
-    //console.log(req.body);
-    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuition": req.body.tuition, "schedule": req.body.schedule, "date": req.body.date, "time": req.body.time }).then(function (result) {
-  
-      res.json(result);
-    });
+  // router.post("/add-student", function (req, res) {
+  //   // const date = new Date();
+  //   // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
+
+  //   console.log(req.body);
+  //   model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.time, "date": req.body.date,}, "tuitionOwed": req.body.tuition}).then(function (result) {
+      
+  //     res.json(result);
+  //   });
+  // });
+
+router.post("/populate-edit-student", function (req, res) {
+  console.log(req.body);
+  model.find({ "emailid": req.body.emailid }).then(function (result) {
+
+    res.json(result);
   });
-  
-  //Delete record -works
-  router.post("/delete", function (req, res) {
-    model.findOneAndDelete({ "emailid": req.body.emailid }, function (result) {
-  
-  
-      res.json({ "message": "Record was deleted" });
-    });
+});
+
+router.post("/edit-student", function (req, res) {
+  model.findOneAndUpdate({ "emailid": req.body.emailid }, { class: { "tuition": req.body.class.tuition, "time": req.body.class.time, "date": req.body.class.date, "className": req.body.class.className}, "isTeacher": false}, { upsert: false, new: true }).then(function (result) {
+
+    res.json(result);
   });
+});
+//add get req. for students to check if email exists, let register||message /tested
+router.post("/registration-student", function (req, res) {
+  model.find({ "emailid": req.body.emailid }).then(function (result) {
+    console.log('result: ', result);
+    if (result.length == 0) {
+      console.log("Crazy");
+      res.json({ success: false, message: 'user registers by invite only' });
+    } else {
+      model.findOneAndUpdate({ "emailid": req.body.emailid }, { firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password, isRegistedred: true }, { upsert: false })
+        .then(function (dbUser) {
+          console.log("crazy1", dbUser);
+          res.json({ message: "You are registered!" });
+        })
+        .catch(function (err) {
+          res.json(err);
+        });
+
+    }
+  });
+});
+
+//Add Student button /tested
+router.post("/add-student", function (req, res) {
+  // const date = new Date();
+  // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
+
+  model.findOneAndUpdate({ "emailid": req.body.emailid }, { class: { "tuition": req.body.class.tuition, "time": req.body.class.time, "date": req.body.class.date, "className": req.body.class.className}, "isTeacher": false}, { upsert: false }).then(function (result) {
+    console.log('in here: ', result);
+    model.findOneAndUpdate({ "emailid": req.body.emailid }, { "tuitionOwed": req.body.class.tuition }, { upsert: false }).then(function (result) { res.json(result); });
+
+  });
+});
+
+//Delete record/ tested
+router.post("/delete", function (req, res) {
+  model.findOneAndDelete({ "emailid": req.body.emailid }, function (result) {
+    res.json({ "message": "Record was deleted" });
+  });
+<<<<<<< HEAD
   
   //Student view
   // TeacherName (dropdown selector)
@@ -132,65 +178,99 @@ router.post("/submit-teacher", function (req, res) {
         model.find({ "emailid": req.body.emailid }, "teacherIs className tuition tuitionOwed").then(function (result) {
         res.json(result);
         });
-  });
-  
-  //drop-down menu - teachers
-  router.get("/teachers", function (req, res) {
-    
-    arrayOfTeachers = [];
-    const listOfTeachers = (response) => {
-     
-      for (var i = 0; i < response.length; i++) {
-        arrayOfTeachers.push(response[i].teacherIs);
-      }
-      return arrayOfTeachers;
-    }
-  
-    model.find({}, "teacherIs").then(function (result) {
-      
-      const teachersList = listOfTeachers(result);
-      //console.log('teachersList: ', teachersList);
-      res.json(teachersList);
-  
-      //}
+=======
+});
+
+//Student view
+// ClassName
+// Monthly Rate/ tested
+router.get("/student-view", function (req, res) {
+  model.findOne({ "emailid": req.body.emailid }, "teacherIs class tuitionOwed").then(function (result) {
+    //console.log(result);
+    model.findOne({ "emailid": result.teacherIs }, "firstName lastName emailid").then(function (answer) {
+      //result.teacherIs = (answer.firstName + " " + answer.lastName);
+      // console.log("Answer"+result);
+      res.json(answer);
     });
+
+>>>>>>> master
+  });
+});
+
+//drop-down menu - teachers
+// router.get("/teachers", function (req, res) {
+
+//   arrayOfTeachers = [];
+//   const listOfTeachers = (response) => {
+
+//     for (var i = 0; i < response.length; i++) {
+//       arrayOfTeachers.push(response[i].teacherIs);
+//     }
+//     return arrayOfTeachers;
+//   }
+
+//   model.find({}, "teacherIs").then(function (result) {
+
+//     const teachersList = listOfTeachers(result);
+//     //console.log('teachersList: ', teachersList);
+//     res.json(teachersList);
+
+//     //}
+//   });
+// });
+
+//drop-down menu - students/ tested / Needs to add Teacher's email in request
+router.post("/students-list", function (req, res) {
+  console.log('are we here?');
+  
+  var arrayOfStudents = [];
+
+ 
+
+  const listOfStudents = (response) => {
+    console.log('are we in this fn?');
+
+    for (var i = 0; i < response.length; i++) {
+      var list={
+        name: "",
+        emailid: ""
+    
+      };
+      list.name=response[i].firstName + " " + response[i].lastName;
+      list.emailid=response[i].emailid;
+      //arrayOfStudents.push(response[i].firstName + " " + response[i].lastName);
+      arrayOfStudents.push(list);
+    }
+    //return arrayOfStudents.sort();
+    return arrayOfStudents;
+  };
+
+  model.find({ "teacherIs": req.body.teacherIs}, "firstName lastName emailid").then(function (result) {
+    console.log("What 2222?"+result);
+    const studentsList = listOfStudents(result);
+    //console.log('studentsList: ', studentsList);
+    res.json(studentsList);
+  });
+});
+
+
+
+//get payment info /tested
+router.get("/payment", function (req, res) {
+  model.find({ "emailid": req.body.emailid }, "tuitionOwed").then(function (result) {
+    console.log(result);
+    res.json(result);
+  });
+});
+
+//calendar read - firstname, lastname, date /tested
+router.get("/teacher-view", function (req, res) {
+
+  model.find({ "teacherIs": req.body.teacherIs }, "firstName lastName class").then(function (result) {
+    console.log(result);
+    res.json(result);
   });
 
-    //drop-down menu - teachers
-    router.get("/students", function (req, res) {
-      console.log('are we here?');
-      var arrayOfStudents = [];
-      const listOfStudents = (response) => {
-        console.log('are we in this fn?');
-        for (var i = 0; i < response.length; i++) {
-          arrayOfStudents.push(response[i].firstName+" "+response[i].lastName);
-        }
-        return arrayOfStudents.sort();
-      };
-    
-      model.find({"isTeacher": false}, "firstName lastName").then(function (result) {
-        //console.log(result);
-        const studentsList = listOfStudents(result);
-        //console.log('studentsList: ', studentsList);
-        res.json(studentsList);
-      });
-    });
-  
-  //get payment info - works
-  //add logic here 
-  router.get("/payment", function (req, res) {
-    model.find({ "emailid": req.body.emailid }, "tuitionOwed").then(function (result) {
-  
-      res.json(result);
-    });
-  });
-  
-  //calendar read - firstname, lastname, date - works
-  router.get("/calendar", function (req, res) {
-  
-    model.find({ "isTeacher": false }, 'firstName lastName date class', function (result) {
-      res.json(result);
-    });
-  
-  });
-  module.exports = router;
+});
+
+module.exports = router;
