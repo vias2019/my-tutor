@@ -10,7 +10,7 @@ class StudentPay extends React.Component {
     }
 
     //Need to figure out why props isnt loading here. 
-    componentDidUpdate() {
+    componentDidMount() {
         var button = document.querySelector('.submit-button1')
         console.log(this.props.amountOwed)
         let amount = this.state.amount

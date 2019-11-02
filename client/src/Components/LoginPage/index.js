@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './style.css';
 import Footer from "../Footer/index";
-import API from "../../Utils/api";
+import API from "../../Utils/API";
 import Auth from "../../Utils/AUTH";
 
 export class LoginPage extends React.Component {
