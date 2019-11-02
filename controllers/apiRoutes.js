@@ -1,4 +1,4 @@
-var express = require('express')
+var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
 var braintree = require('braintree');
@@ -103,6 +103,7 @@ router.post("/send-invite", function (req, res) {
     
   });//add get req. to check if email exists, let register||message
 });
+
   //Add Student button -works
   // router.post("/add-student", function (req, res) {
   //   // const date = new Date();
@@ -171,18 +172,7 @@ router.post("/delete", function (req, res) {
   model.findOneAndDelete({ "emailid": req.body.emailid }, function (result) {
     res.json({ "message": "Record was deleted" });
   });
-<<<<<<< HEAD
-  
-  //Student view
-  // TeacherName (dropdown selector)
-  // ClassName
-  // Monthly Rate -works
-  router.get("/student-view", function (req, res) {
-        console.log('studnet view');
-        model.find({ "emailid": req.body.emailid }, "teacherIs className tuition tuitionOwed").then(function (result) {
-        res.json(result);
-        });
-=======
+
 });
 
 //Student view
@@ -197,7 +187,7 @@ router.get("/student-view", function (req, res) {
       res.json(answer);
     });
 
->>>>>>> master
+
   });
 });
 
