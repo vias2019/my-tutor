@@ -18,7 +18,7 @@ export default class FormUser extends React.Component {
         emailid: '',
        
 
-        tuition:0,
+        tuition:'',
         time: '',
         date: '',
         className:'',
@@ -97,6 +97,7 @@ export default class FormUser extends React.Component {
                             <Form.Label>Student List</Form.Label>
 
                             <Form.Control as="select" onChange={this.handleChange} name="emailid" value={this.state.value}>
+                            <option value="" selected disabled>Select student</option>
                             {
                                 this.state.students.map((student) => <option name="emailid" value={student.emailid} onChange={this.handleChange} >{student.name}</option>)
                             }

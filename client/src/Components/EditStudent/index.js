@@ -17,7 +17,7 @@ export default class FormUser extends React.Component {
       this.state = {
         emailid: '',
 
-        tuition:0,
+        tuition:'',
         time: '',
         date: '',
         className:'',
@@ -40,9 +40,17 @@ export default class FormUser extends React.Component {
       axios.get('/student-info', { params: { emailid: event.target.value}})
       .then(res => {
         //const students = res.data;
-        console.log(res.data[0].class)
+        // console.log(res.data[0].class)
+        var dateFix1 = res.data[0].class.date +' '+ res.data[0].class.time;
+        console.log(dateFix1)
+        var dateFixing = moment.utc(dateFix1)
+        var dateFix2 = dateFixing.local().format('YYYY-MM-DD HH:mm');
+        console.log(dateFix2)
+        var dateFix3 = dateFix2.split(' ')[1];
+        console.log(dateFix3)
+        
 
-        this.setState({ tuition: res.data[0].class.tuition, className: res.data[0].class.className });
+        this.setState({ tuition: res.data[0].class.tuition, className: res.data[0].class.className, date: res.data[0].class.date, time: dateFix3 });
       })
     }
 
@@ -106,6 +114,7 @@ export default class FormUser extends React.Component {
                             <Form.Label>Student List</Form.Label>
 
                             <Form.Control as="select" onChange={this.handleChange} name="emailid" value={this.state.value}>
+                            <option value="" selected disabled>Select student</option>
                             {
                                 this.state.students.map((student) => <option name="emailid" value={student.emailid} onChange={this.handleChange} >{student.name}</option>)
                             }
