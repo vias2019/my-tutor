@@ -1,7 +1,12 @@
 var mongoose = require("mongoose");
+const bcrypt = require('bcryptjs');
 
 var Schema = mongoose.Schema;
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
 var dbSchema = new Schema({
     isTeacher: {
         type: Boolean,
@@ -17,13 +22,13 @@ var dbSchema = new Schema({
     firstName: {
         type: String,
         trim: true,
-        required: true
+        // required: true
     },
 
     lastName: {
         type: String,
         trim: true,
-        required: true
+        // required: true
     },
 
     class:
@@ -61,7 +66,7 @@ var dbSchema = new Schema({
     emailid: {
         type: String,
         match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
-        required: true
+        // required: true
     },
 
     password: {
@@ -77,9 +82,32 @@ var dbSchema = new Schema({
     }
 });
 
+// Define schema methods
+dbSchema.methods = {
+	checkPassword: function (inputPassword) {
+		return bcrypt.compareSync(inputPassword, this.password)
+	},
+	hashPassword: plainTextPassword => {
+		return bcrypt.hashSync(plainTextPassword, 10)
+	}
+}
+
+// Define hooks for pre-saving
+dbSchema.pre('save', function (next) {
+	if (!this.password) {
+		console.log('models/user.js =======NO PASSWORD PROVIDED=======')
+		next()
+	} else {
+		console.log('models/user.js hashPassword in pre save');
+		
+		this.password = this.hashPassword(this.password)
+		next()
+	}
+})
+
 // This creates our model from the above schema, using mongoose's model method
-var createSchema = mongoose.model("Example", dbSchema);
+var model = mongoose.model("Example", dbSchema);
 
 // Export the Example model
-module.exports = createSchema;
+module.exports = model;
 

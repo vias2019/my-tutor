@@ -1,5 +1,5 @@
 import React from "react";
-import logo from './images/logo-placeholder.png';
+// import logo from './images/logo-placeholder.png';
 import Calendar from '../Calendar'
 
 function TeacherScheduler(props) {
