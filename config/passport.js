@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const bcrypt_SALT_ROUNDS = 12;
+// const bcrypt_SALT_ROUNDS = 12;
 
 const passport = require('passport'),
   localStrategy = require('passport-local').Strategy,
@@ -69,6 +69,12 @@ passport.use(
 );
 
 
+// Generates hash using bCrypt
+var createHash = function(password){
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(12), null);
+   }
+
+
 passport.use(
     'registerTeacher',
     new localStrategy(
@@ -86,10 +92,9 @@ passport.use(
               console.log('email address already taken');
               return done(null, false, { message: 'emailid already taken' });
             } else {
-              bcrypt.hash(password, bcrypt_SALT_ROUNDS).then(hashedPassword => {
                 db.create({ 
                   emailid, 
-                  password: hashedPassword, 
+                  password: createHash(password),
                   isRegistered: true,
                   isTeacher:true
               }).then(user => {
@@ -97,7 +102,6 @@ passport.use(
                   // note the return needed with passport local - remove this return for passport JWT to work
                   return done(null, user);
                 });
-              });
             }
           });
         } catch (err) {
@@ -124,15 +128,19 @@ passport.use(
           if (user === null) {
             return done(null, false, { message: 'bad email address' });
           } else {
-            bcrypt.compare(password, user.password).then(response => {
-              if (response !== true) {
+            console.log('in passport showing user: ', user);
+            console.log('in passport showing password: ', password);
+            const passwordsMatch = bcrypt.compareSync(password, user.password);//.then(response => {
+                
+              if (!passwordsMatch) {
                 console.log('passwords do not match');
                 return done(null, false, { message: 'passwords do not match' });
               }
               console.log('user found & authenticated');
+              
               // note the return needed with passport local - remove this return for passport JWT
               return done(null, user);
-            });
+            // });
           }
         });
       } catch (err) {
