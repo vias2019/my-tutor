@@ -30,11 +30,16 @@ module.exports = app => {
         res.send(info.message);
       } else {
         req.logIn(user, err => {
+            console.log('req.user', req.user);
+            console.log('user', user);
+
           db.findOne({
               emailid: user.emailid
           }).then(user => {
             const token = jwt.sign({ id: user.emailid }, process.env.TOKEN);
             res.status(200).send({
+                isTeacher: req.user.isTeacher,
+                emailid: req.user.emailid,
               auth: true,
               token: token,
               message: 'user found & logged in',
@@ -44,4 +49,5 @@ module.exports = app => {
       }
     })(req, res, next);
   });
-};
+
+    };

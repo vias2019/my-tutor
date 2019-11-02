@@ -12,26 +12,25 @@ module.exports = app => {
         res.send(info.message);
       } else {
         req.logIn(user, err => {
+            console.log('user from passport: ', user);
           const data = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            emailid: req.body.emailid
+            password: user.password,
+            emailid: user.emailid
           };
-          db.findOne({
-            where: {
+          db.findOneAndUpdate({
               emailid: data.emailid,
-            },
-          }).then(user => {
-            db.update({
-                first_name: data.first_name,
-                last_name: data.last_name,
-                emailid: data.emailid,
-                isTeacher:true
-              })
-              .then(() => {
+          },{
+            firstName: data.firstName,
+            lastName: data.lastName,
+            password: data.password,
+            isTeacher:true
+          },
+          {new: true}).then(updatedUser => {
+                console.log('updateUser: ', updatedUser);
                 console.log('user created in db');
                 res.status(200).send({ message: 'user created' });
-              });
           });
         });
       }

@@ -62,28 +62,13 @@ var dbSchema = new Schema({
     }
 });
 
-// Define schema methods
-dbSchema.methods = {
-	checkPassword: function (inputPassword) {
-		return bcrypt.compareSync(inputPassword, this.password)
-	},
-	hashPassword: plainTextPassword => {
-		return bcrypt.hashSync(plainTextPassword, 10)
-	}
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    else{
+        res.redirect('/users/login')
+    }
 }
-
-// Define hooks for pre-saving
-dbSchema.pre('save', function (next) {
-	if (!this.password) {
-		console.log('models/user.js =======NO PASSWORD PROVIDED=======')
-		next()
-	} else {
-		console.log('models/user.js hashPassword in pre save');
-		
-		this.password = this.hashPassword(this.password)
-		next()
-	}
-})
 
 // This creates our model from the above schema, using mongoose's model method
 var model = mongoose.model("Example", dbSchema);

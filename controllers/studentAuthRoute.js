@@ -18,7 +18,8 @@ module.exports = app => {
           const data = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            emailid: req.body.emailid
+            emailid: req.body.emailid,
+            password: req.body.password
           };
           db.find({
             
@@ -29,6 +30,7 @@ module.exports = app => {
                 firstName: data.firstName,
                 lastName: data.lastName,
                 emailid: data.emailid,
+                password: data.password
               })
               .then(() => {
                 console.log('user created in db');

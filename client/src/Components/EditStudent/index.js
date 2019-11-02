@@ -68,10 +68,12 @@ export default class FormUser extends React.Component {
   //need to send teacher login information for selecting students
 
   componentDidMount() {
+
     var teacherIsVar = this.state.teacherIs;
     console.log('teacher is ' + teacherIsVar);
 
     axios.get('/students-list', { params: { teacherIs: teacherIsVar}})
+
       .then(res => {
         const students = res.data;
 
