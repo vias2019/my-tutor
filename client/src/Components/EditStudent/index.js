@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import './style.css';
 import moment from 'moment';
 
-
+//send teacher email when click edit student button
 export default class FormUser extends React.Component {
 
   constructor() {
@@ -23,7 +23,8 @@ export default class FormUser extends React.Component {
         className:'',
         tuitionOwed: 0,
         showModal: false,
-        students: []
+        students: [],
+        teacherIs: 'testTeacher@test.com'
       };
     };
 
@@ -39,6 +40,8 @@ export default class FormUser extends React.Component {
       console.log('this is an email id: ' + event.target.value);
       axios.get('/student-info', { params: { emailid: event.target.value}})
       .then(res => {
+        console.log(res);
+        if (res.data[0].class) {
         //const students = res.data;
         // console.log(res.data[0].class)
         var dateFix1 = res.data[0].class.date +' '+ res.data[0].class.time;
@@ -47,20 +50,30 @@ export default class FormUser extends React.Component {
         var dateFix2 = dateFixing.local().format('YYYY-MM-DD HH:mm');
         console.log(dateFix2)
         var dateFix3 = dateFix2.split(' ')[1];
-        console.log(dateFix3)
-        
+        console.log(dateFix3);
+       
+        this.setState({ tuition: res.data[0].class.tuition, className: res.data[0].class.className, date: res.data[0].class.date, time: dateFix3 });}
 
-        this.setState({ tuition: res.data[0].class.tuition, className: res.data[0].class.className, date: res.data[0].class.date, time: dateFix3 });
-      })
+     
+      else {
+        this.setState({ tuition: '', className: '', date: '', time: '' });
+        console.log('nothing to populate')
+      }
+    
     }
-
+    
+    )}
   };
 
   //need to send teacher login information for selecting students
 
   componentDidMount() {
+
+    var teacherIsVar = this.state.teacherIs;
+    console.log('teacher is ' + teacherIsVar);
+
     axios.get('/students-list', { params: { teacherIs: teacherIsVar}})
-    axios.get('/students-list',{})
+
       .then(res => {
         const students = res.data;
 
@@ -99,7 +112,7 @@ export default class FormUser extends React.Component {
     return (
       <>
         <Button variant="primary" onClick={() => this.toggleShow(true)}>
-          Edit Student
+          Add/Edit Student
         </Button>
 
         <Modal show={this.state.showModal} onHide={() => this.toggleShow(false)}>
