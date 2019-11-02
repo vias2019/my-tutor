@@ -169,19 +169,12 @@ router.post("/delete", function (req, res) {
   });
 });
 
-//Student view
-// ClassName
-// Monthly Rate/ tested
-router.get("/student-view", function (req, res) {
-  model.findOne({ "emailid": req.body.emailid }, "teacherIs class tuitionOwed").then(function (result) {
-    //console.log(result);
-    model.findOne({ "emailid": result.teacherIs }, "firstName lastName emailid").then(function (answer) {
-      //result.teacherIs = (answer.firstName + " " + answer.lastName);
-      // console.log("Answer"+result);
-      res.json(answer);
-    });
-
-  });
+//Student view. Gets all the logged in students information.
+router.post("/student-view", function (req, res) {
+    model.findOne({ "emailid": req.body.emailid })
+        .then(function (results) {
+            res.json(results);
+        });
 });
 
 //drop-down menu - teachers

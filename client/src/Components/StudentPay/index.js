@@ -3,15 +3,15 @@ import axios from 'axios';
 import dropin from 'braintree-web-drop-in';
 import './style.css';
 
-class StudentPay extends Component {
+class StudentPay extends React.Component {
     //state will be assigned to a prop that will be passed down. 
     state = {
-        tuitionOwed: '222.20'
+        amountOwed: 0
     };
-
+    //Need to figure out why props isnt loading here. 
     componentDidMount() {
         var button = document.querySelector('.submit-button1')
-        var amount = this.state.tuitionOwed
+        var amount = this.state.amountOwed
         dropin.create({
             authorization: 'sandbox_tv289x3x_9tcq3ypzspqhjqk7',
             container: '.dropin-container1',
@@ -55,7 +55,7 @@ class StudentPay extends Component {
                 </div>
                     <div className="card-body">
                         <h5 className="card-title">Your current fee balance is $
-                             {this.state.tuitionOwed}</h5>
+                             {this.props.amountOwed}</h5>
                         <div>
                             <div className='dropin-container1'></div>
                             <button className='submit-button1'>Purchase</button>

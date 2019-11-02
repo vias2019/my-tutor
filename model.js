@@ -8,62 +8,53 @@ var dbSchema = new Schema({
         default: false,
         required: true
     },
-
     teacherIs: {
-        type: String,
-        trim: true,
+        emailid: {
+            type: String
+        },
+        firstName: {
+            type: String
+        },
+        lastName: {
+            type: String
+        }
     },
-
     firstName: {
         type: String,
         trim: true,
         required: true
     },
-
     lastName: {
         type: String,
         trim: true,
         required: true
     },
-
-    class:
-
-            {
-                className: {
-                    type: String
-                },
-
-                tuition: {
-                    type: Number,
-                    trim: true
-                },
-
-                time: {
-                    type: String
-                },
-
-                date: {
-                    type: String
-                }
-            },
-        
-
+    class: {
+        className: {
+            type: String
+        },
+        tuition: {
+            type: Number
+        },
+        time: {
+            type: String
+        },
+        date: {
+            type: String
+        }
+    },
     isRegistered: {
         type: Boolean,
         default: false
     },
-
     tuitionOwed: {
         type: Number
-        //calculated
     },
-
     emailid: {
         type: String,
         match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
         required: true
     },
-
     password: {
         type: Schema.Types.Mixed,
         trim: true,
