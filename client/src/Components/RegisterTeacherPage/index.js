@@ -1,6 +1,7 @@
 import * as React from 'react';
-import Select from 'react-select';
 import './style.css';
+import API from "../../Utils/API";
+import Auth from "../../Utils/AUTH";
 
 export class RegisterTeacherPage extends React.Component {
 
@@ -9,9 +10,10 @@ export class RegisterTeacherPage extends React.Component {
         this.state = {
             firstName: '',
             lastName: '',
-            emailValue: '',
-            passwordValue: '',
-            confirmPasswordValue: ''
+            emailid: '',
+            password: '',
+            confirmpassword: '',
+            isTeacher: true
         };
         
         this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
@@ -30,15 +32,23 @@ export class RegisterTeacherPage extends React.Component {
     }
 
     handleEmailChange(event) {
-        this.setState({ emailValue: event.target.value });
+        this.setState({ emailid: event.target.value });
     }
 
     handlePasswordChange(event) {
-        this.setState({ passwordValue: event.target.value });
+        this.setState({ password: event.target.value });
     }
 
     handleConfirmPasswordChange(event) {
-        this.setState({ confirmPasswordValue: event.target.value });
+        this.setState({ confirmpassword: event.target.value });
+    }
+
+    registerTeacher = event => {
+        event.preventDefault();
+        console.log('in register teacher function');
+        API.createTeacher(this.state).then(res => {
+            this.props.history.push({ pathname: '/' });
+        }).catch(err => console.log(err));
     }
     
     render () {
@@ -52,7 +62,7 @@ export class RegisterTeacherPage extends React.Component {
             </div>
 
             <div className="d-flex justify-content-center form_container">
-                <form name="signin" method="post" action="signin">
+                <form onSubmit={this.registerTeacher}>
                     <div >
                         <label>
                             First name:
@@ -84,7 +94,7 @@ export class RegisterTeacherPage extends React.Component {
                                 className="form-control input_user"
                                 type="text" 
                                 name="email" 
-                                value={this.state.emailValue} 
+                                value={this.state.emailid} 
                                 placeholder="email"
                                 onChange={this.handleEmailChange}
                             />
@@ -97,7 +107,7 @@ export class RegisterTeacherPage extends React.Component {
                                 className="form-control input_pass"
                                 type="password" 
                                 name="password" 
-                                value={this.state.passwordValue}
+                                value={this.state.password}
                                 placeholder="password"
                                 onChange={this.handlePasswordChange}
                             />
@@ -110,7 +120,7 @@ export class RegisterTeacherPage extends React.Component {
                                 className="form-control input_pass"
                                 type="password" 
                                 name="password-confirm" 
-                                value={this.state.confirmPasswordValue}
+                                value={this.state.confirmpassword}
                                 placeholder="password-confirm"
                                 onChange={this.handleConfirmPasswordChange}
                             />

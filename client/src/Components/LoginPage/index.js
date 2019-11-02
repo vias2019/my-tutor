@@ -1,14 +1,16 @@
 import * as React from 'react';
 import './style.css';
 import Footer from "../Footer/index";
+import API from "../../Utils/API";
+import Auth from "../../Utils/AUTH";
 
 export class LoginPage extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            emailValue: '',
-            passwordValue: ''
+            emailid: '',
+            password: ''
         };
         
         this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -16,25 +18,61 @@ export class LoginPage extends React.Component {
     }
 
     handleEmailChange(event) {
-        this.setState({ emailValue: event.target.value });
+        this.setState({ emailid: event.target.value });
     }
 
     handlePasswordChange(event) {
-        this.setState({ passwordValue: event.target.value });
+        this.setState({ password: event.target.value });
     }
-    
+
+    login = (event) => {
+        event.preventDefault();
+        // alert('here is value ' + this.state.password + this.state.email);
+        API.loginUser(this.state).then(res => {
+            // Auth.setToken(res.data.token);
+            console.log('res: ', res);
+            this.setState({username: res.data.username});
+            //the route below will depend on the res.data.isTeacher(boolean) in the db.
+            this.props.history.push({pathname: '/', state: {username: res.data.username}});
+        }).catch(err => console.log(err));
+    }
+
+    logout = (event) => {
+        event.preventDefault();
+        alert('you are trying to log out ' + this.state.password + this.state.emailid);
+        API.logoutUser(this.state).then(res => {
+            Auth.destroyToken(res.data.token);
+            this.setState({username: res.data.username});
+            //the route below will depend on the res.data.isTeacher(boolean) in the db.
+            this.props.history.push({pathname: '/login', state: {username: res.data.username}});
+        }).catch(err => console.log(err));
+
+    }
+
+
     render () {
         return (
         <>
             <div className="d-flex justify-content-center">
                 <div className="brand_logo_container">
                     <p>Welcome to MyTutor</p>
+                    <form onSubmit={this.logout}>
+                        <div className="d-flex justify-content-center mt-3 login_container">
+                            <button 
+                                type="submit" 
+                                name="button" 
+                                className="btn login_btn" 
+                                value="logout">
+                                Logout
+                            </button>
+                        </div>
+                    </form>
                     <img src="./images/teacherOwl.png" className="brand_logo" alt="Logo"/>
                 </div>
             </div>
 
             <div className="d-flex justify-content-center form_container">
-                <form name="signin" method="post" action="signin">
+                <form onSubmit={this.login}>
                     <div >
                         <label>
                             Email:
@@ -42,7 +80,7 @@ export class LoginPage extends React.Component {
                                 className="form-control input_user"
                                 type="text" 
                                 name="email" 
-                                value={this.state.emailValue} 
+                                value={this.state.emailid} 
                                 placeholder="email"
                                 onChange={this.handleEmailChange}
                             />
@@ -55,7 +93,7 @@ export class LoginPage extends React.Component {
                                 className="form-control input_pass"
                                 type="password" 
                                 name="password" 
-                                value={this.state.passwordValue}
+                                value={this.state.password}
                                 placeholder="password"
                                 onChange={this.handlePasswordChange}
                             />

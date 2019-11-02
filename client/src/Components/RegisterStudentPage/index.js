@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Select from 'react-select';
 import './style.css';
+import API from "../../Utils/API";
+import Auth from "../../Utils/AUTH";
 
 export const dropDownOptions = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -15,9 +17,9 @@ export class RegisterStudentPage extends React.Component {
         this.state = {
             firstName: '',
             lastName: '',
-            emailValue: '',
-            passwordValue: '',
-            confirmPasswordValue: '',
+            emailid: '',
+            password: '',
+            confirmpassword: '',
             teacher: ''
         };
         
@@ -37,19 +39,28 @@ export class RegisterStudentPage extends React.Component {
     }
 
     handleEmailChange(event) {
-        this.setState({ emailValue: event.target.value });
+        this.setState({ emailid: event.target.value });
     }
 
     handlePasswordChange(event) {
-        this.setState({ passwordValue: event.target.value });
+        this.setState({ password: event.target.value });
     }
 
     handleConfirmPasswordChange(event) {
-        this.setState({ confirmPasswordValue: event.target.value });
+        this.setState({ confirmpassword: event.target.value });
     }
 
     setSelectedTeacher = selectedOption => {
         this.setState({ teacher: selectedOption });
+    }
+
+    registerStudent = event => {
+        event.preventDefault();
+        // alert('here is value ' + this.state.value);
+        API.createStudent(this.state).then(res => {
+            //route for redirect after login
+            this.props.history.push({ pathname: '/' });
+        }).catch(err => console.log(err));
     }
     
     render () {
@@ -63,7 +74,8 @@ export class RegisterStudentPage extends React.Component {
             </div>
 
             <div className="d-flex justify-content-center form_container">
-                <form name="signin" method="post" action="signin">
+                {/* <form name="signup" method="fetch" action="signup"> */}
+                <form onSubmit={this.registerStudent}>
                     <div>
                         <label>Teacher:</label>
                         <Select
@@ -103,7 +115,7 @@ export class RegisterStudentPage extends React.Component {
                                 className="form-control input_user"
                                 type="text" 
                                 name="email" 
-                                value={this.state.emailValue} 
+                                value={this.state.emailid} 
                                 placeholder="email"
                                 onChange={this.handleEmailChange}
                             />
@@ -116,7 +128,7 @@ export class RegisterStudentPage extends React.Component {
                                 className="form-control input_pass"
                                 type="password" 
                                 name="password" 
-                                value={this.state.passwordValue}
+                                value={this.state.password}
                                 placeholder="password"
                                 onChange={this.handlePasswordChange}
                             />
@@ -129,7 +141,7 @@ export class RegisterStudentPage extends React.Component {
                                 className="form-control input_pass"
                                 type="password" 
                                 name="password-confirm" 
-                                value={this.state.confirmPasswordValue}
+                                value={this.state.confirmpassword}
                                 placeholder="password-confirm"
                                 onChange={this.handleConfirmPasswordChange}
                             />
