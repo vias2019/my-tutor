@@ -38,6 +38,7 @@ class StudentView extends Component {
                 </Row>
                 <br />
                 <Row>
+
                     <Calendar></Calendar>
                 </Row>
             </Container>
