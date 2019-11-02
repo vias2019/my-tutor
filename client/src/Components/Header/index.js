@@ -1,7 +1,7 @@
 import React from "react";
 //import logo from './images/logo-placeholder.png';
 import logo from "./images/owllogo.jpg";
-import mail from './images/mail.jpg';
+// import mail from './images/mail.jpg';
 import "./style.css";
 
 function Header(props) {
