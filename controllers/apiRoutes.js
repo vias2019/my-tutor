@@ -171,18 +171,6 @@ router.post("/delete", function (req, res) {
   model.findOneAndDelete({ "emailid": req.body.emailid }, function (result) {
     res.json({ "message": "Record was deleted" });
   });
-<<<<<<< HEAD
-  
-  //Student view
-  // TeacherName (dropdown selector)
-  // ClassName
-  // Monthly Rate -works
-  router.get("/student-view", function (req, res) {
-        console.log('studnet view');
-        model.find({ "emailid": req.body.emailid }, "teacherIs className tuition tuitionOwed").then(function (result) {
-        res.json(result);
-        });
-=======
 });
 
 //Student view
@@ -197,7 +185,6 @@ router.get("/student-view", function (req, res) {
       res.json(answer);
     });
 
->>>>>>> master
   });
 });
 
@@ -251,7 +238,7 @@ router.get("/students-list", function (req, res) {
     return arrayOfStudents;
   };
 
-  model.find({ "teacherIs": req.body.teacherIs}, "firstName lastName emailid").then(function (result) {
+  model.find({ "teacherIs": req.query.teacherIs}).then(function (result) {
     console.log("What 2222?"+result);
     const studentsList = listOfStudents(result);
     //console.log('studentsList: ', studentsList);
