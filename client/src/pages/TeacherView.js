@@ -9,7 +9,8 @@ import CalendarModal from "../Components/CalendarModal";
 class TeacherView extends Component {
     state= {
         //TODO write function to pull data for adjusting state
-        name: "Teacher Name",
+        name: window.localStorage.getItem('emailid'),
+        //name: "Teacher Name",
         monthlyIncome: 500,
         outstandingFees: 1000,
         sessionPartner: "**student name",
