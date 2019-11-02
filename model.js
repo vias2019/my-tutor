@@ -3,10 +3,6 @@ const bcrypt = require('bcryptjs');
 
 var Schema = mongoose.Schema;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 var dbSchema = new Schema({
     isTeacher: {
         type: Boolean,
