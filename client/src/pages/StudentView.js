@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Calendar from '../Components/Calendar';
 import CalendarModal from '../Components/CalendarModal';
+import Footer from '../Components/Footer';
 
 class StudentView extends Component {
     state= {
@@ -29,17 +30,16 @@ class StudentView extends Component {
                 <Row>
                     <Col>
                     <StudentScheduler teacherName={this.state.teacherName} courseName={this.state.courseName} monthlyFee={this.state.monthlyFee} />
-                    <CalendarModal sessionPartner={this.state.teacherName} courseName={this.state.courseName}date={this.state.date} time={this.state.time}/>
-
+                    <StudentPay tuitionOwed={this.state.tuitionOwed}/>
                     </Col>
                     <Col>
-                    <StudentPay tuitionOwed={this.state.tuitionOwed}/>
+                    <br></br>
+                    <Calendar></Calendar>
                     </Col>
                 </Row>
                 <br />
-                <Row>
-                    <Calendar></Calendar>
-                </Row>
+
+                <Footer></Footer>
             </Container>
 
 
