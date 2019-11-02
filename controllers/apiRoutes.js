@@ -1,4 +1,4 @@
-var express = require('express')
+var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
 var braintree = require('braintree');
@@ -102,6 +102,7 @@ router.post("/send-invite", function (req, res) {
     }
     
   });//add get req. to check if email exists, let register||message
+});
   
   //Add Student button -works
   router.post("/add-student", function (req, res) {
