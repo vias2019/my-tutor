@@ -54,6 +54,8 @@ require('./config/passport');
 require('./controllers/teacherAuthRoute')(app);
 require('./controllers/studentAuthRoute')(app);
 require('./controllers/loginAuthRoute')(app);
+require('./controllers/logoutAuthRoute')(app);
+
 // Define middleware her
 // app.use(morgan('dev'))
 

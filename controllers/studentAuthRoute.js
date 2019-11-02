@@ -18,25 +18,22 @@ module.exports = app => {
           const data = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            emailid: req.body.emailid,
-            password: req.body.password
+            password: user.password,
+            emailid: user.emailid
           };
-          db.find({
-            
-              emailid: data.emailid,
-            
-          }).then(user => {
-            db.update({
-                firstName: data.firstName,
-                lastName: data.lastName,
-                emailid: data.emailid,
-                password: data.password
-              })
-              .then(() => {
-                console.log('user created in db');
-                res.status(200).send({ message: 'user created' });
-              });
-          });
+          db.findOneAndUpdate({
+            emailid: data.emailid,
+        },{
+          firstName: data.firstName,
+          lastName: data.lastName,
+          password: data.password,
+          isTeacher:false
+        },
+        {new: true}).then(updatedUser => {
+            console.log('updateUser: ', updatedUser);
+            console.log('user created in db');
+            res.status(200).send({ message: 'user created' });
+            });
         });
       }
     })(req, res, next);

@@ -33,20 +33,17 @@ export class LoginPage extends React.Component {
             console.log('res ', res);
             this.setState({username: res.config.data.emailid});
             //the route below will depend on the res.data.isTeacher(boolean) in the db.
-            this.props.history.push({pathname: '/passedAuth', state: {emailid: res.config.data.emailid}});
+            this.props.history.push({pathname: '/', state: {emailid: res.config.data.emailid}});
         }).catch(err => console.log(err));
     }
 
     logout = (event) => {
         event.preventDefault();
-        alert('you are trying to log out ' + this.state.password + this.state.emailid);
+        alert('you are trying to log out ' + this.state.emailid);
         API.logoutUser(this.state).then(res => {
-            Auth.destroyToken(res.data.token);
-            this.setState({username: res.data.username});
-            //the route below will depend on the res.data.isTeacher(boolean) in the db.
-            this.props.history.push({pathname: '/login', state: {username: res.data.username}});
+            console.log('response from logout: ', res);
+            
         }).catch(err => console.log(err));
-
     }
 
 
