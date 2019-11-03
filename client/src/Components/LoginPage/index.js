@@ -3,6 +3,7 @@ import './style.css';
 import Footer from "../Footer/index";
 import API from "../../Utils/API";
 import Auth from "../../Utils/AUTH";
+import { Redirect } from 'react-router-dom'
 
 export class LoginPage extends React.Component {
 
@@ -10,7 +11,9 @@ export class LoginPage extends React.Component {
         super(props);
         this.state = {
             emailid: '',
-            password: ''
+            password: '',
+            isTeacher: '',
+            redirect: false
         };
         
         this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -25,15 +28,37 @@ export class LoginPage extends React.Component {
         this.setState({ password: event.target.value });
     }
 
+    setRedirect = () => {
+        // this.setState({
+        //   redirect: true
+        // })
+      }
+
+
     login = (event) => {
         event.preventDefault();
         // alert('here is value ' + this.state.password + this.state.email);
         API.loginUser(this.state).then(res => {
             // Auth.setToken(res.data.token);
-            console.log('res ', res);
-            this.setState({username: res.config.data.emailid});
+            console.log('res isTeacher', res.data.isTeacher);
+        
+            
             //the route below will depend on the res.data.isTeacher(boolean) in the db.
-            this.props.history.push({pathname: '/', state: {emailid: res.config.data.emailid}});
+            //this.props.history.push({pathname: '/', state: {username: res.data.username}});
+           // var isTeacher = res.data.isTeacher;
+
+        //    conflict commented out right here: this.props.history.push({pathname: '/', state: {emailid: res.config.data.emailid}});
+
+            window.localStorage.setItem('emailid',  res.data.emailid);
+            this.setState({
+                emailid: res.data.emailid, 
+                isTeacher: res.data.isTeacher,
+                redirect: true
+            });
+
+           
+            //the route below will depend on the res.data.isTeacher(boolean) in the db.
+            //this.props.history.push({pathname: '/passedAuth', state: {emailid: res.config.data.emailid}});
         }).catch(err => console.log(err));
     }
 
@@ -49,7 +74,10 @@ export class LoginPage extends React.Component {
 
     render () {
         return (
-        <>
+        
+        this.state.redirect ? 
+            this.state.isTeacher ? <Redirect to='/TeacherView' /> : <Redirect to='/StudentView' /> :
+            <>
             <div className="d-flex justify-content-center">
                 <div className="brand_logo_container">
                     <p>Welcome to MyTutor</p>
@@ -101,7 +129,8 @@ export class LoginPage extends React.Component {
                             type="submit" 
                             name="button" 
                             className="btn login_btn" 
-                            value="Sign In">
+                            value="Sign In"
+                            onClick={this.setRedirect}>
                             Sign In
                         </button>
                     </div>
