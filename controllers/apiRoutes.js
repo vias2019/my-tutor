@@ -274,10 +274,10 @@ router.get("/payment", function (req, res) {
   });
 });
 
-//calendar read - firstname, lastname, date /tested
-router.get("/teacher-view", function (req, res) {
+//Route to get all classes for the teacher.
+router.post("/teacher-view", function (req, res) {
 
-  model.find({ "teacherIs": req.body.teacherIs }, "firstName lastName class").then(function (result) {
+  model.find({ "teacherIs": req.body.teacherIs }, "firstName lastName class amountOwed").then(function (result) {
     console.log(result);
     res.json(result);
   });
