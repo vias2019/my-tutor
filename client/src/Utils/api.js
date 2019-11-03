@@ -36,9 +36,9 @@ createTeacher: function(userInfo){
     
     // return axios.post("http://localhost:3000/api/auth/login", userCredentials);
   },
-  logoutUser: function(userCredentials) {
-    console.log(userCredentials, "inside axios logout request");
-    return axios.post("/logout", userCredentials);
+  logoutUser: function(status) {
+    console.log(status, "inside axios logout request");
+    return axios.get("/logout", status);
     // return axios.post("http://localhost:3000/api/auth/login", userCredentials);
   }
 }
