@@ -10,10 +10,10 @@ class StudentPay extends React.Component {
     }
 
     //Need to figure out why props isnt loading here. 
-    componentDidMount() {
+    static getDerivedStateFromProps(nextProps, prevState) {
         var button = document.querySelector('.submit-button1')
-        console.log(this.props.amountOwed)
-        let amount = this.state.amount
+        console.log(nextProps.amountOwed)
+        let amount = nextProps.amountOwed
         dropin.create({
             authorization: 'sandbox_tv289x3x_9tcq3ypzspqhjqk7',
             container: '.dropin-container1',
@@ -46,6 +46,14 @@ class StudentPay extends React.Component {
             })
         })
     }
+
+    // static getDerivedStateFromProps(nextProps, prevState) {
+    //     console.log('derivedStateFromProps:', nextProps.amountOwed);
+    // this.setState({
+    //     amount: nextProps.amountOwed
+    // })
+    // }
+
 
     render() {
         return (

@@ -23,7 +23,7 @@ class StudentView extends Component {
     };
 
     componentDidMount() {
-        let emailid = 'kevin@student.com' //temp variable. This should be the logged in student.
+        let emailid = 'tim@student.com' //temp variable. This should be the logged in student.
         //Post request to /student-view to get all the logged in students info.
         axios.post('/student-view', { emailid })
             .then((res) => {
@@ -76,19 +76,17 @@ class StudentView extends Component {
                 }
                 calendarArray.push(calendarEvent);
                 //set the state to the students information and pass these states down into the child components as props.
-                this.setState({
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    emailid: data.emailid,
-                    tuition: data.class.tuition,
-                    amountOwed: data.amountOwed,
-                    className: data.class.className,
-                    classObj: calendarArray
-                })
                 let teacherEmail = data.teacherIs
                 axios.post('/teacher-name', {teacherEmail})
                     .then((result) => {
                         this.setState({
+                            firstName: data.firstName,
+                            lastName: data.lastName,
+                            emailid: data.emailid,
+                            tuition: data.class.tuition,
+                            amountOwed: data.amountOwed,
+                            className: data.class.className,
+                            classObj: calendarArray,
                             teacherIs: result.data
                         })
                         console.log(this.state)
@@ -99,7 +97,6 @@ class StudentView extends Component {
 
     render() {
         return (
-
             <div>
             <Header name={this.state.name}/>
             <Container>
@@ -119,8 +116,6 @@ class StudentView extends Component {
                     />
                 </Row>
             </Container>
-
-
             </div>
         )
     }
