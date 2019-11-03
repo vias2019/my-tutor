@@ -18,6 +18,8 @@ module.exports = app => {
                     if (req.body.password == req.body.confirmpassword){
                         passwordsMatch = true;
                         console.log('passwords match');
+                    }else{
+                        console.log('passwords do not match!');
                     }
                 }
                 else{
