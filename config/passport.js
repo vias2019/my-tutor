@@ -93,8 +93,9 @@ passport.use(
                 db.find({
                     emailid: emailid,
                 }).then(user => {
+                    console.log('user from find in passport: ', user);
                     if (user != null) {
-                        if(user.isRegistered){
+                        if(user[0].isRegistered){
                             return done(null, false, { message: 'A student has already registered with this email address' });
                         } else {
                             var hashedPassword = createHash(password).toString();
