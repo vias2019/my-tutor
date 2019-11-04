@@ -70,7 +70,7 @@ export default class FormUser extends React.Component {
 
               <Form.Row>
                 <Col>
-                  <Form.Label>Email:  <Form.Control type="text" name="emailid" value={emailid} onChange={this.handleChange} required /></Form.Label>
+                  <Form.Label>Email:  <Form.Control type="text" name="emailid" value={emailid.toLowerCase()} onChange={this.handleChange} required /></Form.Label>
                 </Col>
               </Form.Row>
 

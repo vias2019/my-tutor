@@ -249,7 +249,7 @@ router.get("/students-list", function (req, res) {
     return arrayOfStudents;
   };
 
-  model.find({ "teacherIs": req.query.teacherIs}).then(function (result) {
+  model.find({ "teacherIs": req.query.teacherIs, "isRegistered": req.query.isRegistered}).then(function (result) {
     console.log("What 2222?"+result);
     const studentsList = listOfStudents(result);
     //console.log('studentsList: ', studentsList);
