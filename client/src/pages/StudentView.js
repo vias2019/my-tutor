@@ -24,7 +24,7 @@ class StudentView extends Component {
 
     componentDidMount() {
         console.log(window.localStorage.getItem('emailid'))
-        let emailid = 'kevin@student.com' //temp variable. Change to get logged in info from window.localStorage.getItem('emailid')
+        let emailid = window.localStorage.getItem('emailid') //temp variable. Change to get logged in info from window.localStorage.getItem('emailid')
         //Post request to /student-view to get all the logged in students info.
         axios.post('/student-view', { emailid })
             .then((res) => {

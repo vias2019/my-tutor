@@ -24,7 +24,7 @@ export default class FormUser extends React.Component {
         tuitionOwed: 0,
         showModal: false,
         students: [],
-        teacherIs: 'testTeacher@test.com'
+        teacherIs: window.localStorage.getItem('emailid')
       };
     };
 

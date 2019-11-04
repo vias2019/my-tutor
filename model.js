@@ -41,7 +41,7 @@ var dbSchema = new Schema({
         type: Boolean,
         default: false
     },
-    tuitionOwed: {
+    amountOwed: {
         type: Number
     },
     emailid: {

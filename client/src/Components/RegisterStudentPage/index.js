@@ -20,7 +20,12 @@ export class RegisterStudentPage extends React.Component {
             emailid: '',
             password: '',
             confirmpassword: '',
-            teacher: ''
+            class: {
+                className: '',
+                tuition: 0,
+                time: '',
+                date: ''
+            }
         };
         
         this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
@@ -56,7 +61,6 @@ export class RegisterStudentPage extends React.Component {
 
     registerStudent = event => {
         event.preventDefault();
-        // alert('here is value ' + this.state.value);
         API.createStudent(this.state).then(res => {
             //route for redirect after login
             this.props.history.push({ pathname: '/' });

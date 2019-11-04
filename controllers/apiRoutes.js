@@ -68,6 +68,7 @@ router.post("/send-invite", function (req, res) {
     if (result.length > 0) {
       res.json({ success: false, message: 'user already exists in db' });
     } else {
+      console.log(req.body)
       model.create(req.body)
         .then(function (dbUser) {
           // Step 1
@@ -277,7 +278,7 @@ router.get("/payment", function (req, res) {
 //Route to get all classes for the teacher.
 router.post("/teacher-view", function (req, res) {
 
-  model.find({ "teacherIs": req.body.teacherIs }, "firstName lastName class amountOwed").then(function (result) {
+  model.find({ "teacherIs": req.body.teacherIs, "isRegistered": true}, "firstName lastName class amountOwed").then(function (result) {
     console.log(result);
     res.json(result);
   });
