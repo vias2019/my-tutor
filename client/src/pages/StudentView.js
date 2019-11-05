@@ -24,8 +24,7 @@ class StudentView extends Component {
 
     componentDidMount() {
         console.log(window.localStorage.getItem('emailid'))
-        let emailid = window.localStorage.getItem('emailid') //temp variable. Change to get logged in info from window.localStorage.getItem('emailid')
-        //Post request to /student-view to get all the logged in students info.
+        let emailid = window.localStorage.getItem('emailid') 
         axios.post('/student-view', { emailid })
             .then((res) => {
                 //shortened variable for res.data.
@@ -103,10 +102,14 @@ class StudentView extends Component {
             <Container>
                 <Row>
                     <Col>
-                    <StudentScheduler teacherName={this.state.teacherIs}/> 
+                    <StudentScheduler 
+                    teacherName={this.state.teacherIs}
+                    courseName = {this.state.className}
+                    monthlyFee = {this.state.tuition}
+                    /> 
                     </Col>
                     <Col>
-                    <StudentPay amountOwed={this.state.amountOwed}/>
+                    <StudentPay/>
                     </Col>
                 </Row>
                 <br />

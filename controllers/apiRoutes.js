@@ -26,7 +26,7 @@ router.post('/checkout', function (req, res) {
       submitForSettlement: true
     }
   }, function (err, result) {
-    res.send(true);
+    res.send(result.success);
   });
 });
 
