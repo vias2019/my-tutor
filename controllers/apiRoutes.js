@@ -162,7 +162,7 @@ router.post("/add-student", function (req, res) {
   // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
 
   console.log(req.body);
-  model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.utcNewTime, "date": req.body.utcNewDate,}, "tuitionOwed": req.body.tuition, "isTeacher": false}, { upsert: false }).then(function (result) {
+  model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.utcNewTime, "date": req.body.utcNewDate,}, "amountOwed": req.body.tuition, "isTeacher": false}, { upsert: false }).then(function (result) {
     res.json(result);
 
   // model.findOneAndUpdate({ "emailid": req.body.emailid }, { class: { "tuition": req.body.class.tuition, "time": req.body.class.time, "date": req.body.class.date, "className": req.body.class.className}, "isTeacher": false}, { upsert: false }).then(function (result) {
