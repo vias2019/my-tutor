@@ -3,6 +3,7 @@ import React from "react";
 import Calendar from '../Calendar'
 
 function TeacherScheduler(props) {
+    console.log(props)
     return (
         <div>
             <div className="row mb-5">
@@ -15,7 +16,9 @@ function TeacherScheduler(props) {
             </div>
             <div className="row ml-2 mr-2">
                 <div className="col-md">
-                    <Calendar/>
+                    <Calendar
+                    events= {props.events}
+                    />
                 </div>
             </div>
         </div>

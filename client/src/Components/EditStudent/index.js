@@ -16,15 +16,14 @@ export default class FormUser extends React.Component {
       super();
       this.state = {
         emailid: '',
-
         tuition:'',
         time: '',
         date: '',
         className:'',
-        tuitionOwed: 0,
+        amountOwed: 0,
         showModal: false,
         students: [],
-        teacherIs: 'testTeacher@test.com'
+        teacherIs: window.localStorage.getItem('emailid')
       };
     };
 
@@ -42,17 +41,12 @@ export default class FormUser extends React.Component {
       .then(res => {
         console.log(res);
         if (res.data[0].class) {
-        //const students = res.data;
-        // console.log(res.data[0].class)
-        var dateFix1 = res.data[0].class.date +' '+ res.data[0].class.time;
-        console.log(dateFix1)
-        var dateFixing = moment.utc(dateFix1)
-        var dateFix2 = dateFixing.local().format('YYYY-MM-DD HH:mm');
-        console.log(dateFix2)
-        var dateFix3 = dateFix2.split(' ')[1];
-        console.log(dateFix3);
-       
-        this.setState({ tuition: res.data[0].class.tuition, className: res.data[0].class.className, date: res.data[0].class.date, time: dateFix3 });}
+          let combinedUTCDateTime  = res.data[0].class.date + 'T' + res.data[0].class.time
+          let utcFormat = 'YYYY-MM-DDTHH:mm'
+          let local = moment.utc(combinedUTCDateTime,utcFormat).local().format('YYYY-MM-DDTHH:mm')
+          let localTime = local.split('T')[1]
+          let localDate = local.split('T')[0]
+        this.setState({ tuition: res.data[0].class.tuition, className: res.data[0].class.className, date: localDate, time: localTime });}
 
      
       else {
@@ -84,8 +78,7 @@ export default class FormUser extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-
-    const {emailid, tuition, time, date, className, tuitionOwed} = this.state;
+    const {emailid, tuition, time, date, className, amountOwed} = this.state;
     console.log(this.state.date);
     var dateTime = this.state.date + 'T' + this.state.time;
     var utcDateTime = moment(dateTime).utc().format('YYYY-MM-DDTHH:mm');
@@ -96,11 +89,10 @@ export default class FormUser extends React.Component {
     //this.setState({date : utcNewDate, time: utcNewTime}, () => console.log('async is fun',this.state));
     console.log(this.state.time)
 
-
     console.log('testing if this works' + emailid)
     
 
-    axios.post('/add-student', ({ emailid, tuition, utcNewTime, utcNewDate, className, tuitionOwed } )) 
+    axios.post('/add-student', ({ emailid, tuition, utcNewTime, utcNewDate, className, amountOwed } )) 
       .then(res => {
         console.log(res);
         console.log(res.data);

@@ -3,46 +3,69 @@ import axios from 'axios';
 import dropin from 'braintree-web-drop-in';
 import './style.css';
 
-class StudentPay extends Component {
+class StudentPay extends React.Component {
     //state will be assigned to a prop that will be passed down. 
     state = {
-        tuitionOwed: '222.20'
-    };
+        amountOwed: 0
+    }
 
-    componentDidMount() {
-        var button = document.querySelector('.submit-button1')
-        var amount = this.state.tuitionOwed
-        dropin.create({
-            authorization: 'sandbox_tv289x3x_9tcq3ypzspqhjqk7',
-            container: '.dropin-container1',
-            paypal: {
-                flow: 'checkout',
-                amount: amount,
-                currency: 'USD'
-            }
-        }, function (err, dropinInstance) {
-            button.addEventListener('click', function () {
-                dropinInstance.requestPaymentMethod()
-                    .then(function (payload) {
-                        console.log(payload)
-                        axios.post('/checkout', { payload, amount })
-                            .then(function (response) {
-                                console.log('payload has been sent');
-                                //add code here to remove the payment button if payment is successful
-                                if (response.data) {
-                                    console.log('success')
-                                } else {
-                                    console.log('fail')
-                                }
-                            })
-                            .catch(function (err) {
-                                console.log(err);
-                            })
-                    }).catch(function (err) {
-                        console.log(err);
-                    })
+    //Need to figure out why props isnt loading here. 
+    componentDidMount(){
+        let emailid = window.localStorage.getItem('emailid')
+    axios.post('/student-view',{emailid})
+        .then((res)=>{
+            this.setState({
+                amountOwed: res.data.amountOwed
+            })
+            let amount = this.state.amountOwed
+            var button = document.querySelector('.submit-button1')
+            dropin.create({
+                authorization: 'sandbox_tv289x3x_9tcq3ypzspqhjqk7',
+                container: '.dropin-container1',
+                paypal: {
+                    flow: 'checkout',
+                    amount: amount,
+                    currency: 'USD'
+                }
+            }, function (err, dropinInstance) {
+                button.addEventListener('click', function () {
+                    dropinInstance.requestPaymentMethod()
+                        .then(function (payload) {
+                            console.log(payload)
+                            axios.post('/checkout', { payload, amount })
+                                .then(function (response) {
+                                    console.log(response.data)
+                                    //add code here to remove the payment button if payment is successful
+                                    if (response.data === true) {
+                                        //db update amount owed, update state. tear down the payment button
+                                        console.log('success')
+                                    } else {
+                                        //payment did not go through
+                                        console.log('fail')
+                                    }
+                                })
+                                .catch(function (err) {
+                                    console.log(err);
+                                })
+                        }).catch(function (err) {
+                            console.log(err);
+                        })
+                })
             })
         })
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     render() {
@@ -55,7 +78,7 @@ class StudentPay extends Component {
                 </div>
                     <div className="card-body">
                         <h5 className="card-title">Your current fee balance is $
-                             {this.state.tuitionOwed}</h5>
+                             {this.state.amountOwed}</h5>
                         <div>
                             <div className='dropin-container1'></div>
                             <button className='submit-button1'>Purchase</button>
