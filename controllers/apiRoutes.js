@@ -172,6 +172,14 @@ router.post("/add-student", function (req, res) {
   });
 });
 
+
+//get payment info /tested
+router.post("/payment", function (req, res) {
+  model.findOneAndUpdate({ "emailid": req.body.emailid }, {"amountOwed": 0}).then(function (result) {
+    console.log(result);
+    res.json(result);
+  });
+});
 //Delete record/ tested
 router.post("/delete", function (req, res) {
   model.findOneAndDelete({ "emailid": req.body.emailid }, function (result) {
@@ -195,30 +203,6 @@ router.post('/teacher-name',function(req,res){
     res.send(teacherName)
   })
 });
-
-
-
-//drop-down menu - teachers
-// router.get("/teachers", function (req, res) {
-
-//   arrayOfTeachers = [];
-//   const listOfTeachers = (response) => {
-
-//     for (var i = 0; i < response.length; i++) {
-//       arrayOfTeachers.push(response[i].teacherIs);
-//     }
-//     return arrayOfTeachers;
-//   }
-
-//   model.find({}, "teacherIs").then(function (result) {
-
-//     const teachersList = listOfTeachers(result);
-//     //console.log('teachersList: ', teachersList);
-//     res.json(teachersList);
-
-//     //}
-//   });
-// });
 
 //drop-down menu - students/ tested / Needs to add Teacher's email in request
 router.get("/students-list", function (req, res) {
@@ -267,13 +251,7 @@ router.get("/student-info", function (req, res) {
   });
 });
 
-//get payment info /tested
-router.get("/payment", function (req, res) {
-  model.find({ "emailid": req.body.emailid }, "tuitionOwed").then(function (result) {
-    console.log(result);
-    res.json(result);
-  });
-});
+
 
 //Route to get all classes for the teacher.
 router.post("/teacher-view", function (req, res) {
