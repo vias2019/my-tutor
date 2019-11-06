@@ -50,7 +50,7 @@ export default class FormUser extends React.Component {
     const { firstName, lastName, emailid} = this.state;
     return (
       <>
-        <Button variant="primary" onClick={() => this.toggleShow(true)}>
+        <Button variant="dark" onClick={() => this.toggleShow(true)} id="inviteButton">
           Invite New Student
         </Button>
 

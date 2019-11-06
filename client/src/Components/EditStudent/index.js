@@ -112,7 +112,7 @@ export default class FormUser extends React.Component {
     const { tuition, time, date, className } = this.state;
     return (
       <>
-        <Button variant="primary" onClick={() => this.toggleShow(true)}>
+        <Button variant="dark" onClick={() => this.toggleShow(true)} id="editButton">
           Add/Edit Student
         </Button>
 
