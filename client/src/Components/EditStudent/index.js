@@ -50,7 +50,7 @@ export default class FormUser extends React.Component {
 
      
       else {
-        this.setState({ tuition: '', className: '', date: '', time: '' });
+        this.setState({ tuition: '', className: '', date: '', time: ''});
         console.log('nothing to populate')
       }
     
@@ -102,8 +102,10 @@ export default class FormUser extends React.Component {
         tuition:'',
         time: '',
         date: '',
-        className:''
+        className:'',
+        emailid: ''
       });
+      window.location.reload();
   }
 
   render() {

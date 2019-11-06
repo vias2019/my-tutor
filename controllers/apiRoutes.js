@@ -136,25 +136,25 @@ router.post("/edit-student", function (req, res) {
   });
 });
 //add get req. for students to check if email exists, let register||message /tested
-router.post("/registration-student", function (req, res) {
-  model.find({ "emailid": req.body.emailid }).then(function (result) {
-    console.log('result: ', result);
-    if (result.length == 0) {
-      console.log("Crazy");
-      res.json({ success: false, message: 'user registers by invite only' });
-    } else {
-      model.findOneAndUpdate({ "emailid": req.body.emailid }, { firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password, isRegistedred: true }, { upsert: false })
-        .then(function (dbUser) {
-          console.log("crazy1", dbUser);
-          res.json({ message: "You are registered!" });
-        })
-        .catch(function (err) {
-          res.json(err);
-        });
+// router.post("/registration-student", function (req, res) {
+//   model.find({ "emailid": req.body.emailid }).then(function (result) {
+//     console.log('result: ', result);
+//     if (result.length == 0) {
+//       console.log("Crazy");
+//       res.json({ success: false, message: 'user registers by invite only' });
+//     } else {
+//       model.findOneAndUpdate({ "emailid": req.body.emailid }, { firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password, isRegistered: true }, { upsert: false })
+//         .then(function (dbUser) {
+//           console.log("crazy1", dbUser);
+//           res.json({ message: "You are registered!" });
+//         })
+//         .catch(function (err) {
+//           res.json(err);
+//         });
 
-    }
-  });
-});
+//     }
+//   });
+// });
 
 //Add Student button /tested
 router.post("/add-student", function (req, res) {

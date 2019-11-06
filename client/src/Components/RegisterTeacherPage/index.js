@@ -94,7 +94,7 @@ export class RegisterTeacherPage extends React.Component {
                                 className="form-control input_user"
                                 type="text" 
                                 name="email" 
-                                value={this.state.emailid} 
+                                value={this.state.emailid.toLowerCase()} 
                                 placeholder="email"
                                 onChange={this.handleEmailChange}
                             />
