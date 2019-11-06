@@ -59,6 +59,9 @@ var dbSchema = new Schema({
             // Error Message
             "Password should be at least 6 characters in length."
         ]
+    },
+    currentMonth:{
+        type: String
     }
 });
 

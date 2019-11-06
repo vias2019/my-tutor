@@ -193,6 +193,11 @@ router.post("/delete", function (req, res) {
 //Student view. Gets all the logged in students information.
 router.post("/student-view", function (req, res) {
   model.findOne({ "emailid": req.body.emailid }).then(function (result) {
+    if(result.currentMonth == new Date().getMonth()){
+      console.log('@@@@@@@@@@@@@')
+    }else{
+      model.updateMany().then({})
+    }
     res.json(result)
   })
 })
