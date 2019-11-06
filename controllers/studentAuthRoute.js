@@ -19,7 +19,7 @@ module.exports = app => {
                         passwordsMatch = true;
                         console.log('passwords match');
                     }else{
-                        console.log('passwords do not match!');
+                        console.log('passwords do not match')
                     }
                 }
                 else{
