@@ -42,7 +42,7 @@ router.use(function timeLog(req, res, next) {
 });
 
 //Teacher reqistration - create a document in db /tested
-//Teacher=true; however, Postman doesn't show true, but DB is updated
+
 router.post("/registration-teacher", function (req, res) {
   model.find({ "emailid": req.body.emailid }).then(function (result) {
     if (result.length == 0) {
