@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './style.css';
 import Footer from "../Footer/index";
-import API from "../../Utils/API";
+import API from "../../Utils/api";
 import Auth from "../../Utils/AUTH";
 import { Redirect } from 'react-router-dom'
 
@@ -28,12 +28,7 @@ export class LoginPage extends React.Component {
         this.setState({ password: event.target.value });
     }
 
-    setRedirect = () => {
-        // this.setState({
-        //   redirect: true
-        // })
-      }
-
+    
 
     login = (event) => {
         event.preventDefault();
