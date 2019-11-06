@@ -60,10 +60,19 @@ export class RegisterStudentPage extends React.Component {
 
     registerStudent = event => {
         event.preventDefault();
-        API.createStudent(this.state).then(res => {
-            //route for redirect after login
-            this.props.history.push({ pathname: '/' });
-        }).catch(err => console.log(err));
+        if (this.state.password !== this.state.confirmpassword){
+            alert('The "password" and "confirm password" fields do not match.  Please try again. Thank you!');
+        } else {
+            API.createStudent(this.state).then(res => {
+                console.log('res: ', res);
+                if (!res.data.emailid){
+                    console.log(res.data);
+                    alert(res.data.message);
+                }
+                //route for redirect after login
+                this.props.history.push({ pathname: '/' });
+            }).catch(err => console.log(err));
+        }
     }
     
     render () {

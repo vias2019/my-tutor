@@ -3,10 +3,10 @@ const passport = require('passport');
 
 module.exports = app => {
   app.post('/teacher-registration', (req, res, next) => {
+      console.log('in post route for reacher reg');
     passport.authenticate('registerTeacher', (err, user, info) => {
       if (err) {
         console.log(err);
-        alert('We were not able to register you.  Please try again.')
       }
       if (info != undefined) {
         console.log(info.message);

@@ -45,10 +45,18 @@ export class RegisterTeacherPage extends React.Component {
 
     registerTeacher = event => {
         event.preventDefault();
-        console.log('in register teacher function');
-        API.createTeacher(this.state).then(res => {
-            this.props.history.push({ pathname: '/' });
-        }).catch(err => console.log(err));
+        if (this.state.password !== this.state.confirmpassword){
+            alert('The "password" and "confirm password" fields do not match.  Please try again. Thank you!');
+            console.log('in register teacher function');
+        } else {
+            API.createTeacher(this.state).then(res => {
+                console.log('res: ', res);
+                if (!res.data.emailid){
+                    alert(res.data);
+                }
+                this.props.history.push({ pathname: '/' });
+            }).catch(err => console.log(err))
+        }
     }
     
     render () {

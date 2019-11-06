@@ -4,7 +4,6 @@ const passport = require('passport');
 module.exports = app => {
     app.post('/student-registration', (req, res, next) => {
         var wasInvited = false;
-        var passwordsMatch = false;
         var reqBody = req.body;
         console.log('request body: ', reqBody);
 
@@ -12,25 +11,7 @@ module.exports = app => {
                 emailid: reqBody.emailid,
             }).then(user => {
                 console.log('user object after findOne: ', user);
-                if (user != null) {
-                    console.log('user is not null')
-                    wasInvited = true;
-                    if (req.body.password == req.body.confirmpassword){
-                        passwordsMatch = true;
-                        console.log('passwords match');
-                    }else{
-                        console.log('passwords do not match')
-                        alert('Your password and confirm password fields do not match. Please try again.')
-                    }
-                }
-                else{
-                    console.log('student does not exist');
-                    alert("Thanks for trying to join but you need to be invited by a teacher in our system to join.  Please have your teacher invite you in his/her profile page. Thanks and see you soon!")
-                    wasInvited = false;
-                    
-                };
-            
-                if (wasInvited && passwordsMatch){
+               
                     passport.authenticate('registerStudent', (err, user, info) => {
                         console.log('req.body from passport: ', req.body);
 
@@ -80,7 +61,7 @@ module.exports = app => {
                             });
                         }
                     })(req, res, next);
-                }
+                
             });
     });
 
