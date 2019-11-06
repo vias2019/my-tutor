@@ -6,6 +6,7 @@ module.exports = app => {
     passport.authenticate('registerTeacher', (err, user, info) => {
       if (err) {
         console.log(err);
+        alert('We were not able to register you.  Please try again.')
       }
       if (info != undefined) {
         console.log(info.message);

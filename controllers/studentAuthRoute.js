@@ -20,11 +20,14 @@ module.exports = app => {
                         console.log('passwords match');
                     }else{
                         console.log('passwords do not match')
+                        alert('Your password and confirm password fields do not match. Please try again.')
                     }
                 }
                 else{
                     console.log('student does not exist');
+                    alert("Thanks for trying to join but you need to be invited by a teacher in our system to join.  Please have your teacher invite you in his/her profile page. Thanks and see you soon!")
                     wasInvited = false;
+                    
                 };
             
                 if (wasInvited && passwordsMatch){
@@ -44,10 +47,18 @@ module.exports = app => {
                                     lastName: req.body.lastName,
                                     emailid: req.user.emailid,
                                     password: req.user.password,
-                                    isRegistered: true
+                                    isRegistered: true,
+                                    amountOwed: 0,
+                                    class: {
+                                        className: '',
+                                        tuition: 0,
+                                        time: '',
+                                        date: ''
+                                    }
                                 };
                                 console.log('req.user: ', req.user);
                                 console.log('user in auth route: ', user);
+                                console.log(data)
                                 console.log('email address in data object in auth route: ', data.emailid);
                                 db.findOneAndUpdate({
                                     emailid: data.emailid,
@@ -57,7 +68,9 @@ module.exports = app => {
                                     lastName: data.lastName,
                                     password: data.password,
                                     isTeacher:false,
-                                    isRegistered: data.isRegistered
+                                    isRegistered: data.isRegistered,
+                                    amountOwed: data.amountOwed,
+                                    class: data.class
                                 },
                                 {new: true}).then(routeUpdatedUser => {
                                     console.log('routeUpdateUser: ', routeUpdatedUser);

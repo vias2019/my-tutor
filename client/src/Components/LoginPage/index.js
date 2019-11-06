@@ -41,7 +41,9 @@ export class LoginPage extends React.Component {
         API.loginUser(this.state).then(res => {
             // Auth.setToken(res.data.token);
             console.log('res isTeacher', res.data.isTeacher);
-        
+            console.log('res.data that passport returns: ', res.data);
+            console.log('res from passport: ', res);
+            
             
             //the route below will depend on the res.data.isTeacher(boolean) in the db.
             //this.props.history.push({pathname: '/', state: {username: res.data.username}});
@@ -49,12 +51,16 @@ export class LoginPage extends React.Component {
 
         //    conflict commented out right here: this.props.history.push({pathname: '/', state: {emailid: res.config.data.emailid}});
 
+        if (!res.data.emailid){
+            alert(res.data);
+        }
+        else {
             window.localStorage.setItem('emailid',  res.data.emailid);
             this.setState({
                 emailid: res.data.emailid, 
                 isTeacher: res.data.isTeacher,
                 redirect: true
-            });
+            });}
 
            
             //the route below will depend on the res.data.isTeacher(boolean) in the db.

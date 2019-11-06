@@ -133,7 +133,7 @@ db.findOne({
 emailid: emailid,
 }).then(user => {
 if (user === null) {
-return done(null, false, { message: 'bad email address' });
+return done(null, false, { message: 'Your email and/or password is not valid.  Please try again.' });
 } else {
 console.log('in passport showing user: ', user);
 console.log('in passport showing password: ', password);
@@ -141,7 +141,7 @@ const passwordsMatch = bcrypt.compareSync(password, user.password);//.then(respo
 
 if (!passwordsMatch) {
 console.log('passwords do not match');
-return done(null, false, { message: 'passwords do not match' });
+return done(null, false, { message: 'Your email and/or password is not valid.  Please try again.' });
 }
 console.log('user found & authenticated');
 

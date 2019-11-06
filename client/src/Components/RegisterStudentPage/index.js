@@ -2,13 +2,12 @@ import * as React from 'react';
 import Select from 'react-select';
 import './style.css';
 import API from "../../Utils/API";
-import Auth from "../../Utils/AUTH";
 
-export const dropDownOptions = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-]
+// export const dropDownOptions = [
+//     { value: 'chocolate', label: 'Chocolate' },
+//     { value: 'strawberry', label: 'Strawberry' },
+//     { value: 'vanilla', label: 'Vanilla' },
+// ]
 
 export class RegisterStudentPage extends React.Component {
 
@@ -20,7 +19,12 @@ export class RegisterStudentPage extends React.Component {
             emailid: '',
             password: '',
             confirmpassword: '',
-            teacher: ''
+            class: {
+                className: '',
+                tuition: 0,
+                time: '',
+                date: ''
+            }
         };
         
         this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
@@ -56,7 +60,6 @@ export class RegisterStudentPage extends React.Component {
 
     registerStudent = event => {
         event.preventDefault();
-        // alert('here is value ' + this.state.value);
         API.createStudent(this.state).then(res => {
             //route for redirect after login
             this.props.history.push({ pathname: '/' });
@@ -76,14 +79,14 @@ export class RegisterStudentPage extends React.Component {
             <div className="d-flex justify-content-center form_container">
                 {/* <form name="signup" method="fetch" action="signup"> */}
                 <form onSubmit={this.registerStudent}>
-                    <div>
+                    {/* <div>
                         <label>Teacher:</label>
                         <Select
                             value={this.state.teacher}
                             onChange={this.setSelectedTeacher}
                             options={dropDownOptions}
                         />
-                    </div>
+                    </div> */}
                     <div >
                         <label>
                             First name:
