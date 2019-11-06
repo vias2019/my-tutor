@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
 var braintree = require('braintree');
+require('dotenv').config();
 
 //require db for hitting is auth method;
 const db = require('../model');
@@ -34,7 +35,7 @@ var model = require("../model");
 const nodemailer = require('nodemailer');
 const log = console.log;
 
-mongoose.connect(("mongodb://localhost/maindatabase" || "mongodb://<dbuser>:<dbpassword>@ds141228.mlab.com:41228/heroku_ddscf0ls"), { useNewUrlParser: true });
+mongoose.connect((process.env.MONGODB_URL || "mongodb://my-tutor:" + process.env.dbpassword + "@ds141228.mlab.com:41228/heroku_ddscf0ls"), { useNewUrlParser: true });
 router.use(function timeLog(req, res, next) {
   console.log('Time: ', Date.now());
   next();
