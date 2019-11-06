@@ -35,7 +35,7 @@ var model = require("../model");
 const nodemailer = require('nodemailer');
 const log = console.log;
 
-mongoose.connect((process.env.MONGODB_URI || "mongodb://my-tutor:" + process.env.dbpassword + "@ds141228.mlab.com:41228/heroku_ddscf0ls"), { useNewUrlParser: true });
+mongoose.connect((process.env.MONGODB_URI || "mongodb://localhost/maindatabase" || "mongodb://my-tutor:" + process.env.dbpassword + "@ds141228.mlab.com:41228/heroku_ddscf0ls"), { useNewUrlParser: true });
 router.use(function timeLog(req, res, next) {
   console.log('Time: ', Date.now());
   next();
@@ -88,7 +88,7 @@ router.post("/send-invite", function (req, res) {
             // TODO: email receiver - pull from registrinvite form submit
             to: req.body.emailid,
             subject: 'Welcome to My Tutor!',
-            text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.'
+            text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started: https://my-tutoring.herokuapp.com/.'
           };
 
           // Step 3
