@@ -28,12 +28,7 @@ export class LoginPage extends React.Component {
         this.setState({ password: event.target.value });
     }
 
-    setRedirect = () => {
-        // this.setState({
-        //   redirect: true
-        // })
-      }
-
+    
 
     login = (event) => {
         event.preventDefault();
