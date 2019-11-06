@@ -35,7 +35,7 @@ var model = require("../model");
 const nodemailer = require('nodemailer');
 const log = console.log;
 
-mongoose.connect((process.env.MONGODB_URL || "mongodb://my-tutor:" + process.env.dbpassword + "@ds141228.mlab.com:41228/heroku_ddscf0ls"), { useNewUrlParser: true });
+mongoose.connect((process.env.MONGODB_URI || "mongodb://my-tutor:" + process.env.dbpassword + "@ds141228.mlab.com:41228/heroku_ddscf0ls"), { useNewUrlParser: true });
 router.use(function timeLog(req, res, next) {
   console.log('Time: ', Date.now());
   next();
