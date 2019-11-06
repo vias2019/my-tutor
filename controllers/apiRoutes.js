@@ -26,7 +26,7 @@ router.post('/checkout', function (req, res) {
       submitForSettlement: true
     }
   }, function (err, result) {
-    res.send(true);
+    res.send(result.success);
   });
 });
 
@@ -68,6 +68,7 @@ router.post("/send-invite", function (req, res) {
     if (result.length > 0) {
       res.json({ success: false, message: 'user already exists in db' });
     } else {
+      console.log(req.body)
       model.create(req.body)
         .then(function (dbUser) {
           // Step 1
@@ -161,7 +162,7 @@ router.post("/add-student", function (req, res) {
   // const formatted = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + 'date.getMinutes()';
 
   console.log(req.body);
-  model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.utcNewTime, "date": req.body.utcNewDate,}, "tuitionOwed": req.body.tuition, "isTeacher": false}, { upsert: false }).then(function (result) {
+  model.findOneAndUpdate({ "emailid": req.body.emailid }, { "class": {"className": req.body.className, "tuition": req.body.tuition, "time": req.body.utcNewTime, "date": req.body.utcNewDate,}, "amountOwed": req.body.tuition, "isTeacher": false}, { upsert: false }).then(function (result) {
     res.json(result);
 
   // model.findOneAndUpdate({ "emailid": req.body.emailid }, { class: { "tuition": req.body.class.tuition, "time": req.body.class.time, "date": req.body.class.date, "className": req.body.class.className}, "isTeacher": false}, { upsert: false }).then(function (result) {
@@ -181,23 +182,21 @@ router.post("/delete", function (req, res) {
 
 });
 
-//Student view
-// ClassName
-// Monthly Rate/ tested
-router.get("/student-view", function (req, res) {
-  model.findOne({ "emailid": req.body.emailid }, "teacherIs class tuitionOwed").then(function (result) {
-    //console.log(result);
-    model.findOne({ "emailid": result.teacherIs }, "firstName lastName emailid").then(function (answer) {
-      //result.teacherIs = (answer.firstName + " " + answer.lastName);
-      // console.log("Answer"+result);
-      res.json(answer);
-    });
+//Student view. Gets all the logged in students information.
+router.post("/student-view", function (req, res) {
+  model.findOne({ "emailid": req.body.emailid }).then(function (result) {
+    res.json(result)
+  })
+})
 
-
-
-
-  });
+router.post('/teacher-name',function(req,res){
+  model.findOne({ "emailid": req.body.teacherEmail }, "firstName lastName").then(function (result) {
+    teacherName = result.firstName + ' ' + result.lastName
+    res.send(teacherName)
+  })
 });
+
+
 
 //drop-down menu - teachers
 // router.get("/teachers", function (req, res) {
@@ -276,10 +275,10 @@ router.get("/payment", function (req, res) {
   });
 });
 
-//calendar read - firstname, lastname, date /tested
-router.get("/teacher-view", function (req, res) {
+//Route to get all classes for the teacher.
+router.post("/teacher-view", function (req, res) {
 
-  model.find({ "teacherIs": req.body.teacherIs }, "firstName lastName class").then(function (result) {
+  model.find({ "teacherIs": req.body.teacherIs, "isRegistered": true}, "firstName lastName class amountOwed").then(function (result) {
     console.log(result);
     res.json(result);
   });
