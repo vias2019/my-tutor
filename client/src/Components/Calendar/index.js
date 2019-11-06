@@ -6,11 +6,16 @@ import interactionPlugin from "@fullcalendar/interaction";
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
+import CalendarModal from '../CalendarModal'
 function Calendar(props){
+  console.log(props)
     return (
       <div>
       <div>
         <FullCalendar
+        eventClick= {function(info){
+          alert(info.event.title)
+        }}
           defaultView="dayGridMonth"
           header={{
             left: "prev,next",

@@ -14,8 +14,7 @@ class TeacherView extends Component {
         name: '',
         email: window.localStorage.getItem('emailid'),
         monthlyIncome: 500, //update this
-        outstandingFees: 1000,//update this
-        sessionPartner: "**student name" //do we need this?
+        outstandingFees: 1000//update this
       };
 
       componentDidMount(){

@@ -98,7 +98,7 @@ class StudentView extends Component {
     render() {
         return (
             <div>
-            <Header name={this.state.name}/>
+            <Header name={this.state.firstName + ' '+ this.state.lastName}/>
             <Container>
                 <Row>
                     <Col>
