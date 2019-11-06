@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Select from 'react-select';
 import './style.css';
-import API from "../../Utils/API";
+import API from "../../Utils/api";
 import Auth from "../../Utils/AUTH";
 
 export const dropDownOptions = [
