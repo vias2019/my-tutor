@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Select from 'react-select';
 import './style.css';
 import API from "../../Utils/API";
@@ -9,7 +9,8 @@ import API from "../../Utils/API";
 //     { value: 'vanilla', label: 'Vanilla' },
 // ]
 
-export class RegisterStudentPage extends React.Component {
+
+export default class RegisterStudentPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -34,31 +35,31 @@ export class RegisterStudentPage extends React.Component {
         this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
     }
 
-    handleFirstNameChange(event) {
+    handleFirstNameChange = (event) =>  {
         this.setState({ firstName: event.target.value });
     }
 
-    handleLastNameChange(event) {
+    handleLastNameChange = (event) =>  {
         this.setState({ lastName: event.target.value });
     }
 
-    handleEmailChange(event) {
+    handleEmailChange = (event) =>  {
         this.setState({ emailid: event.target.value });
     }
 
-    handlePasswordChange(event) {
+    handlePasswordChange = (event) =>  {
         this.setState({ password: event.target.value });
     }
 
-    handleConfirmPasswordChange(event) {
+    handleConfirmPasswordChange = (event) =>  {
         this.setState({ confirmpassword: event.target.value });
     }
 
-    setSelectedTeacher = selectedOption => {
+    setSelectedTeacher = (selectedOption) => {
         this.setState({ teacher: selectedOption });
     }
 
-    registerStudent = event => {
+    registerStudent = (event) =>  {
         event.preventDefault();
         if (this.state.password !== this.state.confirmpassword){
             alert('The "password" and "confirm password" fields do not match.  Please try again. Thank you!');
@@ -75,7 +76,7 @@ export class RegisterStudentPage extends React.Component {
         }
     }
     
-    render () {
+    render() {
         return (
         <>
             <div className="d-flex justify-content-center">
@@ -87,8 +88,10 @@ export class RegisterStudentPage extends React.Component {
 
             <div className="d-flex justify-content-center form_container">
                 {/* <form name="signup" method="fetch" action="signup"> */}
-                <form onSubmit={this.registerStudent}>
-                    {/* <div>
+
+                <form onSubmit={this.registerStudent.bind(this)}>
+                    <div>
+
                         <label>Teacher:</label>
                         <Select
                             value={this.state.teacher}
@@ -181,3 +184,5 @@ export class RegisterStudentPage extends React.Component {
         )
     }
 };
+
+// export default RegisterStudentPage;
