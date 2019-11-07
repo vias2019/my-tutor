@@ -47,6 +47,7 @@ class RegisterTeacherPage extends React.Component {
 
     registerTeacher = (event) => {
         event.preventDefault();
+
         if (this.state.password !== this.state.confirmpassword){
             alert('The "password" and "confirm password" fields do not match.  Please try again. Thank you!');
             console.log('in register teacher function');
@@ -60,6 +61,7 @@ class RegisterTeacherPage extends React.Component {
                 }
             }).catch(err => console.log(err))
         }
+
     }
     
     render () {
