@@ -3,3 +3,9 @@
     font-weight: bold;
     color: rgb(100, 57, 41);
 }
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(100, 57, 41);
+    text-align: center;
+}
