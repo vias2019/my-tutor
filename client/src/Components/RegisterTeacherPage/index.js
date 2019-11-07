@@ -71,7 +71,7 @@ export class RegisterTeacherPage extends React.Component {
                     <img src="./images/teacherOwl.png" className="brand_logo" alt="Logo"/>
                 </div>
             </div>
-
+            <p className="title">Please register as a teacher below</p>
             <div className="d-flex justify-content-center form_container">
                 <form onSubmit={this.registerTeacher}>
                     <div >
@@ -151,8 +151,12 @@ export class RegisterTeacherPage extends React.Component {
 
             <div className="mt-4">
                 <div className="d-flex justify-content-center links">
-                    Already have an account? <br/>
-                        <a href="/" className="ml-2">Log In</a> 
+                    <p>Already have an account?</p> <br/>
+                        <a href="/" className="ml-2">Log In</a>
+                </div>
+                <div className="d-flex justify-content-center links">
+                        <p>Would you like to register as a student?</p> 
+                        <a href="/student-registration" className="ml-2">Student Registration</a> 
                 </div>
             </div>
         </>
