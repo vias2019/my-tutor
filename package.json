@@ -12,6 +12,9 @@
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run build"
   },
+  "engines": {
+    "node": "10.16.0"
+  },
   "author": "Team project",
   "license": "ISC",
   "devDependencies": {

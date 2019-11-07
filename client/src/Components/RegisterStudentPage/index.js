@@ -3,11 +3,11 @@ import Select from 'react-select';
 import './style.css';
 import API from "../../Utils/api";
 
-// export const dropDownOptions = [
-//     { value: 'chocolate', label: 'Chocolate' },
-//     { value: 'strawberry', label: 'Strawberry' },
-//     { value: 'vanilla', label: 'Vanilla' },
-// ]
+export const dropDownOptions = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+]
 
 
 export default class RegisterStudentPage extends React.Component {
@@ -98,7 +98,7 @@ export default class RegisterStudentPage extends React.Component {
                             onChange={this.setSelectedTeacher}
                             options={dropDownOptions}
                         />
-                    </div> */}
+                    </div> 
                     <div >
                         <label>
                             First name:
