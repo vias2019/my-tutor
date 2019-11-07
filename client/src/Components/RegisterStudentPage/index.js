@@ -1,13 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import './style.css';
-import API from "../../Utils/api";
-
-// export const dropDownOptions = [
-//     { value: 'chocolate', label: 'Chocolate' },
-//     { value: 'strawberry', label: 'Strawberry' },
-//     { value: 'vanilla', label: 'Vanilla' },
-// ]
+import API from "../../Utils/API";
 
 
 export default class RegisterStudentPage extends React.Component {
@@ -82,23 +76,14 @@ export default class RegisterStudentPage extends React.Component {
             <div className="d-flex justify-content-center">
                 <div className="brand_logo_container">
                     <p className="header">Welcome to MyTutor</p>
+                    
                     <img src="./images/teacherOwl.png" className="brand_logo" alt="Logo"/>
                 </div>
             </div>
-
+            <p className="title">Please register as a student below</p>
             <div className="d-flex justify-content-center form_container">
-                {/* <form name="signup" method="fetch" action="signup"> */}
 
-                <form onSubmit={this.registerStudent.bind(this)}>
-                    <div>
-
-                        <label>Teacher:</label>
-                        <Select
-                            value={this.state.teacher}
-                            onChange={this.setSelectedTeacher}
-                            options={dropDownOptions}
-                        />
-                    </div> */}
+                <form onSubmit={this.registerStudent}>
                     <div >
                         <label>
                             First name:
@@ -176,8 +161,12 @@ export default class RegisterStudentPage extends React.Component {
 
             <div className="mt-4">
                 <div className="d-flex justify-content-center links">
-                    Already have an account? <br/>
-                        <a href="/" className="ml-2">Log In</a> 
+                    <p>Already have an account?</p> <br/>
+                        <a href="/" className="ml-2">Log In</a>
+                </div>
+                <div className="d-flex justify-content-center links">
+                        <p>Would you like to register as a teacher?</p> 
+                        <a href="/teacher-registration" className="ml-2">Teacher Registration</a> 
                 </div>
             </div>
         </>
