@@ -75,7 +75,9 @@ export class LoginPage extends React.Component {
             <>
             <div className="d-flex justify-content-center">
                 <div className="brand_logo_container">
-                    <p>Welcome to MyTutor</p>
+                    <br></br>
+                    <br></br>
+                    <p className="header" align="center">Welcome to MyTutor</p>
                     {/* <form onSubmit={this.logout}>
                         <div className="d-flex justify-content-center mt-3 login_container">
                             <button 
