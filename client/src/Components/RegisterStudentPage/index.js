@@ -1,7 +1,15 @@
 import React from 'react';
 import Select from 'react-select';
 import './style.css';
-import API from "../../Utils/API";
+
+import API from "../../Utils/api";
+
+export const dropDownOptions = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+]
+
 
 
 export default class RegisterStudentPage extends React.Component {
@@ -83,7 +91,9 @@ export default class RegisterStudentPage extends React.Component {
             <p className="title">Please register as a student below</p>
             <div className="d-flex justify-content-center form_container">
 
+
                 <form onSubmit={this.registerStudent}>
+
                     <div >
                         <label>
                             First name:
