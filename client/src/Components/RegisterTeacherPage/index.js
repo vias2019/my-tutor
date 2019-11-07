@@ -13,7 +13,9 @@ class RegisterTeacherPage extends React.Component {
             emailid: '',
             password: '',
             confirmpassword: '',
-            isTeacher: true
+            isTeacher: true,
+            isRegistered: '',
+            redirect: false
         };
         
         this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
@@ -45,10 +47,21 @@ class RegisterTeacherPage extends React.Component {
 
     registerTeacher = (event) => {
         event.preventDefault();
-        console.log('in register teacher function');
-        API.createTeacher(this.state).then(res => {
-            this.props.history.push({ pathname: '/' });
-        }).catch (err => console.log(err));
+
+        if (this.state.password !== this.state.confirmpassword){
+            alert('The "password" and "confirm password" fields do not match.  Please try again. Thank you!');
+            console.log('in register teacher function');
+        } else {
+            API.createTeacher(this.state).then(res => {
+                if (res.status == 200) {
+                    this.props.history.push({ pathname: '/' });
+                }
+                else {
+                    alert(res.data);
+                }
+            }).catch(err => console.log(err))
+        }
+
     }
     
     render () {
@@ -141,7 +154,7 @@ class RegisterTeacherPage extends React.Component {
             <div className="mt-4">
                 <div className="d-flex justify-content-center links">
                     Already have an account? <br/>
-                        <a href="/teacherReg" className="ml-2">Log In</a> 
+                        <a href="/" className="ml-2">Log In</a> 
                 </div>
             </div>
         </>

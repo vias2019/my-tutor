@@ -14,6 +14,7 @@ class StudentPay extends React.Component {
         let emailid = window.localStorage.getItem('emailid')
     axios.post('/student-view',{emailid})
         .then((res)=>{
+            console.log('res after componentDidMount: ', res);
             this.setState({
                 amountOwed: res.data.amountOwed
             })

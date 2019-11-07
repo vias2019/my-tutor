@@ -2,13 +2,13 @@ import React from 'react';
 import Select from 'react-select';
 import './style.css';
 import API from "../../Utils/api";
-import Auth from "../../Utils/AUTH";
 
-const dropDownOptions = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-]
+// export const dropDownOptions = [
+//     { value: 'chocolate', label: 'Chocolate' },
+//     { value: 'strawberry', label: 'Strawberry' },
+//     { value: 'vanilla', label: 'Vanilla' },
+// ]
+
 
 export default class RegisterStudentPage extends React.Component {
 
@@ -61,10 +61,19 @@ export default class RegisterStudentPage extends React.Component {
 
     registerStudent = (event) =>  {
         event.preventDefault();
-        API.createStudent(this.state).then(res => {
-            //route for redirect after login
-            this.props.history.push({ pathname: '/' });
-        }).catch(err => console.log(err));
+        if (this.state.password !== this.state.confirmpassword){
+            alert('The "password" and "confirm password" fields do not match.  Please try again. Thank you!');
+        } else {
+            API.createStudent(this.state).then(res => {
+                console.log('this is the response coming back to the client - res: ', res);
+                if (res.status == 200) {
+                    this.props.history.push({ pathname: '/' });
+                }
+                else {
+                    alert(res.data);
+                }
+            }).catch(err => console.log(err));
+        }
     }
     
     render() {
@@ -79,15 +88,17 @@ export default class RegisterStudentPage extends React.Component {
 
             <div className="d-flex justify-content-center form_container">
                 {/* <form name="signup" method="fetch" action="signup"> */}
+
                 <form onSubmit={this.registerStudent.bind(this)}>
                     <div>
+
                         <label>Teacher:</label>
                         <Select
                             value={this.state.teacher}
                             onChange={this.setSelectedTeacher}
                             options={dropDownOptions}
                         />
-                    </div>
+                    </div> */}
                     <div >
                         <label>
                             First name:
@@ -166,7 +177,7 @@ export default class RegisterStudentPage extends React.Component {
             <div className="mt-4">
                 <div className="d-flex justify-content-center links">
                     Already have an account? <br/>
-                        <a href="/teacherReg" className="ml-2">Log In</a> 
+                        <a href="/" className="ml-2">Log In</a> 
                 </div>
             </div>
         </>

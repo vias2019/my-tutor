@@ -131,7 +131,8 @@ export default class FormUser extends React.Component {
                             <Form.Control as="select" onChange={this.handleChange} name="emailid" value={this.state.value}>
                             <option value="" selected disabled>Select student</option>
                             {
-                                this.state.students.map((student) => <option name="emailid" value={student.emailid} onChange={this.handleChange} >{student.name}</option>)
+                                
+                                this.state.students.map((student) => <option key={student.emailid} name="emailid" value={student.emailid} onChange={this.handleChange} >{student.name}</option>)
                             }
                             </Form.Control>
                         </Form.Group>
