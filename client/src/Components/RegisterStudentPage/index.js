@@ -1,7 +1,12 @@
 import * as React from 'react';
 import Select from 'react-select';
 import './style.css';
+<<<<<<< HEAD
 import API from "../../Utils/API";
+=======
+import API from "../../Utils/api";
+import Auth from "../../Utils/AUTH";
+>>>>>>> master
 
 // export const dropDownOptions = [
 //     { value: 'chocolate', label: 'Chocolate' },
@@ -125,7 +130,7 @@ export class RegisterStudentPage extends React.Component {
                                 className="form-control input_user"
                                 type="text" 
                                 name="email" 
-                                value={this.state.emailid} 
+                                value={this.state.emailid.toLowerCase()} 
                                 placeholder="email"
                                 onChange={this.handleEmailChange}
                             />

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './style.css';
 import Footer from "../Footer/index";
-import API from "../../Utils/API";
+import API from "../../Utils/api";
 import Auth from "../../Utils/AUTH";
 import { Redirect } from 'react-router-dom'
 
@@ -28,12 +28,7 @@ export class LoginPage extends React.Component {
         this.setState({ password: event.target.value });
     }
 
-    setRedirect = () => {
-        // this.setState({
-        //   redirect: true
-        // })
-      }
-
+    
 
     login = (event) => {
         event.preventDefault();
@@ -87,7 +82,7 @@ export class LoginPage extends React.Component {
             <div className="d-flex justify-content-center">
                 <div className="brand_logo_container">
                     <p>Welcome to MyTutor</p>
-                    <form onSubmit={this.logout}>
+                    {/* <form onSubmit={this.logout}>
                         <div className="d-flex justify-content-center mt-3 login_container">
                             <button 
                                 type="submit" 
@@ -97,7 +92,7 @@ export class LoginPage extends React.Component {
                                 Logout
                             </button>
                         </div>
-                    </form>
+                    </form> */}
                     <img src="./images/teacherOwl.png" className="brand_logo" alt="Logo"/>
                 </div>
             </div>

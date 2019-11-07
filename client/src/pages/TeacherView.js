@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import Header from "../Components/Header";
 import RegistrInvite from "../Components/RegistrInvite";
 import TeacherScheduler from "../Components/TeacherScheduler";
-
+import TeacherInfo from "../Components/TeacherInfo";
 import EditStudent from "../Components/EditStudent";
 import CalendarModal from "../Components/CalendarModal";
 import axios from "axios";
-import moment from 'moment'
+import moment from 'moment';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
 
 class TeacherView extends Component {
     state= {
@@ -89,19 +92,33 @@ class TeacherView extends Component {
         return (
             <div>
             <Header name={this.state.name}></Header>
-            <div className="col-md">
-                <RegistrInvite 
+            <Container>
+                <Row>
+                    <Col md={4} lg={4}>
+                    <br />
+                    <br />
+                    <TeacherInfo monthlyIncome={this.state.income} 
+            outstandingFees={this.state.outstanding} />
+            {/* <div className="col-md"> */}
+                {/* <RegistrInvite 
                 /> 
 
-                <EditStudent />
-                <CalendarModal sessionPartner={this.state.sessionPartner} courseName={this.state.courseName}date={this.state.date} time={this.state.time}/>
-            </div>
+                <EditStudent /> */}
+                {/* <CalendarModal sessionPartner={this.state.sessionPartner} courseName={this.state.courseName}date={this.state.date} time={this.state.time}/> */}
+            {/* </div> */}
+            </Col>
+            <Col>
+            
             <TeacherScheduler 
             monthlyIncome={this.state.income} 
             outstandingFees={this.state.outstanding} 
             events={this.state.classObj}
             //pass the calendar prop into here.
             />
+            
+            </Col>
+            </Row>
+            </Container>
             </div>
         )
     }

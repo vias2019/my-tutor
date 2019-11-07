@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
 var braintree = require('braintree');
+require('dotenv').config();
 
 //require db for hitting is auth method;
 const db = require('../model');
@@ -34,14 +35,14 @@ var model = require("../model");
 const nodemailer = require('nodemailer');
 const log = console.log;
 
-mongoose.connect("mongodb://localhost/maindatabase", { useNewUrlParser: true });
+mongoose.connect((process.env.MONGODB_URI || "mongodb://localhost/maindatabase" || "mongodb://my-tutor:" + process.env.dbpassword + "@ds141228.mlab.com:41228/heroku_ddscf0ls"), { useNewUrlParser: true });
 router.use(function timeLog(req, res, next) {
   console.log('Time: ', Date.now());
   next();
 });
 
 //Teacher reqistration - create a document in db /tested
-//Teacher=true; however, Postman doesn't show true, but DB is updated
+
 router.post("/registration-teacher", function (req, res) {
   model.find({ "emailid": req.body.emailid }).then(function (result) {
     if (result.length == 0) {
@@ -87,7 +88,7 @@ router.post("/send-invite", function (req, res) {
             // TODO: email receiver - pull from registrinvite form submit
             to: req.body.emailid,
             subject: 'Welcome to My Tutor!',
-            text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.'
+            text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started: https://my-tutoring.herokuapp.com/.'
           };
 
           // Step 3
@@ -136,25 +137,25 @@ router.post("/edit-student", function (req, res) {
   });
 });
 //add get req. for students to check if email exists, let register||message /tested
-router.post("/registration-student", function (req, res) {
-  model.find({ "emailid": req.body.emailid }).then(function (result) {
-    console.log('result: ', result);
-    if (result.length == 0) {
-      console.log("Crazy");
-      res.json({ success: false, message: 'user registers by invite only' });
-    } else {
-      model.findOneAndUpdate({ "emailid": req.body.emailid }, { firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password, isRegistedred: true }, { upsert: false })
-        .then(function (dbUser) {
-          console.log("crazy1", dbUser);
-          res.json({ message: "You are registered!" });
-        })
-        .catch(function (err) {
-          res.json(err);
-        });
+// router.post("/registration-student", function (req, res) {
+//   model.find({ "emailid": req.body.emailid }).then(function (result) {
+//     console.log('result: ', result);
+//     if (result.length == 0) {
+//       console.log("Crazy");
+//       res.json({ success: false, message: 'user registers by invite only' });
+//     } else {
+//       model.findOneAndUpdate({ "emailid": req.body.emailid }, { firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password, isRegistered: true }, { upsert: false })
+//         .then(function (dbUser) {
+//           console.log("crazy1", dbUser);
+//           res.json({ message: "You are registered!" });
+//         })
+//         .catch(function (err) {
+//           res.json(err);
+//         });
 
-    }
-  });
-});
+//     }
+//   });
+// });
 
 //Add Student button /tested
 router.post("/add-student", function (req, res) {
@@ -172,6 +173,14 @@ router.post("/add-student", function (req, res) {
   });
 });
 
+
+//get payment info /tested
+router.post("/payment", function (req, res) {
+  model.findOneAndUpdate({ "emailid": req.body.emailid }, {"amountOwed": 0}).then(function (result) {
+    console.log(result);
+    res.json(result);
+  });
+});
 //Delete record/ tested
 router.post("/delete", function (req, res) {
   model.findOneAndDelete({ "emailid": req.body.emailid }, function (result) {
@@ -195,30 +204,6 @@ router.post('/teacher-name',function(req,res){
     res.send(teacherName)
   })
 });
-
-
-
-//drop-down menu - teachers
-// router.get("/teachers", function (req, res) {
-
-//   arrayOfTeachers = [];
-//   const listOfTeachers = (response) => {
-
-//     for (var i = 0; i < response.length; i++) {
-//       arrayOfTeachers.push(response[i].teacherIs);
-//     }
-//     return arrayOfTeachers;
-//   }
-
-//   model.find({}, "teacherIs").then(function (result) {
-
-//     const teachersList = listOfTeachers(result);
-//     //console.log('teachersList: ', teachersList);
-//     res.json(teachersList);
-
-//     //}
-//   });
-// });
 
 //drop-down menu - students/ tested / Needs to add Teacher's email in request
 router.get("/students-list", function (req, res) {
@@ -248,7 +233,7 @@ router.get("/students-list", function (req, res) {
     return arrayOfStudents;
   };
 
-  model.find({ "teacherIs": req.query.teacherIs}).then(function (result) {
+  model.find({ "teacherIs": req.query.teacherIs, "isRegistered": req.query.isRegistered}).then(function (result) {
     console.log("What 2222?"+result);
     const studentsList = listOfStudents(result);
     //console.log('studentsList: ', studentsList);
@@ -267,13 +252,7 @@ router.get("/student-info", function (req, res) {
   });
 });
 
-//get payment info /tested
-router.get("/payment", function (req, res) {
-  model.find({ "emailid": req.body.emailid }, "tuitionOwed").then(function (result) {
-    console.log(result);
-    res.json(result);
-  });
-});
+
 
 //Route to get all classes for the teacher.
 router.post("/teacher-view", function (req, res) {

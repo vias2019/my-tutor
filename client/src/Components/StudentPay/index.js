@@ -28,21 +28,37 @@ class StudentPay extends React.Component {
                     amount: amount,
                     currency: 'USD'
                 }
-            }, function (err, dropinInstance) {
-                button.addEventListener('click', function () {
+            }, (err, dropinInstance) => {
+                button.addEventListener('click', ()=> {
                     dropinInstance.requestPaymentMethod()
-                        .then(function (payload) {
+                        .then((payload)=> {
                             console.log(payload)
                             axios.post('/checkout', { payload, amount })
-                                .then(function (response) {
-                                    console.log(response.data)
+                                .then((response)=> {
                                     //add code here to remove the payment button if payment is successful
-                                    if (response.data === true) {
+                                    if (response.data == true) {
                                         //db update amount owed, update state. tear down the payment button
+                                        axios.post('/payment',{emailid})
+                                            .then((res)=>{
+                                                this.setState({
+                                                    amountOwed: 0
+                                                })
+                                                let parent = document.querySelector(".topDiv")
+                                                let parent2 = document.querySelector(".braintree-dropin")
+                                                let child = document.querySelector('.submit-button1')
+                                                let child2 = document.querySelector('.braintree-large-button')
+                                                parent.removeChild(child)
+                                                parent2.removeChild(child2)
+                                                let lineBreak = document.createElement("br")
+                                                let parent4 = document.querySelector('.braintree-methods.braintree-methods-initial')
+                                                parent4.append(lineBreak, "Thank you for your payment!")
+                                            })
                                         console.log('success')
                                     } else {
-                                        //payment did not go through
-                                        console.log('fail')
+                                        console.log('failed payment')
+                                        let lineBreak = document.createElement("br")
+                                        let parent3 = document.querySelector('h5.card-title')
+                                        parent3.append(lineBreak,"Payment failed. Please try again.")
                                     }
                                 })
                                 .catch(function (err) {
@@ -80,7 +96,7 @@ class StudentPay extends React.Component {
                     <div className="card-body">
                         <h5 className="card-title">Your current fee balance is $
                              {this.state.amountOwed}</h5>
-                        <div>
+                        <div className='topDiv'>
                             <div className='dropin-container1'></div>
                             <button className='submit-button1'>Purchase</button>
                         </div>
