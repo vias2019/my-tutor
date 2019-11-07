@@ -1,6 +1,6 @@
 import React from 'react';
 import './style.css';
-import API from "../../Utils/API";
+import API from "../../Utils/api";
 import Auth from "../../Utils/AUTH";
 
 class RegisterTeacherPage extends React.Component {
