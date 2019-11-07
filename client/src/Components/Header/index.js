@@ -3,7 +3,7 @@ import React from "react";
 import { Redirect } from 'react-router-dom'
 //import logo from './images/logo-placeholder.png';
 import logo from "./images/owllogo.jpg";
-import API from "../../Utils/API";
+import API from "../../Utils/api";
 import "./style.css";
 
 export default class Header extends React.Component {
