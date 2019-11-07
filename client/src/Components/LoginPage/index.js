@@ -5,7 +5,7 @@ import API from "../../Utils/api";
 import Auth from "../../Utils/AUTH";
 import { Redirect } from 'react-router-dom'
 
-export class LoginPage extends React.Component {
+export default class LoginPage extends React.Component {
 
     constructor(props) {
         super(props);

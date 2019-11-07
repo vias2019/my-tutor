@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import './App.css';
-import { LoginPage } from "./Components/LoginPage/index.js";
-import { RegisterStudentPage } from './Components/RegisterStudentPage';
-import { RegisterTeacherPage } from './Components/RegisterTeacherPage';
+import LoginPage from "./Components/LoginPage";
+import RegisterStudentPage from './Components/RegisterStudentPage';
+import RegisterTeacherPage from './Components/RegisterTeacherPage';
 import StudentView from "./pages/StudentView";
 import TeacherView from "./pages/TeacherView";
 
