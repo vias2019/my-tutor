@@ -35,7 +35,7 @@ var model = require("../model");
 const nodemailer = require('nodemailer');
 const log = console.log;
 
-mongoose.connect((process.env.MONGODB_URI || "mongodb://my-tutor:" + process.env.dbpassword + "@ds141228.mlab.com:41228/heroku_ddscf0ls"), { useNewUrlParser: true });
+mongoose.connect((process.env.MONGODB_URI || "mongodb://localhost/maindatabase" || "mongodb://my-tutor:" + process.env.dbpassword + "@ds141228.mlab.com:41228/heroku_ddscf0ls"), { useNewUrlParser: true });
 router.use(function timeLog(req, res, next) {
   console.log('Time: ', Date.now());
   next();
@@ -88,7 +88,7 @@ router.post("/send-invite", function (req, res) {
             // TODO: email receiver - pull from registrinvite form submit
             to: req.body.emailid,
             subject: 'Welcome to My Tutor!',
-            text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started with your tutoring sessions.'
+            text: 'Welcome to My Tutor, ' + req.body.firstName + '! Please register here to get started: https://my-tutoring.herokuapp.com/.'
           };
 
           // Step 3
@@ -137,25 +137,25 @@ router.post("/edit-student", function (req, res) {
   });
 });
 //add get req. for students to check if email exists, let register||message /tested
-router.post("/registration-student", function (req, res) {
-  model.find({ "emailid": req.body.emailid }).then(function (result) {
-    console.log('result: ', result);
-    if (result.length == 0) {
-      console.log("Crazy");
-      res.json({ success: false, message: 'user registers by invite only' });
-    } else {
-      model.findOneAndUpdate({ "emailid": req.body.emailid }, { firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password, isRegistedred: true }, { upsert: false })
-        .then(function (dbUser) {
-          console.log("crazy1", dbUser);
-          res.json({ message: "You are registered!" });
-        })
-        .catch(function (err) {
-          res.json(err);
-        });
+// router.post("/registration-student", function (req, res) {
+//   model.find({ "emailid": req.body.emailid }).then(function (result) {
+//     console.log('result: ', result);
+//     if (result.length == 0) {
+//       console.log("Crazy");
+//       res.json({ success: false, message: 'user registers by invite only' });
+//     } else {
+//       model.findOneAndUpdate({ "emailid": req.body.emailid }, { firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password, isRegistered: true }, { upsert: false })
+//         .then(function (dbUser) {
+//           console.log("crazy1", dbUser);
+//           res.json({ message: "You are registered!" });
+//         })
+//         .catch(function (err) {
+//           res.json(err);
+//         });
 
-    }
-  });
-});
+//     }
+//   });
+// });
 
 //Add Student button /tested
 router.post("/add-student", function (req, res) {
@@ -233,7 +233,7 @@ router.get("/students-list", function (req, res) {
     return arrayOfStudents;
   };
 
-  model.find({ "teacherIs": req.query.teacherIs}).then(function (result) {
+  model.find({ "teacherIs": req.query.teacherIs, "isRegistered": req.query.isRegistered}).then(function (result) {
     console.log("What 2222?"+result);
     const studentsList = listOfStudents(result);
     //console.log('studentsList: ', studentsList);

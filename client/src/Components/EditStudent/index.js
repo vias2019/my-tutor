@@ -50,7 +50,7 @@ export default class FormUser extends React.Component {
 
      
       else {
-        this.setState({ tuition: '', className: '', date: '', time: '' });
+        this.setState({ tuition: '', className: '', date: '', time: ''});
         console.log('nothing to populate')
       }
     
@@ -66,7 +66,7 @@ export default class FormUser extends React.Component {
     var teacherIsVar = this.state.teacherIs;
     console.log('teacher is ' + teacherIsVar);
 
-    axios.get('/students-list', { params: { teacherIs: teacherIsVar}})
+    axios.get('/students-list', { params: { teacherIs: teacherIsVar, isRegistered: true}})
 
       .then(res => {
         const students = res.data;
@@ -97,13 +97,22 @@ export default class FormUser extends React.Component {
         console.log(res);
         console.log(res.data);
       })
+      this.setState({
+        
+        tuition:'',
+        time: '',
+        date: '',
+        className:'',
+        emailid: ''
+      });
+      window.location.reload();
   }
 
   render() {
     const { tuition, time, date, className } = this.state;
     return (
       <>
-        <Button variant="primary" onClick={() => this.toggleShow(true)}>
+        <Button variant="dark" onClick={() => this.toggleShow(true)} id="editButton">
           Add/Edit Student
         </Button>
 
@@ -136,7 +145,7 @@ export default class FormUser extends React.Component {
                     <Form.Row>
                         <Col>
                         <Form.Label>Start Date</Form.Label>
-                        <Form.Control type="date" name="date" value={date} onChange={this.handleChange} />
+                        <Form.Control type="date" name="date" value={date} onChange={this.handleChange} min="2019-11-01" />
                         </Col>
                         <Col> 
 

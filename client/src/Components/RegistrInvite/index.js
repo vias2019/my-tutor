@@ -42,6 +42,7 @@ export default class FormUser extends React.Component {
       .then(res => {
         console.log(res);
         console.log(res.data);
+        this.setState({ firstName: '', lastName: '', emailid: '' });
       })
   }
 
@@ -49,7 +50,7 @@ export default class FormUser extends React.Component {
     const { firstName, lastName, emailid} = this.state;
     return (
       <>
-        <Button variant="primary" onClick={() => this.toggleShow(true)}>
+        <Button variant="dark" onClick={() => this.toggleShow(true)} id="inviteButton">
           Invite New Student
         </Button>
 
@@ -73,7 +74,7 @@ export default class FormUser extends React.Component {
 
               <Form.Row>
                 <Col>
-                  <Form.Label>Email:  <Form.Control type="text" name="emailid" value={emailid} onChange={this.handleChange} required /></Form.Label>
+                  <Form.Label>Email:  <Form.Control type="text" name="emailid" value={emailid.toLowerCase()} onChange={this.handleChange} required /></Form.Label>
                 </Col>
               </Form.Row>
 

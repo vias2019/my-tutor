@@ -19,7 +19,7 @@ class StudentView extends Component {
         tuition: 0,
         amountOwed: 0,
         teacherIs: '',
-        className: '',
+        className: ''
     };
 
     componentDidMount() {
@@ -107,17 +107,18 @@ class StudentView extends Component {
                     courseName = {this.state.className}
                     monthlyFee = {this.state.tuition}
                     /> 
-                    </Col>
-                    <Col>
+                  
                     <StudentPay/>
                     </Col>
-                </Row>
-                <br />
-                <Row>
+                    <br/>
+                    <Col>
+                    <br />
+                           
 
                     <Calendar
                     events={this.state.classObj}
                     />
+                    </Col>
                 </Row>
             </Container>
             </div>

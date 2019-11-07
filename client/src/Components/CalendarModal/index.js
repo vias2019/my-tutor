@@ -18,6 +18,7 @@ function CalendarModal(props) {
   
     return (
       <>
+    
         <Button variant="primary" onClick={handleShow}>
           **Calendar modal**
         </Button>
