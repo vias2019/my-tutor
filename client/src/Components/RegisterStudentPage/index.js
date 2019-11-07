@@ -80,7 +80,7 @@ export class RegisterStudentPage extends React.Component {
         <>
             <div className="d-flex justify-content-center">
                 <div className="brand_logo_container">
-                    <p>Welcome to MyTutor</p>
+                    <p className="header">Welcome to MyTutor</p>
                     <img src="./images/teacherOwl.png" className="brand_logo" alt="Logo"/>
                 </div>
             </div>
@@ -174,7 +174,7 @@ export class RegisterStudentPage extends React.Component {
             <div className="mt-4">
                 <div className="d-flex justify-content-center links">
                     Already have an account? <br/>
-                        <a href="/teacherReg" className="ml-2">Log In</a> 
+                        <a href="/" className="ml-2">Log In</a> 
                 </div>
             </div>
         </>

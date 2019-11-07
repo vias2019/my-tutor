@@ -16,3 +16,12 @@
 .center-div {
     text-align: center;
 }
+
+.header {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(100, 57, 41);
+}
+.login_btn {
+    font-weight: bold;
+}

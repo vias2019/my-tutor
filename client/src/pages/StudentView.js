@@ -101,23 +101,22 @@ class StudentView extends Component {
             <Header name={this.state.name}/>
             <Container>
                 <Row>
-                    <Col>
-                    <StudentScheduler 
-                    teacherName={this.state.teacherIs}
-                    courseName = {this.state.className}
-                    monthlyFee = {this.state.tuition}
-                    /> 
-                  
-                    <StudentPay/>
+                    <Col md={4} lg={4}>
+               
+                        <StudentScheduler 
+                        teacherName={this.state.teacherIs}
+                        courseName = {this.state.className}
+                        monthlyFee = {this.state.tuition}
+                        /> 
+                    
+                        <StudentPay/>
                     </Col>
                     <br/>
                     <Col>
                     <br />
-                           
-
-                    <Calendar
-                    events={this.state.classObj}
-                    />
+                        <Calendar
+                        events={this.state.classObj}
+                        />
                     </Col>
                 </Row>
             </Container>
