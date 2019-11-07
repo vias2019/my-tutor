@@ -1,12 +1,7 @@
 import * as React from 'react';
 import Select from 'react-select';
 import './style.css';
-<<<<<<< HEAD
 import API from "../../Utils/API";
-=======
-import API from "../../Utils/api";
-import Auth from "../../Utils/AUTH";
->>>>>>> master
 
 // export const dropDownOptions = [
 //     { value: 'chocolate', label: 'Chocolate' },
@@ -72,7 +67,9 @@ export class RegisterStudentPage extends React.Component {
                 console.log('this is the response coming back to the client - res: ', res);
                 alert(res.data);
                 //route for redirect after login
-                this.props.history.push({ pathname: '/' });
+                if (res.status == 200) {
+                    this.props.history.push({ pathname: '/' });
+                }
                 
             }).catch(err => console.log(err));
         }

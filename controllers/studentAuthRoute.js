@@ -19,7 +19,7 @@ module.exports = app => {
                         }
                         if (info != undefined) {
                             console.log(info.message);
-                            res.send(info.message);
+                            res.status(201).send(info.message);
                         } else {
                             req.logIn(user, err => {
                                 const data = {

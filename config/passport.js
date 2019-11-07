@@ -96,13 +96,13 @@ passport.use(
                 emailid: emailid,
             }).then(user => {
                 console.log('user from find in passport: ', user);
-                if (user == null) {
+                if (!user || user.length == 0) {
                     return done(null, false, { message: 'You have not been invited by a teacher in our system'} )      
-                    // if (user[0].isRegistered){
-                    //     return done(null, false, { message: 'A student has already registered with this email address' });
-                    // } else {
-                    } else {
-                        
+                    
+                } else {
+                    if (user[0].isRegistered){
+                        return done(null, false, { message: 'A student has already registered with this email address' });
+                    }   
                     var hashedPassword = createHash(password).toString();
                     console.log('found the updated password', hashedPassword);
                     db.findOneAndUpdate(
@@ -115,6 +115,8 @@ passport.use(
                             return done(null, updatedUser);
                         });
                     }
+                }).catch(err => {
+                    return done(err, false, { message: 'You have not been invited by a teacher in our system by teo'} );
                 })
         
         },
