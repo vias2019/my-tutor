@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import './style.css';
 import API from "../../Utils/API";
 import Auth from "../../Utils/AUTH";
 
-export class RegisterTeacherPage extends React.Component {
+class RegisterTeacherPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -25,27 +25,27 @@ export class RegisterTeacherPage extends React.Component {
         this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
     }
 
-    handleFirstNameChange(event) {
+    handleFirstNameChange = (event) =>  {
         this.setState({ firstName: event.target.value });
     }
 
-    handleLastNameChange(event) {
+    handleLastNameChange = (event) =>  {
         this.setState({ lastName: event.target.value });
     }
 
-    handleEmailChange(event) {
+    handleEmailChange = (event) =>  {
         this.setState({ emailid: event.target.value });
     }
 
-    handlePasswordChange(event) {
+    handlePasswordChange = (event) => {
         this.setState({ password: event.target.value });
     }
 
-    handleConfirmPasswordChange(event) {
+    handleConfirmPasswordChange = (event) => {
         this.setState({ confirmpassword: event.target.value });
     }
 
-    registerTeacher = event => {
+    registerTeacher = (event) => {
         event.preventDefault();
         if (this.state.password !== this.state.confirmpassword){
             alert('The "password" and "confirm password" fields do not match.  Please try again. Thank you!');
@@ -73,7 +73,7 @@ export class RegisterTeacherPage extends React.Component {
             </div>
             <p className="title">Please register as a teacher below</p>
             <div className="d-flex justify-content-center form_container">
-                <form onSubmit={this.registerTeacher}>
+                <form onSubmit={this.registerTeacher.bind(this)}>
                     <div >
                         <label>
                             First name:
@@ -163,3 +163,5 @@ export class RegisterTeacherPage extends React.Component {
         )
     }
 };
+
+export default RegisterTeacherPage;
