@@ -61,7 +61,7 @@ var dbSchema = new Schema({
         ]
     },
     currentMonth:{
-        type: String
+        type: Number
     }
 });
 

@@ -193,10 +193,15 @@ router.post("/delete", function (req, res) {
 //Student view. Gets all the logged in students information.
 router.post("/student-view", function (req, res) {
   model.findOne({ "emailid": req.body.emailid }).then(function (result) {
-    if(result.currentMonth == new Date().getMonth()){
-      console.log('@@@@@@@@@@@@@')
+    let thisMonth = new Date().getMonth()
+    if(result.currentMonth === thisMonth){
+      console.log('database month matches the current month')
     }else{
-      model.updateMany().then({})
+      console.log('doesnt match current month')
+      model.updateMany({},{"currentMonth":thisMonth})
+        .then((res)=>{
+          
+        })
     }
     res.json(result)
   })
