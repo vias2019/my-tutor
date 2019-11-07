@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import './style.css';
-import API from "../../Utils/API";
+import API from "../../Utils/api";
 
 // export const dropDownOptions = [
 //     { value: 'chocolate', label: 'Chocolate' },
