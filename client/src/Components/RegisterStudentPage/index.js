@@ -65,12 +65,12 @@ export class RegisterStudentPage extends React.Component {
         } else {
             API.createStudent(this.state).then(res => {
                 console.log('this is the response coming back to the client - res: ', res);
-                alert(res.data);
-                //route for redirect after login
                 if (res.status == 200) {
                     this.props.history.push({ pathname: '/' });
                 }
-                
+                else {
+                    alert(res.data);
+                }
             }).catch(err => console.log(err));
         }
     }

@@ -10,7 +10,7 @@ module.exports = app => {
       }
       if (info != undefined) {
         console.log(info.message);
-        res.send(info.message);
+        res.status(201).send(info.message);
       } else {
         req.logIn(user, err => {
             console.log('user from passport: ', user);
@@ -29,9 +29,9 @@ module.exports = app => {
             isTeacher:true
           },
           {new: true}).then(updatedUser => {
-                console.log('updateUser: ', updatedUser);
-                console.log('user created in db');
-                res.status(200).send({ message: 'user created' });
+            console.log('updateUser: ', updatedUser);
+            console.log('user created in db');
+            res.status(200).send({ message: 'user created' });
           });
         });
       }

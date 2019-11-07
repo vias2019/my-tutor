@@ -52,11 +52,11 @@ export class RegisterTeacherPage extends React.Component {
             console.log('in register teacher function');
         } else {
             API.createTeacher(this.state).then(res => {
-                console.log('res: ', res);
-                if (!res.data.emailid){
+                if (res.status == 200) {
+                    this.props.history.push({ pathname: '/' });
+                }
+                else {
                     alert(res.data);
-                } else {
-                this.props.history.push({ pathname: '/' });
                 }
             }).catch(err => console.log(err))
         }
@@ -152,7 +152,7 @@ export class RegisterTeacherPage extends React.Component {
             <div className="mt-4">
                 <div className="d-flex justify-content-center links">
                     Already have an account? <br/>
-                        <a href="/teacherReg" className="ml-2">Log In</a> 
+                        <a href="/" className="ml-2">Log In</a> 
                 </div>
             </div>
         </>

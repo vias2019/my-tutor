@@ -42,40 +42,33 @@ var createHash = function(password){
 }
 
 
-passport.use(
-'registerTeacher',
-new localStrategy(
-{
-usernameField: 'emailid',
-passwordField: 'password',
-session: false,
-},
-(emailid, password, done) => {
-try {
-db.findOne({
-emailid: emailid,
-}).then(user => {
-if (user != null) {
-console.log('email address already taken');
-return done(null, false, { message: 'emailid already taken' });
-} else {
-db.create({ 
-    emailid, 
-    password: createHash(password),
-    isRegistered: true,
-    isTeacher:true
-}).then(user => {
-    console.log('user created', user);
-    // note the return needed with passport local - remove this return for passport JWT to work
-    return done(null, user);
-});
-}
-});
-} catch (err) {
-done(err);
-}
-},
-),
+passport.use( 'registerTeacher',
+    new localStrategy(
+    {
+        usernameField: 'emailid',
+        passwordField: 'password',
+        session: false,
+    },
+    (emailid, password, done) => {
+        db.findOne({
+            emailid: emailid,
+        }).then(user => {
+            if (user) {
+                return done(null, false, { message: 'emailid already taken' });
+            } 
+            else {
+                db.create({ 
+                    emailid, 
+                    password: createHash(password),
+                    isRegistered: true,
+                    isTeacher:true
+                }).then(user => {
+                    console.log('user created', user);
+                    // note the return needed with passport local - remove this return for passport JWT to work
+                    return done(null, user);
+                });
+        }});
+    })
 );
 
 
@@ -83,15 +76,11 @@ passport.use(
     'registerStudent',
     new localStrategy(
         {
-        usernameField: 'emailid',
-        passwordField: 'password',
-        session: false,
+            usernameField: 'emailid',
+            passwordField: 'password',
+            session: false,
         },
         (emailid, password, done) => {
-
-        
-        //try nested find queries
-            
             db.find({
                 emailid: emailid,
             }).then(user => {
