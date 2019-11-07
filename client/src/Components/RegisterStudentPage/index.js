@@ -64,13 +64,11 @@ export class RegisterStudentPage extends React.Component {
             alert('The "password" and "confirm password" fields do not match.  Please try again. Thank you!');
         } else {
             API.createStudent(this.state).then(res => {
-                console.log('res: ', res);
-                if (!res.data.emailid){
-                    console.log(res.data);
-                    alert(res.data.message);
-                }
+                console.log('this is the response coming back to the client - res: ', res);
+                alert(res.data);
                 //route for redirect after login
                 this.props.history.push({ pathname: '/' });
+                
             }).catch(err => console.log(err));
         }
     }

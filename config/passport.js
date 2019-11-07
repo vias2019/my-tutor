@@ -92,30 +92,30 @@ passport.use(
         
         //try nested find queries
             
-                db.find({
-                    emailid: emailid,
-                }).then(user => {
-                    console.log('user from find in passport: ', user);
-                    if (user === null) {
-                        return done(null, false, { message: 'You have not been invited by a teacher in our system'} )      
-                        // if (user[0].isRegistered){
-                        //     return done(null, false, { message: 'A student has already registered with this email address' });
-                        // } else {
-                        } else {
-                            
-                        var hashedPassword = createHash(password).toString();
-                        console.log('found the updated password', hashedPassword);
-                        db.findOneAndUpdate(
-                            { emailid: emailid },
-                            { password: hashedPassword }, 
-                            { new: true  }
-                            ).then(updatedUser => {
-                                console.log('updatedUser created', updatedUser);
-                                // note the return needed with passport local - remove this return for passport JWT to work
-                                return done(null, updatedUser);
-                            });
-                        }
-                    })
+            db.find({
+                emailid: emailid,
+            }).then(user => {
+                console.log('user from find in passport: ', user);
+                if (user == null) {
+                    return done(null, false, { message: 'You have not been invited by a teacher in our system'} )      
+                    // if (user[0].isRegistered){
+                    //     return done(null, false, { message: 'A student has already registered with this email address' });
+                    // } else {
+                    } else {
+                        
+                    var hashedPassword = createHash(password).toString();
+                    console.log('found the updated password', hashedPassword);
+                    db.findOneAndUpdate(
+                        { emailid: emailid },
+                        { password: hashedPassword }, 
+                        { new: true  }
+                        ).then(updatedUser => {
+                            console.log('updatedUser created', updatedUser);
+                            // note the return needed with passport local - remove this return for passport JWT to work
+                            return done(null, updatedUser);
+                        });
+                    }
+                })
         
         },
     ),

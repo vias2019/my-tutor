@@ -13,7 +13,6 @@ module.exports = app => {
                 console.log('user object after findOne: ', user);
                
                     passport.authenticate('registerStudent', (err, user, info) => {
-                        console.log('req.body from passport: ', req.body);
 
                         if (err) {
                             console.log(err);

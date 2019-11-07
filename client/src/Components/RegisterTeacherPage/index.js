@@ -13,7 +13,9 @@ export class RegisterTeacherPage extends React.Component {
             emailid: '',
             password: '',
             confirmpassword: '',
-            isTeacher: true
+            isTeacher: true,
+            isRegistered: '',
+            redirect: false
         };
         
         this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
@@ -53,8 +55,9 @@ export class RegisterTeacherPage extends React.Component {
                 console.log('res: ', res);
                 if (!res.data.emailid){
                     alert(res.data);
-                }
+                } else {
                 this.props.history.push({ pathname: '/' });
+                }
             }).catch(err => console.log(err))
         }
     }
