@@ -63,7 +63,7 @@ class TeacherView extends Component {
                         default:
                             console.log("Error getting dayName")
                     }
-                    let calendarTitle = data[i].class.className + ' With ' + data[i].firstName + ' ' + data[i].lastName
+                    let calendarTitle = data[i].class.className + ' With ' + data[i].firstName
                     let calendarEvent = {
                         daysOfWeek: [dayNumber],
                         title: calendarTitle, 
