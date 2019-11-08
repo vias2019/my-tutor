@@ -1,0 +1,8 @@
+.fc-event-time, .fc-event-title {
+    padding: 0 1px;
+    white-space: nowrap;
+    }
+    
+    .fc-title {
+    white-space: normal;
+}
