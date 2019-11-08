@@ -6,11 +6,18 @@ import interactionPlugin from "@fullcalendar/interaction";
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 function Calendar(props){
+  const [show, setShow] = React.useState(false);
+  
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
     return (
       <div>
       <div>
         <FullCalendar
+        eventClick= {handleShow}
           defaultView="dayGridMonth"
           header={{
             left: "prev,next",
@@ -22,6 +29,22 @@ function Calendar(props){
           events={props.events}
         />
       </div>
+      <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Calendar Title</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+              <p> You are scheduled for a {props.courseName} session with {props.sessionPartner} </p>
+              <p> Date: {props.date} </p>
+              <p> Time: {props.time} </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+
+          </Modal.Footer>
+        </Modal>
     </div>
     )
 }
