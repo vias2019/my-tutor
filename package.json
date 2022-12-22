@@ -33,7 +33,7 @@
     "express-session": "^1.17.0",
     "if-env": "^1.0.4",
     "moment": "^2.24.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "nodemailer": "^6.3.1",
